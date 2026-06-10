@@ -6,7 +6,7 @@
   <title>이재민 | SAP FI Developer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,6 +23,8 @@
       --white:  #ffffff;
       --green:  #1a7f52;
       --orange: #b05a00;
+      --code-bg: #0d1117;
+      --code-border: #30363d;
     }
 
     html { scroll-behavior: smooth; }
@@ -45,17 +47,26 @@
       height: 56px;
     }
     .nav-logo { font-weight: 700; color: var(--navy); font-size: 16px; letter-spacing: -.3px; }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { text-decoration: none; color: var(--gray600); font-size: 13px; font-weight: 500; transition: color .2s; }
-    .nav-links a:hover { color: var(--navy); }
+    .nav-links { display: flex; gap: 4px; list-style: none; }
+    .nav-links a {
+      text-decoration: none; color: var(--gray600);
+      font-size: 13px; font-weight: 500;
+      padding: 6px 14px; border-radius: 6px;
+      transition: color .2s, background .2s;
+    }
+    .nav-links a:hover { color: var(--navy); background: var(--gray100); }
+    .nav-links a.active { color: var(--blue); background: #e8edf9; font-weight: 600; }
+
+    /* ── TAB PAGES ── */
+    .tab-page { display: none; }
+    .tab-page.active { display: block; }
 
     /* ── HERO ── */
     .hero {
       background: var(--navy);
       color: var(--white);
       padding: 80px 40px 72px;
-      position: relative;
-      overflow: hidden;
+      position: relative; overflow: hidden;
     }
     .hero::before {
       content: '';
@@ -106,19 +117,16 @@
 
     /* ── PROJECT CARDS ── */
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-
     .card {
       background: var(--white);
       border: 1px solid var(--gray200);
-      border-radius: 10px;
-      padding: 24px;
+      border-radius: 10px; padding: 24px;
       transition: box-shadow .2s, border-color .2s, transform .15s;
       position: relative;
     }
     .card:hover {
       box-shadow: 0 6px 24px rgba(30,45,79,.1);
-      border-color: #b8c8f0;
-      transform: translateY(-2px);
+      border-color: #b8c8f0; transform: translateY(-2px);
     }
     .card-type {
       font-size: 10px; font-weight: 700; letter-spacing: 1px;
@@ -129,9 +137,8 @@
     .card-type.fiori  { color: #1e4fa0; }
     .card-type.abap::before  { content: ''; width:8px; height:8px; border-radius:50%; background:#1e7a4e; }
     .card-type.fiori::before { content: ''; width:8px; height:8px; border-radius:50%; background:#1e4fa0; }
-
     .card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .card-id { font-size: 11px; color: var(--gray400); font-family: monospace; margin-bottom: 10px; }
+    .card-id { font-size: 11px; color: var(--gray400); font-family: 'JetBrains Mono', monospace; margin-bottom: 10px; }
     .card p { font-size: 13px; color: var(--gray600); line-height: 1.6; }
     .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
     .tag {
@@ -141,8 +148,6 @@
       border: 1px solid var(--gray200);
     }
     .tag.hl { background: #e8edf9; color: #1e3a8a; border-color: #b0c4f0; }
-
-    /* ── HIGHLIGHT CARD ── */
     .card.featured {
       border-color: var(--blue);
       background: linear-gradient(135deg, #f5f8ff 0%, #ffffff 100%);
@@ -155,14 +160,13 @@
       padding: 2px 8px; border-radius: 4px;
     }
 
-    /* ── TIMELINE / NARRATIVE ── */
+    /* ── NARRATIVE ── */
     .narrative {
       background: var(--gray50);
       border: 1px solid var(--gray200);
       border-left: 4px solid var(--blue);
       border-radius: 0 8px 8px 0;
-      padding: 24px 28px;
-      margin-bottom: 40px;
+      padding: 24px 28px; margin-bottom: 40px;
     }
     .narrative p { font-size: 14px; color: var(--gray600); line-height: 1.8; }
     .narrative strong { color: var(--navy); }
@@ -174,6 +178,127 @@
     .skill-group ul { list-style: none; }
     .skill-group li { font-size: 13px; color: var(--gray600); padding: 3px 0; }
     .skill-group li::before { content: '—'; margin-right: 6px; color: var(--gray400); }
+
+    /* ── ALGO SECTION ── */
+    .algo-banner {
+      background: linear-gradient(135deg, #0f1a2e 0%, #1a2d50 100%);
+      border: 1px solid #2a3a5c;
+      border-radius: 12px;
+      padding: 32px 36px;
+      display: flex; align-items: center; gap: 40px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+    .algo-badge {
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      flex-shrink: 0;
+    }
+    .algo-tier {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: linear-gradient(135deg, #b8b4ff 0%, #7c78e8 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; color: white; letter-spacing: .5px;
+      box-shadow: 0 0 20px rgba(124,120,232,.4);
+    }
+    .algo-tier-lbl { font-size: 11px; color: #8090b0; font-weight: 500; }
+    .algo-info { flex: 1; min-width: 200px; }
+    .algo-info h3 { font-size: 18px; font-weight: 700; color: #e8eef8; margin-bottom: 8px; }
+    .algo-info p { font-size: 13px; color: #8090b0; line-height: 1.7; }
+    .algo-stats { display: flex; gap: 28px; flex-wrap: wrap; }
+    .algo-stat { text-align: center; }
+    .algo-stat-num { font-size: 26px; font-weight: 700; color: #b8b4ff; font-family: 'JetBrains Mono', monospace; }
+    .algo-stat-lbl { font-size: 11px; color: #6070a0; margin-top: 2px; }
+    .algo-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .algo-tag {
+      font-size: 11px; padding: 3px 10px; border-radius: 20px;
+      background: rgba(124,120,232,.15); color: #b8b4ff;
+      border: 1px solid rgba(124,120,232,.3);
+    }
+    .algo-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 16px;
+      font-size: 12px; font-weight: 600; color: #7da8fb;
+      text-decoration: none;
+      border: 1px solid rgba(59,102,212,.4);
+      padding: 6px 14px; border-radius: 6px;
+      transition: background .2s;
+    }
+    .algo-link:hover { background: rgba(59,102,212,.15); }
+
+    /* ── CODE TAB ── */
+    .code-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 0;
+      min-height: 600px;
+      border: 1px solid var(--gray200);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .code-sidebar {
+      background: var(--gray50);
+      border-right: 1px solid var(--gray200);
+      padding: 16px 0;
+    }
+    .code-sidebar-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--gray400);
+      padding: 0 16px 8px;
+    }
+    .snippet-btn {
+      display: block; width: 100%;
+      text-align: left; padding: 10px 16px;
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; font-size: 13px;
+      color: var(--gray600);
+      border-left: 3px solid transparent;
+      transition: background .15s, color .15s;
+    }
+    .snippet-btn:hover { background: var(--gray100); color: var(--navy); }
+    .snippet-btn.active {
+      background: #e8edf9; color: var(--blue);
+      border-left-color: var(--blue); font-weight: 600;
+    }
+    .snippet-btn .stype {
+      font-size: 10px; font-weight: 700; letter-spacing: .5px;
+      text-transform: uppercase;
+      display: block; margin-bottom: 2px;
+    }
+    .snippet-btn .stype.abap { color: #1e7a4e; }
+    .snippet-btn .stype.fiori { color: #1e4fa0; }
+    .code-main { display: flex; flex-direction: column; }
+    .code-header {
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--gray200);
+      background: var(--white);
+    }
+    .code-header h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .code-header p { font-size: 13px; color: var(--gray600); }
+    .code-block {
+      flex: 1;
+      background: var(--code-bg);
+      overflow: auto;
+      position: relative;
+    }
+    .code-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12.5px;
+      line-height: 1.7;
+      padding: 24px 28px;
+      color: #e6edf3;
+      white-space: pre;
+    }
+    .snippet-panel { display: none; height: 100%; }
+    .snippet-panel.active { display: flex; flex-direction: column; height: 100%; }
+
+    /* syntax colors */
+    .kw  { color: #ff7b72; }
+    .cm  { color: #6e7681; font-style: italic; }
+    .str { color: #a5d6ff; }
+    .fn  { color: #d2a8ff; }
+    .num { color: #79c0ff; }
+    .op  { color: #ffa657; }
+    .cls { color: #ffa657; }
 
     /* ── CONTACT ── */
     .contact-bar {
@@ -191,6 +316,9 @@
       .hero-stats { gap: 24px; }
       section { padding: 48px 16px; }
       .cards { grid-template-columns: 1fr; }
+      .code-layout { grid-template-columns: 1fr; }
+      .code-sidebar { border-right: none; border-bottom: 1px solid var(--gray200); }
+      .algo-banner { flex-direction: column; gap: 24px; }
     }
   </style>
 </head>
@@ -200,266 +328,474 @@
 <nav>
   <span class="nav-logo">이재민</span>
   <ul class="nav-links">
-    <li><a href="#projects">프로젝트</a></li>
-    <li><a href="#skills">기술 스택</a></li>
-    <li><a href="#contact">연락처</a></li>
+    <li><a href="#" class="active" onclick="showTab('overview', this); return false;">포트폴리오</a></li>
+    <li><a href="#" onclick="showTab('code', this); return false;">SAP Code</a></li>
   </ul>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-inner">
-    <span class="hero-tag">SAP FI Developer</span>
-    <h1>SAP <em>회계 시스템</em>,<br/>처음부터 끝까지 혼자 구축했습니다</h1>
-    <p class="hero-sub">
-      ABAP 커스텀 개발부터 OData 서비스 설계, SAP Fiori 프론트엔드까지 —
-      FI(Financial Accounting) 모듈 전 영역을 단독으로 설계하고 구현했습니다.
-    </p>
-    <div class="hero-stats">
-      <div>
-        <div class="hero-stat-num">10+</div>
-        <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">2</div>
-        <div class="hero-stat-lbl">SAP Fiori 앱</div>
-      </div>
-      <div>
-        <div class="hero-stat-num">1인</div>
-        <div class="hero-stat-lbl">FI 모듈 전담 개발</div>
+<!-- ══════════════ TAB: OVERVIEW ══════════════ -->
+<div id="tab-overview" class="tab-page active">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <span class="hero-tag">SAP FI Developer</span>
+      <h1>SAP <em>회계 시스템</em>,<br/>처음부터 끝까지 혼자 구축했습니다</h1>
+      <p class="hero-sub">
+        ABAP 커스텀 개발부터 OData 서비스 설계, SAP Fiori 프론트엔드까지 —
+        FI(Financial Accounting) 모듈 전 영역을 단독으로 설계하고 구현했습니다.
+      </p>
+      <div class="hero-stats">
+        <div>
+          <div class="hero-stat-num">10+</div>
+          <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">2</div>
+          <div class="hero-stat-lbl">SAP Fiori 앱</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">1인</div>
+          <div class="hero-stat-lbl">FI 모듈 전담 개발</div>
+        </div>
+        <div>
+          <div class="hero-stat-num">900+</div>
+          <div class="hero-stat-lbl">알고리즘 풀이 (백준)</div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- PROJECTS -->
-<section id="projects">
-  <div class="section-label">Work</div>
-  <div class="section-title">개발 프로젝트</div>
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-label">Work</div>
+    <div class="section-title">개발 프로젝트</div>
 
-  <div class="narrative">
-    <p>
-      <strong>SAP ERP 회계 모듈(FI)의 커스텀 개발을 단독으로 담당</strong>했습니다.
-      전표 입력부터 자산 관리, 채권 독촉, 결재 워크플로우까지 회계 업무 전 사이클을 직접 설계하고 구현했으며,
-      ABAP 백엔드 프로그램, OData 게이트웨이, Fiori 프론트엔드를 모두 혼자 작성했습니다.
-    </p>
+    <div class="narrative">
+      <p>
+        <strong>SAP ERP 회계 모듈(FI)의 커스텀 개발을 단독으로 담당</strong>했습니다.
+        전표 입력부터 자산 관리, 채권 독촉, 결재 워크플로우까지 회계 업무 전 사이클을 직접 설계하고 구현했으며,
+        ABAP 백엔드 프로그램, OData 게이트웨이, Fiori 프론트엔드를 모두 혼자 작성했습니다.
+      </p>
+    </div>
+
+    <div class="cards">
+      <div class="card featured">
+        <span class="card-type abap">ABAP</span>
+        <h3>임시전표 작성 프로그램</h3>
+        <div class="card-id">ZE1FI0001</div>
+        <p>전표 헤더/아이템 입력, 전기 키(SA/DR/KR/AA) 유효성 검증, 차대변 잔액 자동 체크, 번호 범위 채번 후 DB 저장까지 처리. 헤더 잠금 상태 제어로 입력 흐름 보호.</p>
+        <div class="card-tags">
+          <span class="tag hl">ALV Grid</span><span class="tag hl">TextEditor</span>
+          <span class="tag">전표 밸런스 검증</span><span class="tag">Number Range</span><span class="tag">F4 Value Help</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-type abap">ABAP</span>
+        <h3>임시전표 결재 프로그램</h3>
+        <div class="card-id">ZRE1FI0008</div>
+        <p>ZE1FI0001에서 생성된 임시전표를 결재하는 후속 프로그램. 전표번호 파라미터를 넘겨받아 자동 조회 후 승인/반려 처리. 결재 완료 시 전표 상태 변경 및 정식 전기 연계.</p>
+        <div class="card-tags">
+          <span class="tag hl">결재 워크플로우</span><span class="tag">SET PARAMETER</span><span class="tag">상태 관리</span>
+        </div>
+      </div>
+
+      <div class="card featured">
+        <span class="card-type abap">ABAP</span>
+        <h3>고정자산 현황 관리</h3>
+        <div class="card-id">ZE1FI0002</div>
+        <p>ALV Column Tree + 바 차트(연도별 취득액) + 그룹 차트(자산클래스별 취득원가/감가누계/장부가액) 3-panel 구성. 감가상각 누계액 실시간 계산 및 장부가액 표시.</p>
+        <div class="card-tags">
+          <span class="tag hl">ALV Tree</span><span class="tag hl">iXML Chart</span>
+          <span class="tag">감가상각 계산</span><span class="tag">자산클래스 집계</span><span class="tag">스플리터 레이아웃</span>
+        </div>
+      </div>
+
+      <div class="card featured">
+        <span class="card-type fiori">Fiori</span>
+        <h3>독촉장 관리 시스템</h3>
+        <div class="card-id">ZPE1FI_GW02 · zgwe1fi0002</div>
+        <p>미결 채권 현황 대시보드(KPI·차트)와 거래처별 독촉장 발행 기능을 통합한 Fiori 앱. OData 전량 조회 후 클라이언트 사이드 필터링으로 안정적 동작. 독촉 메일 발송(Gmail 연동) 포함.</p>
+        <div class="card-tags">
+          <span class="tag hl">SAP Fiori</span><span class="tag hl">OData 2.0</span>
+          <span class="tag">VizFrame 차트</span><span class="tag">미납액 계산</span><span class="tag">독촉 메일 발송</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-type fiori">Fiori</span>
+        <h3>매출 실적 분석 (ALP 패턴)</h3>
+        <div class="card-id">cyclone_layout_example</div>
+        <p>Analytical List Page 패턴 구현 예시. 사업부별 컬럼 차트 클릭 시 하단 테이블이 자동 필터되는 차트-테이블 인터랙션이 핵심. KPI 2종 인라인 스트립, 2단계 필터 구조.</p>
+        <div class="card-tags">
+          <span class="tag hl">ALP 패턴</span><span class="tag hl">VizFrame</span>
+          <span class="tag">차트-테이블 연동</span><span class="tag">클라이언트 필터링</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider"/>
+
+  <!-- ALGORITHM -->
+  <section id="algo">
+    <div class="section-label">Algorithm</div>
+    <div class="section-title">알고리즘 / PS</div>
+
+    <div class="algo-banner">
+      <div class="algo-badge">
+        <div class="algo-tier">PLAT</div>
+        <div class="algo-tier-lbl">백준 플래티넘</div>
+      </div>
+      <div class="algo-info">
+        <h3>Python으로 900문제 이상 풀었습니다</h3>
+        <p>
+          BaekjoonHub를 통해 풀이를 GitHub에 자동 아카이빙하며 꾸준히 기록해왔습니다.<br/>
+          DP, 그래프 탐색(BFS/DFS), 이분 탐색, 세그먼트 트리 등 폭넓은 유형을 다뤘습니다.
+        </p>
+        <div class="algo-tags">
+          <span class="algo-tag">DP</span>
+          <span class="algo-tag">BFS / DFS</span>
+          <span class="algo-tag">이분 탐색</span>
+          <span class="algo-tag">그리디</span>
+          <span class="algo-tag">세그먼트 트리</span>
+          <span class="algo-tag">구현</span>
+        </div>
+        <a class="algo-link" href="https://github.com/imsunbow/study_algorithm" target="_blank">
+          ↗ GitHub에서 풀이 보기
+        </a>
+      </div>
+      <div class="algo-stats">
+        <div class="algo-stat">
+          <div class="algo-stat-num">900+</div>
+          <div class="algo-stat-lbl">해결한 문제</div>
+        </div>
+        <div class="algo-stat">
+          <div class="algo-stat-num">Pt</div>
+          <div class="algo-stat-lbl">최고 티어</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider"/>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="section-label">Stack</div>
+    <div class="section-title">기술 스택</div>
+    <div class="skills-grid">
+      <div class="skill-group">
+        <h4>SAP Backend</h4>
+        <ul>
+          <li>ABAP (OO / Procedural)</li>
+          <li>ALV Grid / Tree / Chart</li>
+          <li>OData 2.0 (SEGW)</li>
+          <li>SAP Gateway</li>
+          <li>Number Range / BAPI</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>SAP Frontend</h4>
+        <ul>
+          <li>SAP UI5 (1.120 / 1.148)</li>
+          <li>SAP Fiori (MVC)</li>
+          <li>sap.viz VizFrame</li>
+          <li>sap.f DynamicPage</li>
+          <li>Fiori Launchpad 배포</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>SAP FI 도메인</h4>
+        <ul>
+          <li>전표 처리 (SA/DR/KR/AA)</li>
+          <li>전기 키 / 계정 과목</li>
+          <li>고정자산 (감가상각)</li>
+          <li>채권 관리 / 독촉</li>
+          <li>결재 워크플로우</li>
+        </ul>
+      </div>
+      <div class="skill-group">
+        <h4>기타</h4>
+        <ul>
+          <li>Python (알고리즘 PS)</li>
+          <li>JavaScript / JSON</li>
+          <li>XML View / Binding</li>
+          <li>Git / GitHub</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <div class="contact-bar" id="contact">
+    <h2>이재민</h2>
+    <p>SAP FI Developer · <a href="mailto:imsunbow@gmail.com">imsunbow@gmail.com</a></p>
   </div>
 
-  <div class="cards">
+</div><!-- /tab-overview -->
 
-    <!-- ZE1FI0001 -->
-    <div class="card featured">
-      <span class="card-type abap">ABAP</span>
-      <h3>임시전표 작성 프로그램</h3>
-      <div class="card-id">ZE1FI0001</div>
-      <p>
-        전표 헤더/아이템 입력, 전기 키(SA/DR/KR/AA) 유효성 검증, 차대변 잔액 자동 체크,
-        번호 범위 채번 후 DB 저장까지 처리. 헤더 잠금 상태 제어로 입력 흐름 보호.
-      </p>
-      <div class="card-tags">
-        <span class="tag hl">ALV Grid</span>
-        <span class="tag hl">TextEditor</span>
-        <span class="tag">전표 밸런스 검증</span>
-        <span class="tag">Number Range</span>
-        <span class="tag">F4 Value Help</span>
+
+<!-- ══════════════ TAB: SAP CODE ══════════════ -->
+<div id="tab-code" class="tab-page">
+  <section style="max-width:1100px;">
+    <div class="section-label">Source</div>
+    <div class="section-title">SAP Code 스니펫</div>
+
+    <div class="code-layout">
+      <!-- SIDEBAR -->
+      <div class="code-sidebar">
+        <div class="code-sidebar-label">ABAP</div>
+        <button class="snippet-btn active" onclick="showSnippet('s1', this)">
+          <span class="stype abap">ABAP</span>전표 밸런스 검증
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s2', this)">
+          <span class="stype abap">ABAP</span>결재 상태 처리
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s3', this)">
+          <span class="stype abap">ABAP</span>감가상각 계산
+        </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">Fiori / UI5</div>
+        <button class="snippet-btn" onclick="showSnippet('s4', this)">
+          <span class="stype fiori">Fiori</span>OData 상태 집계
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s5', this)">
+          <span class="stype fiori">Fiori</span>채권 KPI 모델 초기화
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s6', this)">
+          <span class="stype fiori">Fiori</span>클라이언트 필터링
+        </button>
       </div>
-    </div>
 
-    <!-- ZRE1FI0008 -->
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3>임시전표 결재 프로그램</h3>
-      <div class="card-id">ZRE1FI0008</div>
-      <p>
-        ZE1FI0001에서 생성된 임시전표를 결재하는 후속 프로그램.
-        전표번호 파라미터를 넘겨받아 자동 조회 후 승인/반려 처리.
-        결재 완료 시 전표 상태 변경 및 정식 전기 연계.
-      </p>
-      <div class="card-tags">
-        <span class="tag hl">결재 워크플로우</span>
-        <span class="tag">SET PARAMETER</span>
-        <span class="tag">상태 관리</span>
-      </div>
-    </div>
+      <!-- PANELS -->
+      <div class="code-main">
 
-    <!-- ZE1FI0002 -->
-    <div class="card featured">
-      <span class="card-type abap">ABAP</span>
-      <h3>고정자산 현황 관리</h3>
-      <div class="card-id">ZE1FI0002</div>
-      <p>
-        ALV Column Tree + 바 차트(연도별 취득액) + 그룹 차트(자산클래스별 취득원가/감가누계/장부가액)
-        3-panel 구성. 감가상각 누계액 실시간 계산 및 장부가액 표시.
-      </p>
-      <div class="card-tags">
-        <span class="tag hl">ALV Tree</span>
-        <span class="tag hl">iXML Chart</span>
-        <span class="tag">감가상각 계산</span>
-        <span class="tag">자산클래스 집계</span>
-        <span class="tag">스플리터 레이아웃</span>
-      </div>
-    </div>
+        <div id="s1" class="snippet-panel active">
+          <div class="code-header">
+            <h3>전표 밸런스 검증 (ZE1FI0001)</h3>
+            <p>임시전표 저장 전 차변/대변 합계가 일치하는지 검증하는 로직</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 전표 아이템 내역에서 차변/대변 합계 계산</span>
+<span class="kw">DATA</span>: lv_debit  <span class="kw">TYPE</span> <span class="cls">bseg-dmbtr</span>,
+      lv_credit <span class="kw">TYPE</span> <span class="cls">bseg-dmbtr</span>.
 
-    <!-- PLACEHOLDER 3 -->
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3><!-- 프로그램명 입력 --></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+<span class="kw">LOOP AT</span> gt_item <span class="kw">INTO</span> gs_item.
+  <span class="kw">CASE</span> gs_item-shkzg.
+    <span class="kw">WHEN</span> <span class="str">'S'</span>.  <span class="cm">" 차변 (Soll)</span>
+      lv_debit = lv_debit + gs_item-dmbtr.
+    <span class="kw">WHEN</span> <span class="str">'H'</span>.  <span class="cm">" 대변 (Haben)</span>
+      lv_credit = lv_credit + gs_item-dmbtr.
+  <span class="kw">ENDCASE</span>.
+<span class="kw">ENDLOOP</span>.
 
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+<span class="cm">" 차대변 불일치 시 저장 차단</span>
+<span class="kw">IF</span> lv_debit <span class="op">NE</span> lv_credit.
+  <span class="fn">MESSAGE</span> <span class="str">'차변과 대변 합계가 일치하지 않습니다.'</span>
+    <span class="kw">TYPE</span> <span class="str">'E'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+  <span class="kw">RETURN</span>.
+<span class="kw">ENDIF</span>.
 
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+<span class="cm">" 밸런스 통과 → 번호 범위 채번 후 DB 저장</span>
+<span class="fn">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
+  <span class="kw">EXPORTING</span>
+    nr_range_nr = <span class="str">'01'</span>
+    object      = <span class="str">'ZFI_TEMP'</span>
+  <span class="kw">IMPORTING</span>
+    number      = lv_docno.
 
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+gs_header-belnr = lv_docno.
+<span class="fn">INSERT</span> zfi_temp_h <span class="kw">FROM</span> gs_header.
+<span class="fn">INSERT</span> zfi_temp_i <span class="kw">FROM TABLE</span> gt_item.</pre></div>
+        </div>
 
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+        <div id="s2" class="snippet-panel">
+          <div class="code-header">
+            <h3>결재 상태 처리 (ZRE1FI0008)</h3>
+            <p>임시전표 승인/반려 시 상태값을 업데이트하고 정식 전기로 연계하는 로직</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 결재 액션에 따라 전표 상태 분기</span>
+<span class="kw">CASE</span> lv_action.
+  <span class="kw">WHEN</span> <span class="str">'APPROVE'</span>.
+    <span class="cm">" 승인: 상태를 P(완료)로 변경 후 정식 전기 연계</span>
+    <span class="kw">UPDATE</span> zfi_temp_h
+      <span class="kw">SET</span>   status = <span class="str">'P'</span>
+            approved_by   = sy-uname
+            approved_date = sy-datum
+      <span class="kw">WHERE</span> belnr = lv_belnr.
 
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+    <span class="cm">" BAPI로 FI 정식 전표 생성</span>
+    <span class="fn">CALL FUNCTION</span> <span class="str">'BAPI_ACC_DOCUMENT_POST'</span>
+      <span class="kw">EXPORTING</span>
+        documentheader = ls_header
+      <span class="kw">TABLES</span>
+        accountgl      = lt_accountgl
+        currencyamount = lt_curramt
+        return         = lt_return.
 
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+    <span class="fn">CALL FUNCTION</span> <span class="str">'BAPI_TRANSACTION_COMMIT'</span>
+      <span class="kw">EXPORTING</span> wait = <span class="str">'X'</span>.
 
-    <div class="card">
-      <span class="card-type abap">ABAP</span>
-      <h3></h3>
-      <div class="card-id">ZE1FI00__</div>
-      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
-      <div class="card-tags"><span class="tag">추가 예정</span></div>
-    </div>
+  <span class="kw">WHEN</span> <span class="str">'REJECT'</span>.
+    <span class="cm">" 반려: 상태를 J로 변경, 반려 사유 저장</span>
+    <span class="kw">UPDATE</span> zfi_temp_h
+      <span class="kw">SET</span>   status      = <span class="str">'J'</span>
+            reject_note = lv_reason
+            reject_date = sy-datum
+      <span class="kw">WHERE</span> belnr = lv_belnr.
+<span class="kw">ENDCASE</span>.</pre></div>
+        </div>
 
-    <!-- FIORI: 독촉장 -->
-    <div class="card featured">
-      <span class="card-type fiori">Fiori</span>
-      <h3>독촉장 관리 시스템</h3>
-      <div class="card-id">ZPE1FI_GW02 · zgwe1fi0002</div>
-      <p>
-        미결 채권 현황 대시보드(KPI·차트)와 거래처별 독촉장 발행 기능을 통합한 Fiori 앱.
-        OData 전량 조회 후 클라이언트 사이드 필터링으로 서버 에러 없이 안정적으로 동작.
-        독촉 메일 발송(Gmail 연동) 포함.
-      </p>
-      <div class="card-tags">
-        <span class="tag hl">SAP Fiori</span>
-        <span class="tag hl">OData 2.0</span>
-        <span class="tag">VizFrame 차트</span>
-        <span class="tag">미납액 계산</span>
-        <span class="tag">독촉 메일 발송</span>
-        <span class="tag">SAP Launchpad 배포</span>
-      </div>
-    </div>
+        <div id="s3" class="snippet-panel">
+          <div class="code-header">
+            <h3>감가상각 계산 (ZE1FI0002)</h3>
+            <p>고정자산 현황에서 취득원가·상각률로 장부가액을 실시간 계산하는 로직</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 자산별 감가상각 누계액 및 장부가액 계산</span>
+<span class="kw">LOOP AT</span> gt_asset <span class="kw">INTO</span> gs_asset.
 
-    <!-- FIORI: ALP 레이아웃 -->
-    <div class="card">
-      <span class="card-type fiori">Fiori</span>
-      <h3>매출 실적 분석 (ALP 패턴)</h3>
-      <div class="card-id">cyclone_layout_example</div>
-      <p>
-        Analytical List Page 패턴 구현 예시.
-        사업부별 컬럼 차트 클릭 시 하단 테이블이 자동 필터되는
-        차트-테이블 인터랙션이 핵심. KPI 2종 인라인 스트립, 2단계 필터 구조.
-      </p>
-      <div class="card-tags">
-        <span class="tag hl">ALP 패턴</span>
-        <span class="tag hl">VizFrame</span>
-        <span class="tag">차트-테이블 연동</span>
-        <span class="tag">클라이언트 필터링</span>
-      </div>
-    </div>
+  <span class="cm">" 경과 연수 = 현재 회계연도 - 취득 연도</span>
+  lv_years = sy-datum+0(4) - gs_asset-acquisition_date+0(4).
 
+  <span class="cm">" 정액법 상각: 취득원가 / 내용 연수</span>
+  <span class="kw">IF</span> gs_asset-useful_life <span class="op">GT</span> <span class="num">0</span>.
+    lv_annual_dep = gs_asset-acquisition_cost
+                    / gs_asset-useful_life.
+
+    lv_accum_dep  = lv_annual_dep * lv_years.
+
+    <span class="cm">" 누계액이 취득원가를 초과하지 않도록 제한</span>
+    <span class="kw">IF</span> lv_accum_dep <span class="op">GT</span> gs_asset-acquisition_cost.
+      lv_accum_dep = gs_asset-acquisition_cost.
+    <span class="kw">ENDIF</span>.
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" 장부가액 = 취득원가 - 감가상각 누계액</span>
+  gs_asset-book_value = gs_asset-acquisition_cost
+                        - lv_accum_dep.
+  gs_asset-accum_dep  = lv_accum_dep.
+
+  <span class="fn">MODIFY</span> gt_asset <span class="kw">FROM</span> gs_asset.
+<span class="kw">ENDLOOP</span>.</pre></div>
+        </div>
+
+        <div id="s4" class="snippet-panel">
+          <div class="code-header">
+            <h3>OData 상태별 집계 (zgwe1fi0001 · OverviewView)</h3>
+            <p>백엔드 OData에서 전체 데이터를 읽어 상태별 카운트를 JSON 모델에 반영</p>
+          </div>
+          <div class="code-block"><pre><span class="fn">_calculateChartCounts</span>: <span class="kw">function</span> (oModel) {
+  <span class="kw">var</span> oChartModel = <span class="kw">this</span>.getView().getModel(<span class="str">"chart"</span>);
+
+  <span class="cm">// 리스트 필터에 무관하게 원본 데이터 직접 조회</span>
+  oModel.<span class="fn">read</span>(<span class="str">"/ApprovalHeaderSet"</span>, {
+    <span class="fn">success</span>: <span class="kw">function</span> (oData) {
+      <span class="kw">var</span> iWait = <span class="num">0</span>, iDone = <span class="num">0</span>, iReject = <span class="num">0</span>;
+
+      oData.results.<span class="fn">forEach</span>(<span class="kw">function</span> (item) {
+        <span class="kw">if</span>      (item.Status === <span class="str">"D"</span>) { iWait++;   }
+        <span class="kw">else if</span> (item.Status === <span class="str">"P"</span>) { iDone++;   }
+        <span class="kw">else if</span> (item.Status === <span class="str">"J"</span>) { iReject++; }
+      });
+
+      <span class="cm">// 집계 결과 → JSON 모델 반영 → XML 차트 자동 갱신</span>
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/WaitCount"</span>,   iWait);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/DoneCount"</span>,   iDone);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/RejectCount"</span>, iReject);
+    }.<span class="fn">bind</span>(<span class="kw">this</span>),
+    <span class="fn">error</span>: <span class="kw">function</span> () {
+      sap.m.MessageToast.<span class="fn">show</span>(<span class="str">"집계 데이터 로드 실패"</span>);
+    }
+  });
+},</pre></div>
+        </div>
+
+        <div id="s5" class="snippet-panel">
+          <div class="code-header">
+            <h3>채권 KPI 모델 초기화 (zgwe1fi0002 · OverviewView)</h3>
+            <p>독촉장 관리 앱의 KPI 대시보드용 JSON 모델 초기값 설정</p>
+          </div>
+          <div class="code-block"><pre><span class="fn">onInit</span>: <span class="kw">function</span> () {
+  <span class="kw">this</span>.getView().<span class="fn">setModel</span>(<span class="kw">new</span> JSONModel({
+    kpi: {
+      openCount:      <span class="num">0</span>,   <span class="cm">// 미결 건수</span>
+      overdueCount:   <span class="num">0</span>,   <span class="cm">// 연체 건수</span>
+      totalOpen:      <span class="num">0</span>,   <span class="cm">// 총 미결 금액</span>
+      totalOpenScale: <span class="str">"만"</span>,
+      over90Count:    <span class="num">0</span>,   <span class="cm">// 90일 초과 건수</span>
+      avgOverdue:     <span class="num">0</span>    <span class="cm">// 평균 연체일</span>
+    },
+    overdueRanges: [
+      { label: <span class="str">"1~30일"</span>,    count: <span class="num">0</span> },
+      { label: <span class="str">"31~60일"</span>,   count: <span class="num">0</span> },
+      { label: <span class="str">"61~90일"</span>,   count: <span class="num">0</span> },
+      { label: <span class="str">"90일 초과"</span>, count: <span class="num">0</span> }
+    ],
+    clearStatus: [
+      { label: <span class="str">"미반제"</span>,   count: <span class="num">0</span> },
+      { label: <span class="str">"일부반제"</span>, count: <span class="num">0</span> },
+      { label: <span class="str">"반제완료"</span>, count: <span class="num">0</span> }
+    ]
+  }), <span class="str">"overview"</span>);
+
+  <span class="kw">this</span>.<span class="fn">_loadDunningStats</span>([]);
+},</pre></div>
+        </div>
+
+        <div id="s6" class="snippet-panel">
+          <div class="code-header">
+            <h3>클라이언트 사이드 필터링 (zgwe1fi0002)</h3>
+            <p>OData 서버 에러 회피를 위해 전체 데이터를 로드 후 클라이언트에서 필터링</p>
+          </div>
+          <div class="code-block"><pre><span class="fn">onOverviewSearch</span>: <span class="kw">function</span> () {
+  <span class="kw">var</span> sPartner = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputPartner"</span>).<span class="fn">getValue</span>().<span class="fn">trim</span>();
+  <span class="kw">var</span> sBukrs   = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputBukrs"</span>).<span class="fn">getValue</span>().<span class="fn">trim</span>();
+  <span class="kw">var</span> aFilters = [];
+
+  <span class="kw">if</span> (sPartner) {
+    aFilters.<span class="fn">push</span>(<span class="kw">new</span> Filter(<span class="str">"PartnerNo"</span>, FilterOperator.EQ, sPartner));
+  }
+  <span class="kw">if</span> (sBukrs) {
+    aFilters.<span class="fn">push</span>(<span class="kw">new</span> Filter(<span class="str">"Bukrs"</span>, FilterOperator.EQ, sBukrs));
+  }
+
+  <span class="cm">// 서버 필터 대신 클라이언트 필터로 집계 재계산</span>
+  <span class="kw">this</span>.<span class="fn">_loadDunningStats</span>(aFilters);
+},
+
+<span class="fn">onOverviewReset</span>: <span class="kw">function</span> () {
+  <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputPartner"</span>).<span class="fn">setValue</span>(<span class="str">""</span>);
+  <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputBukrs"</span>).<span class="fn">setValue</span>(<span class="str">""</span>);
+  <span class="kw">this</span>.<span class="fn">_loadDunningStats</span>([]);
+},</pre></div>
+        </div>
+
+      </div><!-- /code-main -->
+    </div><!-- /code-layout -->
+  </section>
+
+  <div class="contact-bar">
+    <h2>이재민</h2>
+    <p>SAP FI Developer · <a href="mailto:imsunbow@gmail.com">imsunbow@gmail.com</a></p>
   </div>
-</section>
+</div><!-- /tab-code -->
 
-<hr class="section-divider"/>
+<script>
+  function showTab(name, el) {
+    document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    el.classList.add('active');
+    window.scrollTo(0, 0);
+  }
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-label">Stack</div>
-  <div class="section-title">기술 스택</div>
-  <div class="skills-grid">
-    <div class="skill-group">
-      <h4>SAP Backend</h4>
-      <ul>
-        <li>ABAP (OO / Procedural)</li>
-        <li>ALV Grid / Tree / Chart</li>
-        <li>OData 2.0 (SEGW)</li>
-        <li>SAP Gateway</li>
-        <li>Number Range / BAPI</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <h4>SAP Frontend</h4>
-      <ul>
-        <li>SAP UI5 (1.120 / 1.148)</li>
-        <li>SAP Fiori (MVC)</li>
-        <li>sap.viz VizFrame</li>
-        <li>sap.f DynamicPage</li>
-        <li>Fiori Launchpad 배포</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <h4>SAP FI 도메인</h4>
-      <ul>
-        <li>전표 처리 (SA/DR/KR/AA)</li>
-        <li>전기 키 / 계정 과목</li>
-        <li>고정자산 (감가상각)</li>
-        <li>채권 관리 / 독촉</li>
-        <li>결재 워크플로우</li>
-      </ul>
-    </div>
-    <div class="skill-group">
-      <h4>기타</h4>
-      <ul>
-        <li>JavaScript / JSON</li>
-        <li>XML View / Binding</li>
-        <li>Git / GitHub</li>
-        <li>npm / ui5-tooling</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<div class="contact-bar" id="contact">
-  <h2>이재민</h2>
-  <p>SAP FI Developer · <a href="mailto:imsunbow@gmail.com">imsunbow@gmail.com</a></p>
-</div>
+  function showSnippet(id, btn) {
+    document.querySelectorAll('.snippet-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.snippet-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
 
 </body>
 </html>
