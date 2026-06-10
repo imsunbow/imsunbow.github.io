@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>이재민 | SAP FI Developer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #1e2d4f;
+      --navy2:  #2d4275;
+      --blue:   #3b66d4;
+      --gray50: #f8f9fc;
+      --gray100:#f0f2f8;
+      --gray200:#e2e6f0;
+      --gray400:#9aa3bf;
+      --gray600:#5a6480;
+      --gray800:#2c3450;
+      --white:  #ffffff;
+      --green:  #1a7f52;
+      --orange: #b05a00;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-size: 15px;
+      color: var(--gray800);
+      background: var(--white);
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--gray200);
+      padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 56px;
+    }
+    .nav-logo { font-weight: 700; color: var(--navy); font-size: 16px; letter-spacing: -.3px; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { text-decoration: none; color: var(--gray600); font-size: 13px; font-weight: 500; transition: color .2s; }
+    .nav-links a:hover { color: var(--navy); }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--navy);
+      color: var(--white);
+      padding: 80px 40px 72px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(59,102,212,.25) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(59,102,212,.3);
+      border: 1px solid rgba(59,102,212,.5);
+      color: #a8c0f8;
+      font-size: 12px; font-weight: 600; letter-spacing: 1px;
+      padding: 4px 12px; border-radius: 4px;
+      margin-bottom: 20px; text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 700; line-height: 1.25; letter-spacing: -.5px;
+      margin-bottom: 20px;
+    }
+    .hero h1 em { color: #7da8fb; font-style: normal; }
+    .hero-sub {
+      color: #b8c4de; font-size: 16px; max-width: 580px; line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .hero-stats {
+      display: flex; gap: 40px; flex-wrap: wrap;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,.1);
+    }
+    .hero-stat-num { font-size: 28px; font-weight: 700; color: #7da8fb; }
+    .hero-stat-lbl { font-size: 12px; color: #8090b0; margin-top: 2px; }
+
+    /* ── SECTION ── */
+    section { max-width: 960px; margin: 0 auto; padding: 64px 24px; }
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-size: 24px; font-weight: 700; color: var(--navy);
+      margin-bottom: 32px; letter-spacing: -.3px;
+    }
+    .section-divider { border: none; border-top: 1px solid var(--gray200); margin: 0; }
+
+    /* ── PROJECT CARDS ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--gray200);
+      border-radius: 10px;
+      padding: 24px;
+      transition: box-shadow .2s, border-color .2s, transform .15s;
+      position: relative;
+    }
+    .card:hover {
+      box-shadow: 0 6px 24px rgba(30,45,79,.1);
+      border-color: #b8c8f0;
+      transform: translateY(-2px);
+    }
+    .card-type {
+      font-size: 10px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; margin-bottom: 10px;
+      display: inline-flex; align-items: center; gap: 5px;
+    }
+    .card-type.abap   { color: #1e7a4e; }
+    .card-type.fiori  { color: #1e4fa0; }
+    .card-type.abap::before  { content: ''; width:8px; height:8px; border-radius:50%; background:#1e7a4e; }
+    .card-type.fiori::before { content: ''; width:8px; height:8px; border-radius:50%; background:#1e4fa0; }
+
+    .card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .card-id { font-size: 11px; color: var(--gray400); font-family: monospace; margin-bottom: 10px; }
+    .card p { font-size: 13px; color: var(--gray600); line-height: 1.6; }
+    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+    .tag {
+      font-size: 11px; font-weight: 500; padding: 3px 8px;
+      border-radius: 4px;
+      background: var(--gray100); color: var(--gray600);
+      border: 1px solid var(--gray200);
+    }
+    .tag.hl { background: #e8edf9; color: #1e3a8a; border-color: #b0c4f0; }
+
+    /* ── HIGHLIGHT CARD ── */
+    .card.featured {
+      border-color: var(--blue);
+      background: linear-gradient(135deg, #f5f8ff 0%, #ffffff 100%);
+    }
+    .card.featured::after {
+      content: '핵심';
+      position: absolute; top: 16px; right: 16px;
+      font-size: 10px; font-weight: 700; letter-spacing: .5px;
+      background: var(--blue); color: white;
+      padding: 2px 8px; border-radius: 4px;
+    }
+
+    /* ── TIMELINE / NARRATIVE ── */
+    .narrative {
+      background: var(--gray50);
+      border: 1px solid var(--gray200);
+      border-left: 4px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+      padding: 24px 28px;
+      margin-bottom: 40px;
+    }
+    .narrative p { font-size: 14px; color: var(--gray600); line-height: 1.8; }
+    .narrative strong { color: var(--navy); }
+
+    /* ── SKILLS ── */
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .skill-group { background: var(--gray50); border: 1px solid var(--gray200); border-radius: 8px; padding: 18px 20px; }
+    .skill-group h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 10px; }
+    .skill-group ul { list-style: none; }
+    .skill-group li { font-size: 13px; color: var(--gray600); padding: 3px 0; }
+    .skill-group li::before { content: '—'; margin-right: 6px; color: var(--gray400); }
+
+    /* ── CONTACT ── */
+    .contact-bar {
+      background: var(--navy);
+      color: rgba(255,255,255,.7);
+      text-align: center; padding: 40px 24px;
+      font-size: 13px;
+    }
+    .contact-bar a { color: #7da8fb; text-decoration: none; }
+    .contact-bar h2 { font-size: 20px; color: white; margin-bottom: 12px; }
+
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; }
+      .hero { padding: 48px 20px 52px; }
+      .hero-stats { gap: 24px; }
+      section { padding: 48px 16px; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">이재민</span>
+  <ul class="nav-links">
+    <li><a href="#projects">프로젝트</a></li>
+    <li><a href="#skills">기술 스택</a></li>
+    <li><a href="#contact">연락처</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <span class="hero-tag">SAP FI Developer</span>
+    <h1>SAP <em>회계 시스템</em>,<br/>처음부터 끝까지 혼자 구축했습니다</h1>
+    <p class="hero-sub">
+      ABAP 커스텀 개발부터 OData 서비스 설계, SAP Fiori 프론트엔드까지 —
+      FI(Financial Accounting) 모듈 전 영역을 단독으로 설계하고 구현했습니다.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <div class="hero-stat-num">10+</div>
+        <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">2</div>
+        <div class="hero-stat-lbl">SAP Fiori 앱</div>
+      </div>
+      <div>
+        <div class="hero-stat-num">1인</div>
+        <div class="hero-stat-lbl">FI 모듈 전담 개발</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-label">Work</div>
+  <div class="section-title">개발 프로젝트</div>
+
+  <div class="narrative">
+    <p>
+      <strong>SAP ERP 회계 모듈(FI)의 커스텀 개발을 단독으로 담당</strong>했습니다.
+      전표 입력부터 자산 관리, 채권 독촉, 결재 워크플로우까지 회계 업무 전 사이클을 직접 설계하고 구현했으며,
+      ABAP 백엔드 프로그램, OData 게이트웨이, Fiori 프론트엔드를 모두 혼자 작성했습니다.
+    </p>
+  </div>
+
+  <div class="cards">
+
+    <!-- ZE1FI0001 -->
+    <div class="card featured">
+      <span class="card-type abap">ABAP</span>
+      <h3>임시전표 작성 프로그램</h3>
+      <div class="card-id">ZE1FI0001</div>
+      <p>
+        전표 헤더/아이템 입력, 전기 키(SA/DR/KR/AA) 유효성 검증, 차대변 잔액 자동 체크,
+        번호 범위 채번 후 DB 저장까지 처리. 헤더 잠금 상태 제어로 입력 흐름 보호.
+      </p>
+      <div class="card-tags">
+        <span class="tag hl">ALV Grid</span>
+        <span class="tag hl">TextEditor</span>
+        <span class="tag">전표 밸런스 검증</span>
+        <span class="tag">Number Range</span>
+        <span class="tag">F4 Value Help</span>
+      </div>
+    </div>
+
+    <!-- ZRE1FI0008 -->
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3>임시전표 결재 프로그램</h3>
+      <div class="card-id">ZRE1FI0008</div>
+      <p>
+        ZE1FI0001에서 생성된 임시전표를 결재하는 후속 프로그램.
+        전표번호 파라미터를 넘겨받아 자동 조회 후 승인/반려 처리.
+        결재 완료 시 전표 상태 변경 및 정식 전기 연계.
+      </p>
+      <div class="card-tags">
+        <span class="tag hl">결재 워크플로우</span>
+        <span class="tag">SET PARAMETER</span>
+        <span class="tag">상태 관리</span>
+      </div>
+    </div>
+
+    <!-- ZE1FI0002 -->
+    <div class="card featured">
+      <span class="card-type abap">ABAP</span>
+      <h3>고정자산 현황 관리</h3>
+      <div class="card-id">ZE1FI0002</div>
+      <p>
+        ALV Column Tree + 바 차트(연도별 취득액) + 그룹 차트(자산클래스별 취득원가/감가누계/장부가액)
+        3-panel 구성. 감가상각 누계액 실시간 계산 및 장부가액 표시.
+      </p>
+      <div class="card-tags">
+        <span class="tag hl">ALV Tree</span>
+        <span class="tag hl">iXML Chart</span>
+        <span class="tag">감가상각 계산</span>
+        <span class="tag">자산클래스 집계</span>
+        <span class="tag">스플리터 레이아웃</span>
+      </div>
+    </div>
+
+    <!-- PLACEHOLDER 3 -->
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3><!-- 프로그램명 입력 --></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <div class="card">
+      <span class="card-type abap">ABAP</span>
+      <h3></h3>
+      <div class="card-id">ZE1FI00__</div>
+      <p style="color:#bbb;font-style:italic;">프로그램 설명을 입력해주세요.</p>
+      <div class="card-tags"><span class="tag">추가 예정</span></div>
+    </div>
+
+    <!-- FIORI: 독촉장 -->
+    <div class="card featured">
+      <span class="card-type fiori">Fiori</span>
+      <h3>독촉장 관리 시스템</h3>
+      <div class="card-id">ZPE1FI_GW02 · zgwe1fi0002</div>
+      <p>
+        미결 채권 현황 대시보드(KPI·차트)와 거래처별 독촉장 발행 기능을 통합한 Fiori 앱.
+        OData 전량 조회 후 클라이언트 사이드 필터링으로 서버 에러 없이 안정적으로 동작.
+        독촉 메일 발송(Gmail 연동) 포함.
+      </p>
+      <div class="card-tags">
+        <span class="tag hl">SAP Fiori</span>
+        <span class="tag hl">OData 2.0</span>
+        <span class="tag">VizFrame 차트</span>
+        <span class="tag">미납액 계산</span>
+        <span class="tag">독촉 메일 발송</span>
+        <span class="tag">SAP Launchpad 배포</span>
+      </div>
+    </div>
+
+    <!-- FIORI: ALP 레이아웃 -->
+    <div class="card">
+      <span class="card-type fiori">Fiori</span>
+      <h3>매출 실적 분석 (ALP 패턴)</h3>
+      <div class="card-id">cyclone_layout_example</div>
+      <p>
+        Analytical List Page 패턴 구현 예시.
+        사업부별 컬럼 차트 클릭 시 하단 테이블이 자동 필터되는
+        차트-테이블 인터랙션이 핵심. KPI 2종 인라인 스트립, 2단계 필터 구조.
+      </p>
+      <div class="card-tags">
+        <span class="tag hl">ALP 패턴</span>
+        <span class="tag hl">VizFrame</span>
+        <span class="tag">차트-테이블 연동</span>
+        <span class="tag">클라이언트 필터링</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="section-divider"/>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Stack</div>
+  <div class="section-title">기술 스택</div>
+  <div class="skills-grid">
+    <div class="skill-group">
+      <h4>SAP Backend</h4>
+      <ul>
+        <li>ABAP (OO / Procedural)</li>
+        <li>ALV Grid / Tree / Chart</li>
+        <li>OData 2.0 (SEGW)</li>
+        <li>SAP Gateway</li>
+        <li>Number Range / BAPI</li>
+      </ul>
+    </div>
+    <div class="skill-group">
+      <h4>SAP Frontend</h4>
+      <ul>
+        <li>SAP UI5 (1.120 / 1.148)</li>
+        <li>SAP Fiori (MVC)</li>
+        <li>sap.viz VizFrame</li>
+        <li>sap.f DynamicPage</li>
+        <li>Fiori Launchpad 배포</li>
+      </ul>
+    </div>
+    <div class="skill-group">
+      <h4>SAP FI 도메인</h4>
+      <ul>
+        <li>전표 처리 (SA/DR/KR/AA)</li>
+        <li>전기 키 / 계정 과목</li>
+        <li>고정자산 (감가상각)</li>
+        <li>채권 관리 / 독촉</li>
+        <li>결재 워크플로우</li>
+      </ul>
+    </div>
+    <div class="skill-group">
+      <h4>기타</h4>
+      <ul>
+        <li>JavaScript / JSON</li>
+        <li>XML View / Binding</li>
+        <li>Git / GitHub</li>
+        <li>npm / ui5-tooling</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="contact-bar" id="contact">
+  <h2>이재민</h2>
+  <p>SAP FI Developer · <a href="mailto:imsunbow@gmail.com">imsunbow@gmail.com</a></p>
+</div>
+
+</body>
+</html>
