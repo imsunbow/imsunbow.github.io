@@ -347,7 +347,7 @@
       </p>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-num">10+</div>
+          <div class="hero-stat-num">6+</div>
           <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
         </div>
         <div>
@@ -405,10 +405,32 @@
         <span class="card-type abap">ABAP</span>
         <h3>고정자산 현황 관리</h3>
         <div class="card-id">ZE1FI0002</div>
-        <p>ALV Column Tree + 바 차트(연도별 취득액) + 그룹 차트(자산클래스별 취득원가/감가누계/장부가액) 3-panel 구성. 감가상각 누계액 실시간 계산 및 장부가액 표시.</p>
+        <p>ALV Column Tree + 바 차트(연도별 취득액) + 그룹 차트(자산클래스별 취득원가/감가누계/장부가액) 3-panel 구성. 자산 클릭 시 차트 즉시 갱신, 취득·매각 전표 자동 생성.</p>
         <div class="card-tags">
           <span class="tag hl">ALV Tree</span><span class="tag hl">iXML Chart</span>
-          <span class="tag">감가상각 계산</span><span class="tag">자산클래스 집계</span><span class="tag">스플리터 레이아웃</span>
+          <span class="tag">감가상각 계산</span><span class="tag">자산 취득/매각</span><span class="tag">스플리터 레이아웃</span>
+        </div>
+      </div>
+
+      <div class="card featured">
+        <span class="card-type abap">ABAP</span>
+        <h3>전표 조회 / 역분개</h3>
+        <div class="card-id">ZRE1FI0002</div>
+        <p>CDS View 기반 전표 헤더·아이템 2-panel 조회. 전표유형별 동적 컬럼 구성, 역분개 전표 생성(원전표 금액 반전), 환율 환산 및 차대변 분리. Excel·PDF 다운로드 기능 포함.</p>
+        <div class="card-tags">
+          <span class="tag hl">CDS View</span><span class="tag hl">역분개</span>
+          <span class="tag">동적 FCAT</span><span class="tag">환율 환산</span><span class="tag">OLE2 PDF 출력</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-type abap">ABAP</span>
+        <h3>환율 자동 수집 배치</h3>
+        <div class="card-id">ZRE1FI0001</div>
+        <p>한국수출입은행 Open API를 cl_http_client로 호출해 당일 기준 환율 JSON을 수신. /ui2/cl_json 역직렬화 후 100단위 통화(JPY 등) 처리 및 MODIFY upsert로 DB 저장.</p>
+        <div class="card-tags">
+          <span class="tag hl">HTTP Client</span><span class="tag hl">JSON 파싱</span>
+          <span class="tag">외부 API 연동</span><span class="tag">MODIFY upsert</span><span class="tag">배치 프로그램</span>
         </div>
       </div>
 
