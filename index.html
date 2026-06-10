@@ -576,6 +576,16 @@
         <button class="snippet-btn" onclick="showSnippet('s12', this)">
           <span class="stype abap">ABAP</span>환율 DB 저장
         </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0002</div>
+        <button class="snippet-btn" onclick="showSnippet('s13', this)">
+          <span class="stype abap">ABAP</span>역분개 전표 생성
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s14', this)">
+          <span class="stype abap">ABAP</span>전표유형별 동적 컬럼
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s15', this)">
+          <span class="stype abap">ABAP</span>환율 환산 / 차대변 분리
+        </button>
         <div class="code-sidebar-label" style="margin-top:16px;">Fiori / UI5</div>
         <button class="snippet-btn" onclick="showSnippet('s4', this)">
           <span class="stype fiori">Fiori</span>OData 상태 집계
@@ -1056,6 +1066,135 @@ gv_gdatu_inv = <span class="num">99999999</span> - sy-datum.
   <span class="kw">COMMIT WORK</span>.
   <span class="fn">MESSAGE</span> |환율 데이터 { lines( gt_cm0005 ) }건 저장 완료!| <span class="kw">TYPE</span> <span class="str">'S'</span>.
 <span class="kw">ENDIF</span>.</pre></div>
+        </div>
+
+        <div id="s13" class="snippet-panel">
+          <div class="code-header">
+            <h3>역분개 전표 생성 (ZRE1FI0002 · SAVE_REVERSE_DOC)</h3>
+            <p>원전표 아이템 금액에 × -1 적용해 역분개 전표 생성, INSERT×2 + UPDATE×2 모두 성공 시 COMMIT</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 역분개 아이템: 원전표 아이템의 금액을 반전(-1)시켜 생성</span>
+<span class="kw">LOOP AT</span> gt_item <span class="kw">INTO DATA</span>(ls_item).
+  ls_rev_doc_item-bukrs      = gs_header-bukrs.
+  ls_rev_doc_item-gjahr      = gs_header-gjahr.
+  ls_rev_doc_item-belnr      = lv_belnr.
+  ls_rev_doc_item-buzei      = sy-tabix * <span class="num">10</span>.
+  ls_rev_doc_item-bschl      = ls_item-bschl.
+  ls_rev_doc_item-shkzg      = ls_item-shkzg.
+  ls_rev_doc_item-hkont      = ls_item-hkont.
+  ls_rev_doc_item-koart      = ls_item-koart.
+  ls_rev_doc_item-waers      = ls_item-waers.
+  ls_rev_doc_item-wrbtr      = ls_item-wrbtr    * <span class="num">-1</span>.  <span class="cm">" 외화 금액 반전</span>
+  ls_rev_doc_item-open_amt   = ls_item-open_amt * <span class="num">-1</span>.
+  ls_rev_doc_item-dmbtr      = ls_item-dmbtr    * <span class="num">-1</span>.  <span class="cm">" 원화 환산 금액 반전</span>
+  ls_rev_doc_item-ukurs      = ls_item-ukurs.
+  ls_rev_doc_item-erdat      = sy-datum.
+  ls_rev_doc_item-ernam      = sy-uname.
+  <span class="kw">APPEND</span> ls_rev_doc_item <span class="kw">TO</span> lt_rev_doc_item.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" 역분개 전표 헤더 INSERT</span>
+<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_rev_doc_header.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'헤더 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" 역분개 전표 아이템 INSERT</span>
+<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_rev_doc_item.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'아이템 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" 원전표 헤더 UPDATE: 역분개 완료 상태 + 역분개 전표번호 연결</span>
+<span class="kw">UPDATE</span> zte1fi0005
+   <span class="kw">SET</span> status = <span class="str">'X'</span>  stblg  = lv_belnr
+       aedat  = sy-datum  aenam = sy-uname
+ <span class="kw">WHERE</span> bukrs <span class="op">EQ</span> gs_header-bukrs
+   <span class="kw">AND</span> belnr <span class="op">EQ</span> gs_header-belnr
+   <span class="kw">AND</span> gjahr <span class="op">EQ</span> gs_header-gjahr.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'원전표 헤더 업데이트 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" 원전표 아이템 UPDATE: 타임스탬프만 갱신</span>
+<span class="kw">UPDATE</span> zte1fi0006
+   <span class="kw">SET</span> aedat = sy-datum  aenam = sy-uname
+ <span class="kw">WHERE</span> bukrs <span class="op">EQ</span> gs_header-bukrs
+   <span class="kw">AND</span> belnr <span class="op">EQ</span> gs_header-belnr.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'원전표 아이템 업데이트 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="kw">COMMIT WORK AND WAIT</span>.
+<span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> |역분개 전표 생성 완료. 전표 번호 : { lv_belnr }|.</pre></div>
+        </div>
+
+        <div id="s14" class="snippet-panel">
+          <div class="code-header">
+            <h3>전표유형별 동적 컬럼 구성 (ZRE1FI0002 · SET_FCAT_GRID)</h3>
+            <p>pa_blart 값에 따라 FCAT에 추가할 컬럼을 다르게 결정 — 역분개·BP·원전표 컬럼이 전표 유형마다 다르게 조합됨</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 전표 유형에 따른 동적 컬럼 할당</span>
+<span class="kw">CASE</span> pa_blart.
+  <span class="kw">WHEN</span> <span class="str">'SA'</span>.  <span class="cm">" 일반전표: 역분개 전표번호 + 사유</span>
+    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
+    <span class="str">' '</span> <span class="str">'STBLG'</span>       <span class="str">'역분개 전표 번호'</span>  <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
+    <span class="str">' '</span> <span class="str">'REASON_TXT2'</span> <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
+
+  <span class="kw">WHEN</span> <span class="str">'SR'</span>.  <span class="cm">" 역분개전표: 원전표번호 + 원전표의 역분개 사유</span>
+    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
+    <span class="str">' '</span> <span class="str">'REF_BELNR'</span>   <span class="str">'원전표 번호'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
+    <span class="str">' '</span> <span class="str">'REASON_TXT'</span>  <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
+
+  <span class="kw">WHEN</span> <span class="str">'DR'</span> <span class="kw">OR</span> <span class="str">'KR'</span>.  <span class="cm">" 매출/매입전표: BP 정보 + 역분개 정보</span>
+    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
+    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span>  <span class="str">'협력사 번호'</span>      <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'12'</span>,
+    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>   <span class="str">'협력사명'</span>         <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'18'</span>,
+    <span class="str">' '</span> <span class="str">'STBLG'</span>       <span class="str">''</span>                 <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
+    <span class="str">' '</span> <span class="str">'REASON_TXT2'</span> <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
+
+  <span class="kw">WHEN</span> <span class="str">'AL'</span>.  <span class="cm">" 전체 조회: 모든 컬럼 포함</span>
+    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
+    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span>  <span class="str">'협력사 번호'</span>      <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'12'</span>,
+    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>   <span class="str">''</span>                 <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'18'</span>,
+    <span class="str">' '</span> <span class="str">'REF_BELNR'</span>   <span class="str">'원전표 번호'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
+    <span class="str">' '</span> <span class="str">'STBLG'</span>       <span class="str">'역분개 전표 번호'</span>  <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
+    <span class="str">' '</span> <span class="str">'REASON_TXT'</span>  <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
+<span class="kw">ENDCASE</span>.</pre></div>
+        </div>
+
+        <div id="s15" class="snippet-panel">
+          <div class="code-header">
+            <h3>환율 환산 / 차대변 분리 (ZRE1FI0002 · SET_SH)</h3>
+            <p>IDOC 형식 환율을 SAP 금액으로 변환하고, shkzg 기준으로 차변/대변 금액을 분리해 원화 환산까지 산출</p>
+          </div>
+          <div class="code-block"><pre><span class="kw">LOOP AT</span> gt_item <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
+
+  <span class="cm">" IDOC 형식 환율 → SAP 금액 타입으로 변환</span>
+  <span class="kw">CALL FUNCTION</span> <span class="str">'CURRENCY_AMOUNT_IDOC_TO_SAP'</span>
+    <span class="kw">EXPORTING</span>
+      currency    = <span class="str">'KRW'</span>
+      idoc_amount = &lt;lfs_item&gt;-ukurs
+    <span class="kw">IMPORTING</span>
+      sap_amount  = lv_dmbtr.
+
+  <span class="cm">" KRW는 환율이 0으로 저장되므로 강제로 1 할당</span>
+  <span class="kw">IF</span> lv_dmbtr <span class="op">EQ</span> <span class="num">0</span> <span class="kw">AND</span> &lt;lfs_item&gt;-waers = <span class="str">'KRW'</span>.
+    lv_dmbtr = <span class="num">1</span>.
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" shkzg 기준 차대변 분리 + 원화 환산 금액 계산</span>
+  <span class="kw">CASE</span> &lt;lfs_item&gt;-shkzg.
+    <span class="kw">WHEN</span> <span class="str">'S'</span>.  <span class="cm">" 차변</span>
+      &lt;lfs_item&gt;-debit_amt   = &lt;lfs_item&gt;-wrbtr.
+      &lt;lfs_item&gt;-debit_waers = &lt;lfs_item&gt;-waers.
+      &lt;lfs_item&gt;-debit_dmbtr = &lt;lfs_item&gt;-wrbtr * lv_dmbtr.  <span class="cm">" 원화 환산</span>
+      &lt;lfs_item&gt;-debit_hwaer = <span class="str">'KRW'</span>.
+      <span class="kw">CLEAR</span> &lt;lfs_item&gt;-credit_waers.   <span class="cm">" 대변 통화 비우기</span>
+      &lt;lfs_item&gt;-shkzg_text = <span class="str">'차변'</span>.
+
+    <span class="kw">WHEN</span> <span class="str">'H'</span>.  <span class="cm">" 대변</span>
+      &lt;lfs_item&gt;-credit_amt   = &lt;lfs_item&gt;-wrbtr.
+      &lt;lfs_item&gt;-credit_waers = &lt;lfs_item&gt;-waers.
+      &lt;lfs_item&gt;-credit_dmbtr = &lt;lfs_item&gt;-wrbtr * lv_dmbtr.  <span class="cm">" 원화 환산</span>
+      &lt;lfs_item&gt;-credit_hwaer = <span class="str">'KRW'</span>.
+      <span class="kw">CLEAR</span> &lt;lfs_item&gt;-debit_waers.    <span class="cm">" 차변 통화 비우기</span>
+      &lt;lfs_item&gt;-shkzg_text = <span class="str">'대변'</span>.
+  <span class="kw">ENDCASE</span>.
+
+<span class="kw">ENDLOOP</span>.</pre></div>
         </div>
 
       </div><!-- /code-main -->
