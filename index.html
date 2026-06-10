@@ -556,6 +556,16 @@
         <button class="snippet-btn" onclick="showSnippet('s3', this)">
           <span class="stype abap">ABAP</span>DB 저장 / COMMIT
         </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">ZE1FI0002</div>
+        <button class="snippet-btn" onclick="showSnippet('s7', this)">
+          <span class="stype abap">ABAP</span>감가상각 집계
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s8', this)">
+          <span class="stype abap">ABAP</span>매각 전표 저장
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s9', this)">
+          <span class="stype abap">ABAP</span>ALV Tree 노드 구성
+        </button>
         <div class="code-sidebar-label" style="margin-top:16px;">Fiori / UI5</div>
         <button class="snippet-btn" onclick="showSnippet('s4', this)">
           <span class="stype fiori">Fiori</span>OData 상태 집계
@@ -804,6 +814,150 @@ ls_save_header-ernam        = sy-uname.
   <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputBukrs"</span>).<span class="fn">setValue</span>(<span class="str">""</span>);
   <span class="kw">this</span>.<span class="fn">_loadDunningStats</span>([]);
 },</pre></div>
+        </div>
+
+        <div id="s7" class="snippet-panel">
+          <div class="code-header">
+            <h3>감가상각 집계 (ZE1FI0002 · CALC_DEPRECIATION)</h3>
+            <p>hkont '13000030' 항목만 걸러 자산별로 COLLECT 집계 후 BINARY SEARCH로 매핑, 장부가액 산출</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 감가상각누계 계정(13000030) 항목만 자산별로 합산</span>
+<span class="kw">LOOP AT</span> gt_item <span class="kw">INTO</span> gs_item <span class="kw">WHERE</span> hkont <span class="op">EQ</span> <span class="str">'13000030'</span>.
+
+  <span class="kw">CLEAR</span> ls_sum.
+  ls_sum-bukrs = gs_item-bukrs.
+  ls_sum-anln1 = gs_item-anln1.
+
+  <span class="cm">" 차대변 지표에 따라 누계액 가감</span>
+  <span class="kw">CASE</span> gs_item-shkzg.
+    <span class="kw">WHEN</span> <span class="str">'H'</span>. ls_sum-total += gs_item-dmbtr.   <span class="cm">" 대변: 상각 누적</span>
+    <span class="kw">WHEN</span> <span class="str">'S'</span>. ls_sum-total -= gs_item-dmbtr.   <span class="cm">" 차변: 환입</span>
+  <span class="kw">ENDCASE</span>.
+
+  <span class="kw">COLLECT</span> ls_sum <span class="kw">INTO</span> lt_sum.  <span class="cm">" 동일 key면 total 누적</span>
+
+<span class="kw">ENDLOOP</span>.
+
+<span class="kw">SORT</span> lt_sum <span class="kw">BY</span> bukrs anln1.  <span class="cm">" BINARY SEARCH를 위한 사전 정렬</span>
+
+<span class="cm">" 자산별 감가누계 및 장부가액 할당</span>
+<span class="kw">LOOP AT</span> gt_asset <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_asset&gt;).
+
+  <span class="kw">READ TABLE</span> lt_sum <span class="kw">INTO</span> ls_sum
+    <span class="kw">WITH KEY</span> bukrs = &lt;lfs_asset&gt;-bukrs
+             anln1 = &lt;lfs_asset&gt;-anln1
+    <span class="kw">BINARY SEARCH</span>.
+
+  <span class="kw">IF</span> sy-subrc <span class="op">EQ</span> <span class="num">0</span>.
+    &lt;lfs_asset&gt;-afaku = ls_sum-total.   <span class="cm">" 감가상각 누계액</span>
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" 장부가액 = 취득원가 - 감가상각 누계액</span>
+  &lt;lfs_asset&gt;-bchwt = &lt;lfs_asset&gt;-kansw - &lt;lfs_asset&gt;-afaku.
+
+<span class="kw">ENDLOOP</span>.</pre></div>
+        </div>
+
+        <div id="s8" class="snippet-panel">
+          <div class="code-header">
+            <h3>매각 전표 저장 (ZE1FI0002 · SELL_SELECTED_ASSET)</h3>
+            <p>헤더 1건 + 아이템 최대 3건(현금·감가누계·자산계정) INSERT 후 자산 마스터 loekz UPDATE, 실패 시 ROLLBACK</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 차변 - 현금 (장부가액만큼 매각대금 수취)</span>
+<span class="fn">PERFORM</span> add_item <span class="kw">USING</span>    lv_buzei  <span class="str">'11000010'</span>  <span class="str">'S'</span>
+                              gs_asset-bchwt  gs_asset-anln1  <span class="str">'40'</span>  lv_belnr
+                 <span class="kw">CHANGING</span> lt_item.
+
+<span class="cm">" 차변 - 감가상각누계 (누계액 있을 때만 추가)</span>
+<span class="kw">IF</span> gs_asset-afaku <span class="op">GT</span> <span class="num">0</span>.
+  lv_buzei += <span class="num">10</span>.
+  <span class="fn">PERFORM</span> add_item <span class="kw">USING</span>    lv_buzei  <span class="str">'13000030'</span>  <span class="str">'S'</span>
+                                gs_asset-afaku  gs_asset-anln1  <span class="str">'40'</span>  lv_belnr
+                   <span class="kw">CHANGING</span> lt_item.
+<span class="kw">ENDIF</span>.
+
+<span class="cm">" 대변 - 자산계정 (취득원가 전액 제거)</span>
+lv_buzei += <span class="num">10</span>.
+<span class="fn">PERFORM</span> add_item <span class="kw">USING</span>    lv_buzei  lv_hkont  <span class="str">'H'</span>
+                              gs_asset-kansw  gs_asset-anln1  <span class="str">'50'</span>  lv_belnr
+                 <span class="kw">CHANGING</span> lt_item.
+
+<span class="cm">" 전표 헤더 INSERT</span>
+<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_header.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'매각 전표 헤더 생성 실패'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" 전표 아이템 INSERT</span>
+<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'감가상각 전표 아이템 생성 실패'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" 자산 마스터 논리 삭제 (loekz 플래그 세팅)</span>
+<span class="kw">UPDATE</span> zte1fi0004
+   <span class="kw">SET</span> loekz = abap_true
+       aedat = sy-datum  aenam = sy-uname
+ <span class="kw">WHERE</span> bukrs <span class="op">EQ</span> gs_asset-bukrs
+   <span class="kw">AND</span> anln1 <span class="op">EQ</span> gs_asset-anln1.
+
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'고정자산 매각 실패'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="kw">COMMIT WORK AND WAIT</span>.
+<span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> |{ gs_asset-anln1 }번 고정자산 매각 성공 및 전표 { lv_belnr }번 생성 완료.|.</pre></div>
+        </div>
+
+        <div id="s9" class="snippet-panel">
+          <div class="code-header">
+            <h3>ALV Column Tree 노드 구성 (ZE1FI0002 · SET_FCAT_GRID)</h3>
+            <p>자산 데이터를 연도 → 자산클래스 → 개별 자산 3단계 계층으로 트리 노드에 삽입</p>
+          </div>
+          <div class="code-block"><pre><span class="kw">SORT</span> gt_asset <span class="kw">BY</span> aktiv(4) anlkl anln1.
+<span class="kw">CLEAR</span>: lv_year, lv_anlkl, lv_parent, lv_child.
+
+<span class="kw">LOOP AT</span> gt_asset <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_asset&gt;).
+
+  <span class="cm">" ① 연도 노드 — 연도 바뀔 때마다 새 폴더 생성</span>
+  <span class="kw">IF</span> &lt;lfs_asset&gt;-aktiv(4) <span class="op">NE</span> lv_year.
+    lv_year = &lt;lfs_asset&gt;-aktiv(4).
+    <span class="kw">CLEAR</span>: lv_anlkl, lv_child.
+    ls_node-isfolder = abap_true.  ls_node-expander = abap_true.
+    <span class="kw">CALL METHOD</span> gcl_tree-&gt;add_node
+      <span class="kw">EXPORTING</span> i_relat_node_key = space
+                i_relationship   = cl_gui_column_tree=&gt;relat_last_child
+                i_node_text      = lv_year
+                is_node_layout   = ls_node
+      <span class="kw">IMPORTING</span> e_new_node_key   = lv_parent.
+    <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_parent ).
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" ② 자산클래스 노드 — 클래스 바뀔 때마다 연도 노드 아래에 추가</span>
+  <span class="kw">IF</span> &lt;lfs_asset&gt;-anlkl <span class="op">NE</span> lv_anlkl <span class="kw">OR</span> lv_child <span class="kw">IS INITIAL</span>.
+    lv_anlkl = &lt;lfs_asset&gt;-anlkl.
+    ls_node-isfolder = abap_true.  ls_node-expander = abap_true.
+    <span class="fn">PERFORM</span> set_asset_text <span class="kw">USING</span> &lt;lfs_asset&gt;-anlkl <span class="kw">CHANGING</span> lv_text.
+    <span class="kw">CALL METHOD</span> gcl_tree-&gt;add_node
+      <span class="kw">EXPORTING</span> i_relat_node_key = lv_parent
+                i_relationship   = cl_gui_column_tree=&gt;relat_last_child
+                i_node_text      = lv_text
+                is_node_layout   = ls_node
+      <span class="kw">IMPORTING</span> e_new_node_key   = lv_child.
+    <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_child ).
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" ③ 자산 리프 노드 — 자산클래스 노드 아래에 개별 자산 할당</span>
+  <span class="kw">IF</span> lv_child <span class="kw">IS NOT INITIAL</span>.
+    ls_node-isfolder = abap_false.  ls_node-expander = abap_false.
+    lv_text = &lt;lfs_asset&gt;-asset_name.
+    ls_tree-anln1  = &lt;lfs_asset&gt;-anln1.   ls_tree-kansw = &lt;lfs_asset&gt;-kansw.
+    ls_tree-waers  = &lt;lfs_asset&gt;-waers.   ls_tree-aktiv = &lt;lfs_asset&gt;-aktiv.
+    ls_tree-kostl  = &lt;lfs_asset&gt;-kostl.   ls_tree-ktext = &lt;lfs_asset&gt;-ktext.
+    <span class="kw">CALL METHOD</span> gcl_tree-&gt;add_node
+      <span class="kw">EXPORTING</span> i_relat_node_key = lv_child
+                i_relationship   = cl_gui_column_tree=&gt;relat_last_child
+                i_node_text      = lv_text
+                is_node_layout   = ls_node
+                is_outtab_line   = ls_tree.
+  <span class="kw">ENDIF</span>.
+
+<span class="kw">ENDLOOP</span>.
+<span class="kw">CALL METHOD</span> gcl_tree-&gt;frontend_update( ).</pre></div>
         </div>
 
       </div><!-- /code-main -->
