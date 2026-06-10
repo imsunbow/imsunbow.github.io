@@ -347,7 +347,7 @@
       </p>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-num">8+</div>
+          <div class="hero-stat-num">9+</div>
           <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
         </div>
         <div>
@@ -393,11 +393,23 @@
 
       <div class="card">
         <span class="card-type abap">ABAP</span>
+        <h3>여신 등급 자동 갱신 배치</h3>
+        <div class="card-id">ZRE1FI0007</div>
+        <p>월별 DR 전표를 GROUP BY SUM으로 거래처별 매출 집계 후 S/A/B/C 4단계 등급 자동 산정. 월말 배치는 등급 재산정(매출 없으면 한 단계 강등), 일배치는 기존 등급 유지·미결잔액만 갱신. 고객마스터·여신 테이블 일괄 MODIFY.</p>
+        <div class="card-tags">
+          <span class="tag hl">Batch 배치</span><span class="tag hl">GROUP BY SUM</span>
+          <span class="tag">여신 등급</span><span class="tag">월말/일배치 분기</span><span class="tag">MODIFY upsert</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-type abap">ABAP</span>
         <h3>임시전표 결재 프로그램</h3>
         <div class="card-id">ZRE1FI0008</div>
-        <p>ZE1FI0001에서 생성된 임시전표를 결재하는 후속 프로그램. 전표번호 파라미터를 넘겨받아 자동 조회 후 승인/반려 처리. 결재 완료 시 전표 상태 변경 및 정식 전기 연계.</p>
+        <p>ZE1FI0001에서 생성된 임시전표를 결재·반려하는 후속 프로그램. ALV 커스텀 툴바(결재/반려/일괄결재), GET PARAMETER로 전표번호 자동 수신. 일괄결재는 FOR ALL ENTRIES 일괄 조회 후 채번→FI·CO 헤더+아이템 일괄 INSERT.</p>
         <div class="card-tags">
-          <span class="tag hl">결재 워크플로우</span><span class="tag">SET PARAMETER</span><span class="tag">상태 관리</span>
+          <span class="tag hl">결재 워크플로우</span><span class="tag hl">일괄결재</span>
+          <span class="tag">ALV 커스텀 툴바</span><span class="tag">FAE 조회</span><span class="tag">FI·CO 동기 전기</span>
         </div>
       </div>
 
@@ -639,6 +651,26 @@
         </button>
         <button class="snippet-btn" onclick="showSnippet('s18', this)">
           <span class="stype abap">ABAP</span>SVG 차트 HTML 생성
+        </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0007</div>
+        <button class="snippet-btn" onclick="showSnippet('s22', this)">
+          <span class="stype abap">ABAP</span>직전 월 기준기간 계산
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s23', this)">
+          <span class="stype abap">ABAP</span>매출 GROUP BY 집계
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s24', this)">
+          <span class="stype abap">ABAP</span>등급 재산정 / 여신 MODIFY
+        </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0008</div>
+        <button class="snippet-btn" onclick="showSnippet('s25', this)">
+          <span class="stype abap">ABAP</span>ALV 커스텀 툴바 등록
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s26', this)">
+          <span class="stype abap">ABAP</span>FI/CO 전표 생성 (채번+INSERT)
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s27', this)">
+          <span class="stype abap">ABAP</span>일괄결재 FAE+채번+일괄 INSERT
         </button>
         <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0004</div>
         <button class="snippet-btn" onclick="showSnippet('s19', this)">
@@ -1423,6 +1455,264 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
   <span class="kw">IMPORTING</span>  assigned_url = lv_url
   <span class="kw">CHANGING</span>   data_table   = lt_html.
 <span class="kw">CALL METHOD</span> gcl_chart_html-&gt;show_url( <span class="kw">EXPORTING</span> url = lv_url ).</pre></div>
+        </div>
+
+        <div id="s22" class="snippet-panel">
+          <div class="code-header">
+            <h3>직전 월 기준기간 계산 (ZRE1FI0007 · CALC_DATE_RANGE)</h3>
+            <p>시스템 날짜 기준으로 직전 월 1일~오늘을 기준기간으로 산출 — 1월일 경우 연도 역산 처리, 체크박스 미선택 시 즉시 종료</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 체크박스 미선택 시 처리 차단</span>
+<span class="kw">IF</span> pa_chbox <span class="kw">NE</span> abap_true.
+  <span class="kw">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'체크박스 체크 안할 시 여신 변경 불가'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+  <span class="kw">LEAVE LIST-PROCESSING</span>.
+<span class="kw">ENDIF</span>.
+
+lv_year  = sy-datum(<span class="num">4</span>).
+lv_month = sy-datum+<span class="num">4</span>(<span class="num">2</span>).
+
+<span class="cm">" 직전 월 계산 — 1월이면 전년 12월로 역산</span>
+<span class="kw">IF</span> lv_month <span class="kw">EQ</span> <span class="str">'01'</span>.
+  lv_month = <span class="str">'12'</span>.
+  lv_year  = lv_year - <span class="num">1</span>.
+<span class="kw">ELSE</span>.
+  lv_month = lv_month - <span class="num">1</span>.
+<span class="kw">ENDIF</span>.
+
+<span class="cm">" 직전 월 1일 조합 (YYYYMMDD)</span>
+<span class="kw">CONCATENATE</span> lv_year lv_month <span class="str">'01'</span> <span class="kw">INTO</span> gv_first_day.
+
+<span class="cm">" 종료일 = 오늘 (배치 실행 일자)</span>
+gv_last_day = sy-datum.
+
+<span class="kw">WRITE</span>: / |기준기간: { gv_first_day } ~ { gv_last_day }|.</pre></div>
+        </div>
+
+        <div id="s23" class="snippet-panel">
+          <div class="code-header">
+            <h3>매출 GROUP BY 집계 (ZRE1FI0007 · GET_SALES_DATA)</h3>
+            <p>기준기간 내 DR 전표에서 거래처별 총 매출·미결잔액을 SUM GROUP BY로 단일 SELECT — bschl=40(매출계정), shkzg=S 조건으로 차변만 집계</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 거래처별 매출 합계·미결잔액을 GROUP BY로 단일 쿼리 집계</span>
+<span class="kw">SELECT</span> a~partner_no,
+       <span class="fn">SUM</span>( b~dmbtr )    <span class="kw">AS</span> total_amt,
+       <span class="fn">SUM</span>( b~open_amt ) <span class="kw">AS</span> open_amt,
+       a~waers
+  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> @gt_sales
+  <span class="kw">FROM</span> zte1fi0005 <span class="kw">AS</span> a
+ <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> b
+    <span class="kw">ON</span>  a~bukrs <span class="kw">EQ</span> b~bukrs
+   <span class="kw">AND</span> a~gjahr <span class="kw">EQ</span> b~gjahr
+   <span class="kw">AND</span> a~belnr <span class="kw">EQ</span> b~belnr
+ <span class="kw">WHERE</span> a~bukrs      <span class="kw">EQ</span> <span class="str">'1000'</span>
+   <span class="kw">AND</span> a~bldat      <span class="kw">BETWEEN</span> @gv_first_day <span class="kw">AND</span> @gv_last_day
+   <span class="kw">AND</span> a~blart      <span class="kw">EQ</span> <span class="str">'DR'</span>        <span class="cm">" 외상매출 전표유형</span>
+   <span class="kw">AND</span> a~status     <span class="kw">NE</span> <span class="str">'X'</span>
+   <span class="kw">AND</span> a~partner_no <span class="kw">NE</span> @space
+   <span class="kw">AND</span> a~belnr      <span class="kw">LIKE</span> <span class="str">'0%'</span>
+   <span class="kw">AND</span> b~shkzg      <span class="kw">EQ</span> <span class="str">'S'</span>         <span class="cm">" 차변만 집계</span>
+   <span class="kw">AND</span> b~bschl      <span class="kw">EQ</span> <span class="str">'40'</span>        <span class="cm">" 전기 키 40(매출)</span>
+   <span class="kw">AND</span> a~loekz      <span class="kw">EQ</span> @space
+ <span class="kw">GROUP BY</span> a~partner_no, a~waers.
+
+<span class="kw">IF</span> gt_sales <span class="kw">IS INITIAL</span>.
+  <span class="kw">WRITE</span>: / <span class="str">'해당 기간 매출 데이터 없음 (기존 등급 기준으로 한도 갱신)'</span>.
+<span class="kw">ELSE</span>.
+  <span class="kw">WRITE</span>: / |매출 집계 대상: { lines( gt_sales ) }건|.
+<span class="kw">ENDIF</span>.</pre></div>
+        </div>
+
+        <div id="s24" class="snippet-panel">
+          <div class="code-header">
+            <h3>등급 재산정 / 여신 일괄 MODIFY (ZRE1FI0007 · PROCESS_GRADE)</h3>
+            <p>월말/평일 분기 — 월말에만 매출 기준 S/A/B/C 등급 재산정(매출 없으면 한 단계 강등), 일배치는 기존 등급 유지 · 미결잔액만 갱신. 고객마스터·여신 테이블 일괄 MODIFY 후 COMMIT AND WAIT</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 월말 여부 판단 (RP_LAST_DAY_OF_MONTHS)</span>
+<span class="kw">CALL FUNCTION</span> <span class="str">'RP_LAST_DAY_OF_MONTHS'</span>
+  <span class="kw">EXPORTING</span>  day_in            = sy-datum
+  <span class="kw">IMPORTING</span>  last_day_of_month = lv_last_day.
+<span class="kw">IF</span> sy-datum <span class="kw">EQ</span> lv_last_day. lv_is_last = abap_true. <span class="kw">ENDIF</span>.
+
+<span class="kw">LOOP AT</span> lt_cust <span class="kw">INTO DATA</span>(ls_cust).
+  <span class="kw">READ TABLE</span> gt_sales <span class="kw">INTO</span> gs_sales <span class="kw">WITH KEY</span> partner_no = ls_cust-partner_no.
+  <span class="kw">IF</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>. lv_amt = gs_sales-total_amt. lv_open_amt = gs_sales-open_amt. <span class="kw">ENDIF</span>.
+
+  <span class="cm">" 월말: 매출 기준 등급 재산정</span>
+  <span class="kw">IF</span> lv_is_last <span class="kw">EQ</span> abap_true.
+    <span class="kw">IF</span>      lv_amt <span class="kw">GE</span> gc_amt_s. lv_new_grade = <span class="str">'S'</span>. lv_klimk = gc_amt_s.
+    <span class="kw">ELSEIF</span>  lv_amt <span class="kw">GE</span> gc_amt_a. lv_new_grade = <span class="str">'A'</span>. lv_klimk = gc_amt_a.
+    <span class="kw">ELSEIF</span>  lv_amt <span class="kw">GE</span> gc_amt_b. lv_new_grade = <span class="str">'B'</span>. lv_klimk = gc_amt_b.
+    <span class="kw">ELSE</span>.                         lv_new_grade = <span class="str">'C'</span>. lv_klimk = gc_amt_c. <span class="kw">ENDIF</span>.
+
+    <span class="cm">" 매출 없으면 한 단계 강등</span>
+    <span class="kw">IF</span> lv_amt <span class="kw">IS INITIAL</span>.
+      <span class="kw">CASE</span> lv_old_grade.
+        <span class="kw">WHEN</span> <span class="str">'S'</span>. lv_new_grade = <span class="str">'A'</span>. lv_klimk = gc_amt_a.
+        <span class="kw">WHEN</span> <span class="str">'A'</span>. lv_new_grade = <span class="str">'B'</span>. lv_klimk = gc_amt_b.
+        <span class="kw">WHEN OTHERS</span>. lv_new_grade = <span class="str">'C'</span>. lv_klimk = gc_amt_c.
+      <span class="kw">ENDCASE</span>.
+    <span class="kw">ENDIF</span>.
+  <span class="kw">ELSE</span>.
+    <span class="cm">" 평일: 기존 등급 유지, 한도만 매핑</span>
+    lv_new_grade = lv_old_grade.
+    <span class="kw">CASE</span> lv_old_grade.
+      <span class="kw">WHEN</span> <span class="str">'S'</span>. lv_klimk = gc_amt_s.  <span class="kw">WHEN</span> <span class="str">'A'</span>. lv_klimk = gc_amt_a.
+      <span class="kw">WHEN</span> <span class="str">'B'</span>. lv_klimk = gc_amt_b.  <span class="kw">WHEN OTHERS</span>. lv_klimk = gc_amt_c.
+    <span class="kw">ENDCASE</span>.
+  <span class="kw">ENDIF</span>.
+
+  <span class="kw">IF</span> lv_old_grade <span class="kw">NE</span> lv_new_grade.
+    gv_change_cnt += <span class="num">1</span>.
+    <span class="kw">WRITE</span>: / |{ ls_cust-partner_no } : { lv_old_grade } → { lv_new_grade } (등급 변경)| <span class="kw">COLOR COL_KEY</span>.
+  <span class="kw">ENDIF</span>.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" 고객마스터(월말만) + 여신 테이블 일괄 MODIFY → COMMIT AND WAIT</span>
+<span class="kw">IF</span> lt_sd0001 <span class="kw">IS NOT INITIAL</span>.
+  <span class="kw">MODIFY</span> zte1sd0001 <span class="kw">FROM TABLE</span> lt_sd0001.
+  <span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">ENDIF</span>.
+<span class="kw">ENDIF</span>.
+<span class="kw">MODIFY</span> zte1sd0016 <span class="kw">FROM TABLE</span> lt_sd0016.
+<span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">ENDIF</span>.
+<span class="kw">COMMIT WORK AND WAIT</span>.</pre></div>
+        </div>
+
+        <div id="s25" class="snippet-panel">
+          <div class="code-header">
+            <h3>ALV 커스텀 툴바 등록 (ZRE1FI0008 · HANDLE_TOOLBAR / HANDLE_UCOMM)</h3>
+            <p>ALV 툴바에 결재·반려·일괄결재 버튼을 동적으로 추가 — Separator(구분선) 삽입 후 icon_allow/icon_reject 아이콘 지정, UCOMM 이벤트에서 PERFORM 분기</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" ALV 툴바 이벤트 — 커스텀 버튼 3개 등록</span>
+<span class="kw">FORM</span> <span class="fn">handle_toolbar</span> <span class="kw">USING</span> pcl_object <span class="kw">TYPE REF TO</span> cl_alv_event_toolbar_set.
+
+  <span class="kw">DATA</span>: ls_button <span class="kw">TYPE</span> stb_button.
+
+  ls_button-butn_type = <span class="num">3</span>.  <span class="cm">" Separator (구분선)</span>
+  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.  <span class="kw">CLEAR</span> ls_button.
+
+  ls_button-function  = <span class="str">'APPROVE'</span>.
+  ls_button-icon      = icon_allow.
+  ls_button-text      = <span class="str">'임시전표 결재'</span>.
+  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.  <span class="kw">CLEAR</span> ls_button.
+
+  ls_button-function  = <span class="str">'REJECT'</span>.
+  ls_button-icon      = icon_reject.
+  ls_button-text      = <span class="str">'임시전표 반려'</span>.
+  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.  <span class="kw">CLEAR</span> ls_button.
+
+  ls_button-function  = <span class="str">'APPROVE_ALL'</span>.
+  ls_button-icon      = icon_allow.
+  ls_button-text      = <span class="str">'일괄 결재'</span>.
+  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.
+
+<span class="kw">ENDFORM</span>.
+
+<span class="cm">" ALV UCOMM 이벤트 — 버튼 클릭 분기</span>
+<span class="kw">FORM</span> <span class="fn">handle_ucomm</span> <span class="kw">USING</span> pv_ucomm <span class="kw">TYPE</span> sy-ucomm.
+  <span class="kw">CASE</span> pv_ucomm.
+    <span class="kw">WHEN</span> <span class="str">'APPROVE'</span>.     <span class="fn">PERFORM</span> approve_doc.
+    <span class="kw">WHEN</span> <span class="str">'REJECT'</span>.      <span class="fn">PERFORM</span> reject_doc.
+    <span class="kw">WHEN</span> <span class="str">'APPROVE_ALL'</span>. <span class="fn">PERFORM</span> approve_doc_all.
+  <span class="kw">ENDCASE</span>.
+<span class="kw">ENDFORM</span>.</pre></div>
+        </div>
+
+        <div id="s26" class="snippet-panel">
+          <div class="code-header">
+            <h3>FI/CO 전표 생성 · 채번 (ZRE1FI0008 · INSERT_DOC)</h3>
+            <p>NUMBER_GET_NEXT로 채번 후 헤더·아이템을 FI 테이블(zte1fi0005/0006)과 CO 테이블(zte1co0006/0007)에 각각 INSERT — KRW 고정 통화, 타임스탬프 재할당, ROLLBACK on failure</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" Number Range 채번 (ZNRE1FI01)</span>
+<span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
+  <span class="kw">EXPORTING</span>  nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
+  <span class="kw">IMPORTING</span>  number      = lv_belnr.
+
+<span class="kw">MOVE-CORRESPONDING</span> gs_header <span class="kw">TO</span> ls_header.
+<span class="kw">MOVE-CORRESPONDING</span> gt_item   <span class="kw">TO</span> lt_item.
+
+<span class="cm">" 헤더 필드 세팅 (신규 전표번호·통화·상태·타임스탬프)</span>
+ls_header-belnr        = lv_belnr.
+ls_header-hwaer        = <span class="str">'KRW'</span>.  ls_header-waers = <span class="str">'KRW'</span>.
+ls_header-status       = <span class="str">'P'</span>.    ls_header-clear_status = <span class="str">'N'</span>.
+ls_header-erdat = sy-datum.  ls_header-erzet = sy-uzeit.  ls_header-ernam = sy-uname.
+
+<span class="cm">" 아이템 순회 — 전표번호·통화 재할당 및 타임스탬프 세팅</span>
+<span class="kw">LOOP AT</span> lt_item <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
+  &lt;lfs_item&gt;-bukrs = pv_bukrs.  &lt;lfs_item&gt;-gjahr = pv_gjahr.
+  &lt;lfs_item&gt;-belnr = lv_belnr.  &lt;lfs_item&gt;-ktopl = <span class="str">'CAKR'</span>.
+  &lt;lfs_item&gt;-erdat = sy-datum.  &lt;lfs_item&gt;-erzet = sy-uzeit.  &lt;lfs_item&gt;-ernam = sy-uname.
+  <span class="kw">IF</span> &lt;lfs_item&gt;-waers <span class="kw">EQ</span> <span class="str">'KRW'</span>.
+    &lt;lfs_item&gt;-dmbtr = &lt;lfs_item&gt;-open_amt.  &lt;lfs_item&gt;-wrbtr = &lt;lfs_item&gt;-open_amt.
+  <span class="kw">ENDIF</span>.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" FI 헤더 → CO 헤더 → FI 아이템 → CO 아이템 순서로 INSERT</span>
+<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_header.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
+
+<span class="kw">MOVE-CORRESPONDING</span> ls_header <span class="kw">TO</span> ls_header_co.
+ls_header_co-kokrs = ls_header-bukrs.
+<span class="kw">INSERT</span> zte1co0006 <span class="kw">FROM</span> ls_header_co.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
+
+<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
+
+<span class="kw">MOVE-CORRESPONDING</span> lt_item <span class="kw">TO</span> lt_item_co.
+<span class="cm">" CO 아이템 kokrs/dmbtr 추가 매핑 후 INSERT</span>
+<span class="kw">INSERT</span> zte1co0007 <span class="kw">FROM TABLE</span> lt_item_co.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
+
+gv_belnr = lv_belnr.</pre></div>
+        </div>
+
+        <div id="s27" class="snippet-panel">
+          <div class="code-header">
+            <h3>일괄결재 FAE + 채번 + 일괄 INSERT (ZRE1FI0008 · APPROVE_DOC_ALL)</h3>
+            <p>대기 전표 전체를 FOR ALL ENTRIES로 헤더·아이템 일괄 조회 후 전표별 채번 → FI·CO 헤더+아이템 테이블에 일괄 INSERT, 원본 헤더 MODIFY(상태·실전표번호) → COMMIT AND WAIT</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 대기(icon_led_yellow) 전표만 대상 수집</span>
+<span class="kw">LOOP AT</span> gt_header <span class="kw">INTO</span> gs_header <span class="kw">WHERE</span> icon <span class="kw">EQ</span> icon_led_yellow.
+  <span class="kw">APPEND</span> gs_header <span class="kw">TO</span> lt_target.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" FOR ALL ENTRIES: 헤더·아이템 일괄 조회</span>
+<span class="kw">SELECT</span> * <span class="kw">INTO TABLE</span> lt_head_org <span class="kw">FROM</span> zte1fi0005
+   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
+  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-belnr
+    <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr  <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
+
+<span class="kw">SELECT</span> bukrs belnr gjahr buzei bschl shkzg hkont partner_no open_amt waers
+  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_all_item <span class="kw">FROM</span> zte1fi0006
+   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
+  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-belnr
+    <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr  <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
+
+<span class="cm">" 전표별 채번 → FI/CO 헤더 INSERT 적재</span>
+<span class="kw">LOOP AT</span> lt_target <span class="kw">INTO</span> gs_header.
+  <span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
+    <span class="kw">EXPORTING</span> nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
+    <span class="kw">IMPORTING</span> number      = lv_belnr.
+  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+
+  <span class="cm">" FI 헤더 적재 (신규 belnr, status=P)</span>
+  ls_head_ins-belnr  = lv_belnr.  ls_head_ins-status = <span class="str">'P'</span>.
+  ls_head_ins-hwaer  = <span class="str">'KRW'</span>.    ls_head_ins-erdat  = sy-datum.
+  <span class="kw">APPEND</span> ls_head_ins <span class="kw">TO</span> lt_head_ins.
+
+  <span class="cm">" 원본 헤더 UPDATE 적재 (status=P, act_belnr=신규번호)</span>
+  ls_head_upd-status    = <span class="str">'P'</span>.  ls_head_upd-act_belnr = lv_belnr.
+  <span class="kw">APPEND</span> ls_head_upd <span class="kw">TO</span> lt_head_upd.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" DB 반영: FI 헤더/CO 헤더/FI 아이템/CO 아이템 INSERT → 원본 헤더 MODIFY</span>
+<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_ins. <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">INSERT</span> zte1co0006 <span class="kw">FROM TABLE</span> lt_head_co.  <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_ins. <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">INSERT</span> zte1co0007 <span class="kw">FROM TABLE</span> lt_item_co.  <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">MODIFY</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_upd. <span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">COMMIT WORK AND WAIT</span>.
+<span class="kw">MESSAGE</span> s000 <span class="kw">WITH</span> |{ lv_cnt }건 일괄결재 완료.|.</pre></div>
         </div>
 
         <div id="s19" class="snippet-panel">
