@@ -608,6 +608,16 @@
         <button class="snippet-btn" onclick="showSnippet('s15', this)">
           <span class="stype abap">ABAP</span>환율 환산 / 차대변 분리
         </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">재무상태표 조회</div>
+        <button class="snippet-btn" onclick="showSnippet('s16', this)">
+          <span class="stype abap">ABAP</span>잔액 부호 계산/집계
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s17', this)">
+          <span class="stype abap">ABAP</span>재무상태표 Tree 구성
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s18', this)">
+          <span class="stype abap">ABAP</span>SVG 차트 HTML 생성
+        </button>
         <div class="code-sidebar-label" style="margin-top:16px;">Fiori / UI5</div>
         <button class="snippet-btn" onclick="showSnippet('s4', this)">
           <span class="stype fiori">Fiori</span>OData 상태 집계
@@ -1217,6 +1227,170 @@ gv_gdatu_inv = <span class="num">99999999</span> - sy-datum.
   <span class="kw">ENDCASE</span>.
 
 <span class="kw">ENDLOOP</span>.</pre></div>
+        </div>
+
+        <div id="s16" class="snippet-panel">
+          <div class="code-header">
+            <h3>잔액 부호 계산 / 당기·전년 집계 (재무상태표 · COLLECT_BALANCE_DATA)</h3>
+            <p>계정 성격(KTOKS) + 차대변(SHKZG) 조합으로 잔액 부호를 결정하고, 계정별 당기/전년 금액을 누적 집계</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 계정 성격(KTOKS) + 차대변(SHKZG) 기준 잔액 부호 결정</span>
+<span class="kw">CASE</span> gs_balance-ktoks.
+
+  <span class="kw">WHEN</span> <span class="str">'ASST'</span> <span class="kw">OR</span> <span class="str">'EXPN'</span>.  <span class="cm">" 자산·비용 : 차변 증가</span>
+    <span class="kw">IF</span> gs_balance-shkzg = <span class="str">'S'</span>.
+      lv_sign_amt = lv_base_amt.
+    <span class="kw">ELSE</span>.
+      lv_sign_amt = lv_base_amt * <span class="num">-1</span>.
+    <span class="kw">ENDIF</span>.
+
+  <span class="kw">WHEN</span> <span class="str">'LIAB'</span> <span class="kw">OR</span> <span class="str">'EQTY'</span> <span class="kw">OR</span> <span class="str">'REVE'</span>.  <span class="cm">" 부채·자본·수익 : 대변 증가</span>
+    <span class="kw">IF</span> gs_balance-shkzg = <span class="str">'H'</span>.
+      lv_sign_amt = lv_base_amt.
+    <span class="kw">ELSE</span>.
+      lv_sign_amt = lv_base_amt * <span class="num">-1</span>.
+    <span class="kw">ENDIF</span>.
+
+  <span class="kw">WHEN OTHERS</span>.
+    <span class="kw">CONTINUE</span>.  <span class="cm">" BS 대상 아닌 계정 제외</span>
+
+<span class="kw">ENDCASE</span>.
+
+<span class="cm">" 계정 라인 조회 → 신규면 생성, 기존이면 금액 누적</span>
+<span class="kw">READ TABLE</span> gt_bs_tree <span class="kw">INTO</span> ls_tree
+  <span class="kw">WITH KEY</span> node_type = <span class="str">'ACCOUNT'</span>
+           saknr     = gs_balance-saknr.
+
+<span class="kw">IF</span> sy-subrc <> <span class="num">0</span>.  <span class="cm">" 신규 계정</span>
+  ls_tree-node_type = <span class="str">'ACCOUNT'</span>.
+  ls_tree-ktoks     = gs_balance-ktoks.
+  ls_tree-saknr     = gs_balance-saknr.
+  ls_tree-txt20     = gs_balance-txt20.
+  ls_tree-waers     = gs_balance-waers.
+  <span class="kw">IF</span> gs_balance-gjahr = pa_gjahr.
+    ls_tree-curr_amt = lv_sign_amt.
+  <span class="kw">ELSE</span>.
+    ls_tree-prev_amt = lv_sign_amt.  <span class="cm">" 전년도</span>
+  <span class="kw">ENDIF</span>.
+  <span class="kw">APPEND</span> ls_tree <span class="kw">TO</span> gt_bs_tree.
+
+<span class="kw">ELSE</span>.  <span class="cm">" 기존 계정 누적</span>
+  <span class="kw">IF</span> gs_balance-gjahr = pa_gjahr.
+    ls_tree-curr_amt = ls_tree-curr_amt + lv_sign_amt.
+  <span class="kw">ELSE</span>.
+    ls_tree-prev_amt = ls_tree-prev_amt + lv_sign_amt.
+  <span class="kw">ENDIF</span>.
+  <span class="kw">MODIFY</span> gt_bs_tree <span class="kw">FROM</span> ls_tree
+    <span class="kw">TRANSPORTING</span> curr_amt prev_amt
+    <span class="kw">WHERE</span> node_type = <span class="str">'ACCOUNT'</span>
+      <span class="kw">AND</span> saknr     = gs_balance-saknr.
+<span class="kw">ENDIF</span>.</pre></div>
+        </div>
+
+        <div id="s17" class="snippet-panel">
+          <div class="code-header">
+            <h3>재무상태표 Tree 구성 (재무상태표 · BUILD_TREE)</h3>
+            <p>ROOT(재무상태표) → GROUP(자산/부채/자본) → ACCOUNT(계정) 3단계로 노드 생성, 그룹 합계는 ACCOUNT 집계에서 역산</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 그룹(자산/부채/자본)별 합계 계산</span>
+<span class="kw">LOOP AT</span> lt_acct <span class="kw">INTO</span> ls_acct.
+  <span class="kw">CASE</span> ls_acct-ktoks.
+    <span class="kw">WHEN</span> <span class="str">'ASST'</span>.
+      ls_asst-curr_amt += ls_acct-curr_amt.
+      ls_asst-prev_amt += ls_acct-prev_amt.
+      ls_asst-diff_amt += ls_acct-diff_amt.
+    <span class="kw">WHEN</span> <span class="str">'LIAB'</span>.
+      ls_liab-curr_amt += ls_acct-curr_amt.
+      ls_liab-prev_amt += ls_acct-prev_amt.
+      ls_liab-diff_amt += ls_acct-diff_amt.
+    <span class="kw">WHEN</span> <span class="str">'EQTY'</span>.
+      ls_eqty-curr_amt += ls_acct-curr_amt.
+      ls_eqty-prev_amt += ls_acct-prev_amt.
+      ls_eqty-diff_amt += ls_acct-diff_amt.
+  <span class="kw">ENDCASE</span>.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" ROOT 총계 = 자산 + 부채 + 자본</span>
+ls_root-curr_amt = ls_asst-curr_amt + ls_liab-curr_amt + ls_eqty-curr_amt.
+ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
+
+<span class="cm">" ROOT / GROUP 노드 생성 (굵게 강조)</span>
+<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_root <span class="str">'재무상태표'</span> <span class="str">''</span>         lv_root_key <span class="str">'X'</span>.
+<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_asst <span class="str">'자산'</span>      lv_root_key lv_asst_key <span class="str">'X'</span>.
+<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_liab <span class="str">'부채'</span>      lv_root_key lv_liab_key <span class="str">'X'</span>.
+<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_eqty <span class="str">'자본'</span>      lv_root_key lv_eqty_key <span class="str">'X'</span>.
+
+<span class="cm">" ACCOUNT 노드 생성 — 각 그룹 하위에 계정 배치</span>
+<span class="kw">SORT</span> lt_acct <span class="kw">BY</span> ktoks saknr.
+
+<span class="kw">LOOP AT</span> lt_acct <span class="kw">INTO</span> ls_acct.
+  <span class="kw">CASE</span> ls_acct-ktoks.
+    <span class="kw">WHEN</span> <span class="str">'ASST'</span>. <span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_acct ls_acct-txt20 lv_asst_key lv_node_key space.
+    <span class="kw">WHEN</span> <span class="str">'LIAB'</span>. <span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_acct ls_acct-txt20 lv_liab_key lv_node_key space.
+    <span class="kw">WHEN</span> <span class="str">'EQTY'</span>. <span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_acct ls_acct-txt20 lv_eqty_key lv_node_key space.
+  <span class="kw">ENDCASE</span>.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" 노드 펼침 — 하위 계정이 있는 그룹만 expand</span>
+<span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_root_key ).
+<span class="kw">IF</span> lv_asst_cnt > <span class="num">0</span>. <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_asst_key ). <span class="kw">ENDIF</span>.
+<span class="kw">IF</span> lv_liab_cnt > <span class="num">0</span>. <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_liab_key ). <span class="kw">ENDIF</span>.
+<span class="kw">IF</span> lv_eqty_cnt > <span class="num">0</span>. <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_eqty_key ). <span class="kw">ENDIF</span>.
+
+<span class="kw">CALL METHOD</span> gcl_tree-&gt;frontend_update.</pre></div>
+        </div>
+
+        <div id="s18" class="snippet-panel">
+          <div class="code-header">
+            <h3>SVG 꺾은선 차트 HTML 동적 생성 (재무상태표 · BUILD_CHART_HTML)</h3>
+            <p>외부 라이브러리 없이 순수 SVG로 당기/전년 꺾은선 차트 생성 — Y축 금액 라벨, 격자선, 전년 데이터 유무 조건 분기 포함</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 월별 SVG 좌표 계산 (X: 등간격, Y: 최대값 대비 비율)</span>
+<span class="kw">LOOP AT</span> gt_chart <span class="kw">ASSIGNING</span> &lt;fs_chart&gt;.
+  lv_idx = lv_idx + <span class="num">1</span>.
+  lv_x      = <span class="num">95</span> + ( lv_idx - <span class="num">1</span> ) * <span class="num">50</span>.
+  lv_curr_y = <span class="num">250</span> - ( lv_curr_abs * <span class="num">190</span> / lv_max_amt ).  <span class="cm">" 위쪽이 Y=0</span>
+  lv_prev_y = <span class="num">250</span> - ( lv_prev_abs * <span class="num">190</span> / lv_max_amt ).
+
+  <span class="cm">" Polyline points 누적 (당기 / 전년)</span>
+  <span class="kw">CONCATENATE</span> lv_curr_points lv_x_txt <span class="str">','</span> lv_curr_y_txt <span class="kw">INTO</span> lv_curr_points <span class="kw">SEPARATED BY</span> space.
+  <span class="kw">CONCATENATE</span> lv_prev_points lv_x_txt <span class="str">','</span> lv_prev_y_txt <span class="kw">INTO</span> lv_prev_points <span class="kw">SEPARATED BY</span> space.
+
+  <span class="cm">" 당기 데이터 포인트 원(circle) SVG 누적</span>
+  <span class="kw">CONCATENATE</span> lv_curr_circle
+    <span class="str">'&lt;circle cx="'</span> lv_x_txt <span class="str">'" cy="'</span> lv_curr_y_txt
+    <span class="str">'" r="5" fill="#2563eb" stroke="white" stroke-width="2"/&gt;'</span>
+    <span class="kw">INTO</span> lv_curr_circle.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" 전년 데이터 유무에 따라 선/범례 조건 분기</span>
+<span class="kw">IF</span> gv_has_prev_data = abap_true.
+  lv_chart_sub   = <span class="str">'당기 / 전년 금액 비교'</span>.
+  lv_prev_legend = <span class="str">'&lt;span class="dot2"&gt;&lt;/span&gt;전년'</span>.
+  <span class="kw">CONCATENATE</span>
+    <span class="str">'&lt;polyline fill="none" stroke="#f97316" stroke-width="4" points="'</span>
+    lv_prev_points <span class="str">'"/'</span> <span class="kw">INTO</span> lv_prev_line.
+<span class="kw">ELSE</span>.
+  lv_chart_sub = <span class="str">'당기 금액 기준 · 전년 데이터 없음'</span>.
+  <span class="kw">CLEAR</span>: lv_prev_line, lv_prev_circle, lv_prev_legend.
+<span class="kw">ENDIF</span>.
+
+<span class="cm">" 최종 HTML 조합 후 W3HTMLTAB(255자 단위)로 분할 → gcl_chart_html->load_data</span>
+<span class="kw">WHILE</span> lv_html <span class="kw">IS NOT INITIAL</span>.
+  <span class="kw">IF</span> strlen( lv_html ) > <span class="num">255</span>.
+    ls_html-line = lv_html+0(255).
+    <span class="kw">SHIFT</span> lv_html <span class="kw">BY</span> <span class="num">255</span> <span class="kw">PLACES LEFT</span>.
+  <span class="kw">ELSE</span>.
+    ls_html-line = lv_html. <span class="kw">CLEAR</span> lv_html.
+  <span class="kw">ENDIF</span>.
+  <span class="kw">APPEND</span> ls_html <span class="kw">TO</span> lt_html.
+<span class="kw">ENDWHILE</span>.
+
+<span class="kw">CALL METHOD</span> gcl_chart_html-&gt;load_data
+  <span class="kw">EXPORTING</span>  type = <span class="str">'text'</span>  subtype = <span class="str">'html'</span>
+  <span class="kw">IMPORTING</span>  assigned_url = lv_url
+  <span class="kw">CHANGING</span>   data_table   = lt_html.
+<span class="kw">CALL METHOD</span> gcl_chart_html-&gt;show_url( <span class="kw">EXPORTING</span> url = lv_url ).</pre></div>
         </div>
 
       </div><!-- /code-main -->
