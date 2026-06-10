@@ -300,6 +300,29 @@
     .op  { color: #ffa657; }
     .cls { color: #ffa657; }
 
+    /* ── ABOUT (학력/자격증) ── */
+    .about-section {
+      max-width: 860px; margin: 0 auto; padding: 64px 40px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+    }
+    .about-block h3 {
+      font-size: 13px; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 18px;
+    }
+    .about-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 14px 0; border-bottom: 1px solid var(--gray200);
+    }
+    .about-item:last-child { border-bottom: none; }
+    .about-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      background: var(--gray100); display: flex; align-items: center;
+      justify-content: center; font-size: 16px; flex-shrink: 0;
+    }
+    .about-item-title { font-weight: 600; font-size: 14px; color: var(--gray800); }
+    .about-item-sub   { font-size: 13px; color: var(--gray600); margin-top: 2px; }
+    @media(max-width:600px){ .about-section{ grid-template-columns:1fr; padding:40px 20px; } }
+
     /* ── CONTACT ── */
     .contact-bar {
       background: var(--navy);
@@ -592,6 +615,32 @@
           <li>XML View / Binding</li>
           <li>Git / GitHub</li>
         </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section>
+    <div class="about-section">
+      <div class="about-block">
+        <h3>학력</h3>
+        <div class="about-item">
+          <div class="about-icon">🎓</div>
+          <div>
+            <div class="about-item-title">연세대학교 미래캠퍼스</div>
+            <div class="about-item-sub">환경공학 · 컴퓨터공학 전공 &nbsp;|&nbsp; 2018 – 2024</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-block">
+        <h3>자격증</h3>
+        <div class="about-item">
+          <div class="about-icon">📋</div>
+          <div>
+            <div class="about-item-title">SQLD (SQL 개발자)</div>
+            <div class="about-item-sub">한국데이터산업진흥원</div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
