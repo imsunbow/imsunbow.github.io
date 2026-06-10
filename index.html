@@ -361,6 +361,40 @@
     .about-item-sub   { font-size: 13px; color: var(--gray600); margin-top: 2px; }
     @media(max-width:600px){ .about-section{ grid-template-columns:1fr; padding:40px 20px; } }
 
+    /* ── CARD SNIPPETS ── */
+    .card-snippet-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 14px; padding: 6px 14px;
+      font-size: 12px; font-weight: 600; color: var(--blue);
+      background: transparent; border: 1px solid var(--blue);
+      border-radius: 6px; cursor: pointer; transition: background .15s, color .15s;
+    }
+    .card-snippet-toggle:hover { background: var(--blue); color: white; }
+    .card-snippet-toggle .arrow { transition: transform .2s; display: inline-block; }
+    .card-snippet-toggle.open .arrow { transform: rotate(180deg); }
+    .card-snippets-wrap {
+      display: none; margin-top: 16px;
+      border-top: 1px solid var(--gray200); padding-top: 16px;
+    }
+    .card-snippets-wrap.open { display: block; }
+    .cs-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .cs-tab {
+      padding: 4px 12px; font-size: 12px; font-weight: 500;
+      border: 1px solid var(--gray200); border-radius: 20px;
+      background: var(--gray50); color: var(--gray600); cursor: pointer;
+      transition: background .12s, color .12s;
+    }
+    .cs-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
+    .cs-panel { display: none; }
+    .cs-panel.active { display: block; }
+    .cs-panel .code-header h3 { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
+    .cs-panel .code-header p  { font-size: 12px; color: var(--gray600); margin-bottom: 10px; }
+    .cs-panel .code-block {
+      background: var(--code-bg); border: 1px solid var(--code-border);
+      border-radius: 8px; overflow-x: auto; padding: 16px 20px;
+    }
+    .cs-panel .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #c9d1d9; white-space: pre; }
+
     /* ── CONTACT ── */
     .contact-bar {
       background: var(--navy);
@@ -390,7 +424,6 @@
   <span class="nav-logo">이재민</span>
   <ul class="nav-links">
     <li><a href="#" class="active" onclick="showTab('overview', this); return false;">포트폴리오</a></li>
-    <li><a href="#" onclick="showTab('code', this); return false;">SAP Code</a></li>
   </ul>
 </nav>
 
@@ -436,6 +469,7 @@
           <span class="tag hl">ALV Grid</span><span class="tag hl">TextEditor</span>
           <span class="tag">전표 밸런스 검증</span><span class="tag">Number Range</span><span class="tag">F4 Value Help</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s1')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card">
@@ -447,6 +481,7 @@
           <span class="tag hl">Excel 업로드</span><span class="tag hl">일괄 반제</span>
           <span class="tag">동적 필드 매핑</span><span class="tag">FAE 유효성 검증</span><span class="tag">누적금액 추적</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s31')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card">
@@ -458,6 +493,7 @@
           <span class="tag hl">반제(Clearing)</span><span class="tag hl">AR/AP</span>
           <span class="tag">동적 FCAT</span><span class="tag">미결금액 차감</span><span class="tag">청구문서 연동</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s28')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card">
@@ -469,6 +505,7 @@
           <span class="tag hl">Batch 배치</span><span class="tag hl">GROUP BY SUM</span>
           <span class="tag">여신 등급</span><span class="tag">월말/일배치 분기</span><span class="tag">MODIFY upsert</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s22')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card">
@@ -480,6 +517,7 @@
           <span class="tag hl">결재 워크플로우</span><span class="tag hl">일괄결재</span>
           <span class="tag">ALV 커스텀 툴바</span><span class="tag">FAE 조회</span><span class="tag">FI·CO 동기 전기</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s25')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card featured">
@@ -491,6 +529,7 @@
           <span class="tag hl">ALV Tree</span><span class="tag hl">iXML Chart</span>
           <span class="tag">감가상각 계산</span><span class="tag">자산 취득/매각</span><span class="tag">스플리터 레이아웃</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s7')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card featured">
@@ -502,6 +541,7 @@
           <span class="tag hl">CDS View</span><span class="tag hl">역분개</span>
           <span class="tag">동적 FCAT</span><span class="tag">환율 환산</span><span class="tag">OLE2 PDF 출력</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s13')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card">
@@ -513,6 +553,7 @@
           <span class="tag hl">HTTP Client</span><span class="tag hl">JSON 파싱</span>
           <span class="tag">외부 API 연동</span><span class="tag">MODIFY upsert</span><span class="tag">배치 프로그램</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s10')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card featured">
@@ -524,6 +565,7 @@
           <span class="tag hl">ALV Column Tree</span><span class="tag hl">iXML 차트</span>
           <span class="tag">4-테이블 JOIN</span><span class="tag">차대변 분리</span><span class="tag">KTOKS 그룹</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s19')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card featured">
@@ -535,6 +577,7 @@
           <span class="tag hl">ALV Tree</span><span class="tag hl">SVG 차트</span>
           <span class="tag">당기/전년 비교</span><span class="tag">HTML Viewer</span><span class="tag">재무상태표</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s16')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
       <div class="card featured">
@@ -546,6 +589,7 @@
           <span class="tag hl">SAP Fiori</span><span class="tag hl">OData 2.0</span>
           <span class="tag">VizFrame 차트</span><span class="tag">미납액 계산</span><span class="tag">독촉 메일 발송</span>
         </div>
+        <button class="card-snippet-toggle" onclick="openCode('s4')">코드 보기 <span class="arrow">▼</span></button>
       </div>
 
         </div><!-- /tl-cards -->
@@ -2308,7 +2352,7 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     document.querySelectorAll('.tab-page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
-    el.classList.add('active');
+    if (el) el.classList.add('active');
     window.scrollTo(0, 0);
   }
 
@@ -2317,6 +2361,22 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     document.querySelectorAll('.snippet-btn').forEach(b => b.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     btn.classList.add('active');
+  }
+
+  function openCode(snippetId) {
+    showTab('code', null);
+    // activate the matching snippet-btn and panel
+    const targetPanel = document.getElementById(snippetId);
+    if (!targetPanel) return;
+    document.querySelectorAll('.snippet-panel').forEach(p => p.classList.remove('active'));
+    targetPanel.classList.add('active');
+    // highlight matching sidebar button
+    document.querySelectorAll('.snippet-btn').forEach(b => {
+      b.classList.remove('active');
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + snippetId + "'")) {
+        b.classList.add('active');
+      }
+    });
   }
 </script>
 
