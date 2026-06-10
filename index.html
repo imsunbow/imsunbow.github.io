@@ -679,7 +679,7 @@
     <div class="code-layout">
       <!-- SIDEBAR -->
       <div class="code-sidebar">
-        <div class="code-sidebar-label">ABAP</div>
+        <div class="code-sidebar-label">임시전표 작성</div>
         <button class="snippet-btn active" onclick="showSnippet('s1', this)">
           <span class="stype abap">ABAP</span>전기 키 유효성 검증
         </button>
@@ -689,7 +689,7 @@
         <button class="snippet-btn" onclick="showSnippet('s3', this)">
           <span class="stype abap">ABAP</span>DB 저장 / COMMIT
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZE1FI0002</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">고정자산 현황</div>
         <button class="snippet-btn" onclick="showSnippet('s7', this)">
           <span class="stype abap">ABAP</span>감가상각 집계
         </button>
@@ -699,7 +699,7 @@
         <button class="snippet-btn" onclick="showSnippet('s9', this)">
           <span class="stype abap">ABAP</span>ALV Tree 노드 구성
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0001</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">환율 배치</div>
         <button class="snippet-btn" onclick="showSnippet('s10', this)">
           <span class="stype abap">ABAP</span>환율 API 호출
         </button>
@@ -709,7 +709,7 @@
         <button class="snippet-btn" onclick="showSnippet('s12', this)">
           <span class="stype abap">ABAP</span>환율 DB 저장
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0002</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">전표 조회/역분개</div>
         <button class="snippet-btn" onclick="showSnippet('s13', this)">
           <span class="stype abap">ABAP</span>역분개 전표 생성
         </button>
@@ -719,7 +719,7 @@
         <button class="snippet-btn" onclick="showSnippet('s15', this)">
           <span class="stype abap">ABAP</span>환율 환산 / 차대변 분리
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0003</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">재무상태표</div>
         <button class="snippet-btn" onclick="showSnippet('s16', this)">
           <span class="stype abap">ABAP</span>잔액 부호 계산/집계
         </button>
@@ -729,7 +729,7 @@
         <button class="snippet-btn" onclick="showSnippet('s18', this)">
           <span class="stype abap">ABAP</span>SVG 차트 HTML 생성
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0010</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">Excel 일괄 반제</div>
         <button class="snippet-btn" onclick="showSnippet('s31', this)">
           <span class="stype abap">ABAP</span>Excel→내부테이블 동적 필드 매핑
         </button>
@@ -739,7 +739,7 @@
         <button class="snippet-btn" onclick="showSnippet('s33', this)">
           <span class="stype abap">ABAP</span>일괄 반제 FAE+채번+INSERT/MODIFY
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0009</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">반제 처리</div>
         <button class="snippet-btn" onclick="showSnippet('s28', this)">
           <span class="stype abap">ABAP</span>AR/AP 동적 FCAT 분기
         </button>
@@ -749,7 +749,7 @@
         <button class="snippet-btn" onclick="showSnippet('s30', this)">
           <span class="stype abap">ABAP</span>반제 처리 (미결금액 차감+전표 생성)
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0007</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">여신관리 배치</div>
         <button class="snippet-btn" onclick="showSnippet('s22', this)">
           <span class="stype abap">ABAP</span>직전 월 기준기간 계산
         </button>
@@ -759,7 +759,7 @@
         <button class="snippet-btn" onclick="showSnippet('s24', this)">
           <span class="stype abap">ABAP</span>등급 재산정 / 여신 MODIFY
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0008</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">임시전표 결재</div>
         <button class="snippet-btn" onclick="showSnippet('s25', this)">
           <span class="stype abap">ABAP</span>ALV 커스텀 툴바 등록
         </button>
@@ -769,7 +769,7 @@
         <button class="snippet-btn" onclick="showSnippet('s27', this)">
           <span class="stype abap">ABAP</span>일괄결재 FAE+채번+일괄 INSERT
         </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0004</div>
+        <div class="code-sidebar-label" style="margin-top:16px;">총계정원장</div>
         <button class="snippet-btn" onclick="showSnippet('s19', this)">
           <span class="stype abap">ABAP</span>4-테이블 JOIN + 차대변 분리
         </button>
@@ -796,7 +796,7 @@
 
         <div id="s1" class="snippet-panel active">
           <div class="code-header">
-            <h3>전기 키 유효성 검증 (ZE1FI0001 · ADD_STATE_LINE)</h3>
+            <h3>전기 키 유효성 검증 (임시전표 작성 ·ADD_STATE_LINE)</h3>
             <p>전표 유형(blart)별로 허용되는 전기 키(bschl)를 검증하고, G/L 계정과목 첫 자리로 계정 분류까지 체크</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 전표유형별 전기 키 유효성 검증</span>
@@ -852,7 +852,7 @@
 
         <div id="s2" class="snippet-panel">
           <div class="code-header">
-            <h3>차대변 잔액 계산 (ZE1FI0001 · CHECK_BALANCE)</h3>
+            <h3>차대변 잔액 계산 (임시전표 작성 ·CHECK_BALANCE)</h3>
             <p>전기 키(bschl)로 차변/대변을 분리해 합계를 계산하고, 차액이 0인지 여부를 LED 아이콘으로 표시</p>
           </div>
           <div class="code-block"><pre><span class="kw">LOOP AT</span> gt_state_add <span class="kw">INTO</span> gs_state_add.
@@ -888,7 +888,7 @@ gs_state_add-icon = <span class="kw">COND</span> #(
 
         <div id="s3" class="snippet-panel">
           <div class="code-header">
-            <h3>DB 저장 / COMMIT-ROLLBACK (ZE1FI0001 · SAVE_DATA)</h3>
+            <h3>DB 저장 / COMMIT-ROLLBACK (임시전표 작성 ·SAVE_DATA)</h3>
             <p>헤더·아이템을 각각 INSERT하고 하나라도 실패하면 ROLLBACK, 모두 성공하면 COMMIT WAIT 처리</p>
           </div>
           <div class="code-block"><pre><span class="kw">MOVE-CORRESPONDING</span> gs_state_header <span class="kw">TO</span> ls_save_header.
@@ -1031,7 +1031,7 @@ ls_save_header-ernam        = sy-uname.
 
         <div id="s7" class="snippet-panel">
           <div class="code-header">
-            <h3>감가상각 집계 (ZE1FI0002 · CALC_DEPRECIATION)</h3>
+            <h3>감가상각 집계 (고정자산 현황 ·CALC_DEPRECIATION)</h3>
             <p>hkont '13000030' 항목만 걸러 자산별로 COLLECT 집계 후 BINARY SEARCH로 매핑, 장부가액 산출</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 감가상각누계 계정(13000030) 항목만 자산별로 합산</span>
@@ -1073,7 +1073,7 @@ ls_save_header-ernam        = sy-uname.
 
         <div id="s8" class="snippet-panel">
           <div class="code-header">
-            <h3>매각 전표 저장 (ZE1FI0002 · SELL_SELECTED_ASSET)</h3>
+            <h3>매각 전표 저장 (고정자산 현황 ·SELL_SELECTED_ASSET)</h3>
             <p>헤더 1건 + 아이템 최대 3건(현금·감가누계·자산계정) INSERT 후 자산 마스터 loekz UPDATE, 실패 시 ROLLBACK</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 차변 - 현금 (장부가액만큼 매각대금 수취)</span>
@@ -1118,7 +1118,7 @@ lv_buzei += <span class="num">10</span>.
 
         <div id="s9" class="snippet-panel">
           <div class="code-header">
-            <h3>ALV Column Tree 노드 구성 (ZE1FI0002 · SET_FCAT_GRID)</h3>
+            <h3>ALV Column Tree 노드 구성 (고정자산 현황 ·SET_FCAT_GRID)</h3>
             <p>자산 데이터를 연도 → 자산클래스 → 개별 자산 3단계 계층으로 트리 노드에 삽입</p>
           </div>
           <div class="code-block"><pre><span class="kw">SORT</span> gt_asset <span class="kw">BY</span> aktiv(4) anlkl anln1.
@@ -1175,7 +1175,7 @@ lv_buzei += <span class="num">10</span>.
 
         <div id="s10" class="snippet-panel">
           <div class="code-header">
-            <h3>환율 API 호출 (ZRE1FI0001 · GET_EXCHANGE_RATE_API)</h3>
+            <h3>환율 API 호출 (환율 배치 ·GET_EXCHANGE_RATE_API)</h3>
             <p>한국수출입은행 Open API를 cl_http_client로 호출, 당일 기준 환율 JSON 수신</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 오늘 날짜 기준 URL 동적 생성</span>
@@ -1200,7 +1200,7 @@ gv_json_data = go_http_client-&gt;response-&gt;get_cdata( ).</pre></div>
 
         <div id="s11" class="snippet-panel">
           <div class="code-header">
-            <h3>JSON 역직렬화 (ZRE1FI0001 · PARSE_JSON_DATA)</h3>
+            <h3>JSON 역직렬화 (환율 배치 ·PARSE_JSON_DATA)</h3>
             <p>수신된 JSON 문자열을 /ui2/cl_json으로 내부 테이블에 직접 매핑, 빈 응답(영업일 외) 별도 처리</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 빈 응답 또는 빈 배열([]) → 영업일 외 등 데이터 없는 경우</span>
@@ -1219,7 +1219,7 @@ gv_json_data = go_http_client-&gt;response-&gt;get_cdata( ).</pre></div>
 
         <div id="s12" class="snippet-panel">
           <div class="code-header">
-            <h3>환율 DB 저장 (ZRE1FI0001 · SAVE_TO_DB)</h3>
+            <h3>환율 DB 저장 (환율 배치 ·SAVE_TO_DB)</h3>
             <p>100단위 통화 처리, 콤마 제거 후 MODIFY로 upsert — 이미 있으면 갱신, 없으면 삽입</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 역전 날짜: SAP 환율 테이블은 99999999 - 기준일로 정렬</span>
@@ -1263,7 +1263,7 @@ gv_gdatu_inv = <span class="num">99999999</span> - sy-datum.
 
         <div id="s13" class="snippet-panel">
           <div class="code-header">
-            <h3>역분개 전표 생성 (ZRE1FI0002 · SAVE_REVERSE_DOC)</h3>
+            <h3>역분개 전표 생성 (전표 조회/역분개 ·SAVE_REVERSE_DOC)</h3>
             <p>원전표 아이템 금액에 × -1 적용해 역분개 전표 생성, INSERT×2 + UPDATE×2 모두 성공 시 COMMIT</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 역분개 아이템: 원전표 아이템의 금액을 반전(-1)시켜 생성</span>
@@ -1316,7 +1316,7 @@ gv_gdatu_inv = <span class="num">99999999</span> - sy-datum.
 
         <div id="s14" class="snippet-panel">
           <div class="code-header">
-            <h3>전표유형별 동적 컬럼 구성 (ZRE1FI0002 · SET_FCAT_GRID)</h3>
+            <h3>전표유형별 동적 컬럼 구성 (전표 조회/역분개 ·SET_FCAT_GRID)</h3>
             <p>pa_blart 값에 따라 FCAT에 추가할 컬럼을 다르게 결정 — 역분개·BP·원전표 컬럼이 전표 유형마다 다르게 조합됨</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 전표 유형에 따른 동적 컬럼 할당</span>
@@ -1350,7 +1350,7 @@ gv_gdatu_inv = <span class="num">99999999</span> - sy-datum.
 
         <div id="s15" class="snippet-panel">
           <div class="code-header">
-            <h3>환율 환산 / 차대변 분리 (ZRE1FI0002 · SET_SH)</h3>
+            <h3>환율 환산 / 차대변 분리 (전표 조회/역분개 ·SET_SH)</h3>
             <p>IDOC 형식 환율을 SAP 금액으로 변환하고, shkzg 기준으로 차변/대변 금액을 분리해 원화 환산까지 산출</p>
           </div>
           <div class="code-block"><pre><span class="kw">LOOP AT</span> gt_item <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
@@ -1556,7 +1556,7 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
 
         <div id="s31" class="snippet-panel">
           <div class="code-header">
-            <h3>Excel → 내부테이블 동적 필드 매핑 (ZRE1FI0010 · GET_DATA)</h3>
+            <h3>Excel → 내부테이블 동적 필드 매핑 (Excel 일괄 반제 ·GET_DATA)</h3>
             <p>ALSM_EXCEL_TO_INTERNAL_TABLE로 엑셀 파싱 후 col 번호 기준 ASSIGN COMPONENT로 동적 필드 매핑 — 전표번호 ALPHA 패딩, 금액 콤마 제거, FIELD-SYMBOL 활용</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 엑셀 파일 → alsmex_tabline 내부 테이블 변환 (1048576행)</span>
@@ -1601,7 +1601,7 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
 
         <div id="s32" class="snippet-panel">
           <div class="code-header">
-            <h3>FAE 유효성 검증 · 누적금액 추적 (ZRE1FI0010 · CHECK_VALIDITY)</h3>
+            <h3>FAE 유효성 검증 · 누적금액 추적 (Excel 일괄 반제 ·CHECK_VALIDITY)</h3>
             <p>전표·BP·전표유형을 FAE 3-쿼리로 일괄 조회 후 통화불일치/없는전표/BP조합불일치/초과입금 순차 검증 — 동일 전표 여러 행 처리 시 lt_accum으로 누적 입금액 추적</p>
           </div>
           <div class="code-block"><pre><span class="cm">" FAE 3-쿼리: 전표+BP 조합 / 전표번호만 / BP번호만</span>
@@ -1674,7 +1674,7 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
 
         <div id="s33" class="snippet-panel">
           <div class="code-header">
-            <h3>일괄 반제 FAE 조회 + 채번 + INSERT/MODIFY (ZRE1FI0010 · CLEAR_ALL)</h3>
+            <h3>일괄 반제 FAE 조회 + 채번 + INSERT/MODIFY (Excel 일괄 반제 ·CLEAR_ALL)</h3>
             <p>유효 행(초록/노랑)만 수집 → FAE 3-쿼리(헤더·아이템·출하테이블) → 전표별 채번 → 반제전표 헤더+아이템 INSERT, 원전표 UPDATE, 출하테이블 UPDATE, 입출금내역 INSERT → COMMIT AND WAIT</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 유효 행(초록/노랑)만 대상 수집 → 중복 제거</span>
@@ -1732,7 +1732,7 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
 
         <div id="s28" class="snippet-panel">
           <div class="code-header">
-            <h3>AR/AP 라디오버튼 동적 FCAT 분기 (ZRE1FI0009 · SET_FCAT_LAYOUT)</h3>
+            <h3>AR/AP 라디오버튼 동적 FCAT 분기 (반제 처리 ·SET_FCAT_LAYOUT)</h3>
             <p>매출채권(AR·DR)/매입채무(AP·KR) 라디오버튼에 따라 거래처 참조 테이블을 동적으로 분기 — 동일 컬럼(PARTNER_NO/COMP_NAME)이지만 ref_table이 SD·MM 테이블로 달라짐</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 고정 헤더 FCAT 등록 (상태 아이콘·전표번호·일자·전표유형 공통)</span>
@@ -1774,7 +1774,7 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
 
         <div id="s29" class="snippet-panel">
           <div class="code-header">
-            <h3>반제 내역 4-테이블 JOIN + GROUP BY SUM (ZRE1FI0009 · GET_CLEARING_DATA)</h3>
+            <h3>반제 내역 4-테이블 JOIN + GROUP BY SUM (반제 처리 ·GET_CLEARING_DATA)</h3>
             <p>입출금 내역(zte1fi0009)·전표헤더·전표명세·계좌마스터를 4-테이블 JOIN — 명세의 차변(shkzg=S) SUM으로 원전표 금액 집계, 반제상태 도메인 텍스트 후처리</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 4-테이블 JOIN: 입출금내역 + 전표헤더 + 전표명세(차변 SUM) + 계좌마스터</span>
@@ -1821,7 +1821,7 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
 
         <div id="s30" class="snippet-panel">
           <div class="code-header">
-            <h3>반제 처리 · 미결금액 차감 + 반제전표 생성 (ZRE1FI0009 · DO_CLEARING)</h3>
+            <h3>반제 처리 · 미결금액 차감 + 반제전표 생성 (반제 처리 ·DO_CLEARING)</h3>
             <p>입출금 금액과 미결금액 비교로 완전반제(C)/부분반제(P) 결정 — 전표 아이템·헤더 UPDATE 후 채번, 반제전표(ZR) INSERT, AR일 때 청구문서 상태도 동기화, COMMIT AND WAIT</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 미결금액 조회 후 입출금액 비교 → 반제 상태 결정</span>
@@ -1890,7 +1890,7 @@ ls_header_insert-status = <span class="str">'D'</span>.       ls_header_insert-c
 
         <div id="s22" class="snippet-panel">
           <div class="code-header">
-            <h3>직전 월 기준기간 계산 (ZRE1FI0007 · CALC_DATE_RANGE)</h3>
+            <h3>직전 월 기준기간 계산 (여신관리 배치 ·CALC_DATE_RANGE)</h3>
             <p>시스템 날짜 기준으로 직전 월 1일~오늘을 기준기간으로 산출 — 1월일 경우 연도 역산 처리, 체크박스 미선택 시 즉시 종료</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 체크박스 미선택 시 처리 차단</span>
@@ -1921,7 +1921,7 @@ gv_last_day = sy-datum.
 
         <div id="s23" class="snippet-panel">
           <div class="code-header">
-            <h3>매출 GROUP BY 집계 (ZRE1FI0007 · GET_SALES_DATA)</h3>
+            <h3>매출 GROUP BY 집계 (여신관리 배치 ·GET_SALES_DATA)</h3>
             <p>기준기간 내 DR 전표에서 거래처별 총 매출·미결잔액을 SUM GROUP BY로 단일 SELECT — bschl=40(매출계정), shkzg=S 조건으로 차변만 집계</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 거래처별 매출 합계·미결잔액을 GROUP BY로 단일 쿼리 집계</span>
@@ -1955,7 +1955,7 @@ gv_last_day = sy-datum.
 
         <div id="s24" class="snippet-panel">
           <div class="code-header">
-            <h3>등급 재산정 / 여신 일괄 MODIFY (ZRE1FI0007 · PROCESS_GRADE)</h3>
+            <h3>등급 재산정 / 여신 일괄 MODIFY (여신관리 배치 ·PROCESS_GRADE)</h3>
             <p>월말/평일 분기 — 월말에만 매출 기준 S/A/B/C 등급 재산정(매출 없으면 한 단계 강등), 일배치는 기존 등급 유지 · 미결잔액만 갱신. 고객마스터·여신 테이블 일괄 MODIFY 후 COMMIT AND WAIT</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 월말 여부 판단 (RP_LAST_DAY_OF_MONTHS)</span>
@@ -2010,7 +2010,7 @@ gv_last_day = sy-datum.
 
         <div id="s25" class="snippet-panel">
           <div class="code-header">
-            <h3>ALV 커스텀 툴바 등록 (ZRE1FI0008 · HANDLE_TOOLBAR / HANDLE_UCOMM)</h3>
+            <h3>ALV 커스텀 툴바 등록 (임시전표 결재 ·HANDLE_TOOLBAR / HANDLE_UCOMM)</h3>
             <p>ALV 툴바에 결재·반려·일괄결재 버튼을 동적으로 추가 — Separator(구분선) 삽입 후 icon_allow/icon_reject 아이콘 지정, UCOMM 이벤트에서 PERFORM 분기</p>
           </div>
           <div class="code-block"><pre><span class="cm">" ALV 툴바 이벤트 — 커스텀 버튼 3개 등록</span>
@@ -2050,7 +2050,7 @@ gv_last_day = sy-datum.
 
         <div id="s26" class="snippet-panel">
           <div class="code-header">
-            <h3>FI/CO 전표 생성 · 채번 (ZRE1FI0008 · INSERT_DOC)</h3>
+            <h3>FI/CO 전표 생성 · 채번 (임시전표 결재 ·INSERT_DOC)</h3>
             <p>NUMBER_GET_NEXT로 채번 후 헤더·아이템을 FI 테이블(zte1fi0005/0006)과 CO 테이블(zte1co0006/0007)에 각각 INSERT — KRW 고정 통화, 타임스탬프 재할당, ROLLBACK on failure</p>
           </div>
           <div class="code-block"><pre><span class="cm">" Number Range 채번 (ZNRE1FI01)</span>
@@ -2099,7 +2099,7 @@ gv_belnr = lv_belnr.</pre></div>
 
         <div id="s27" class="snippet-panel">
           <div class="code-header">
-            <h3>일괄결재 FAE + 채번 + 일괄 INSERT (ZRE1FI0008 · APPROVE_DOC_ALL)</h3>
+            <h3>일괄결재 FAE + 채번 + 일괄 INSERT (임시전표 결재 ·APPROVE_DOC_ALL)</h3>
             <p>대기 전표 전체를 FOR ALL ENTRIES로 헤더·아이템 일괄 조회 후 전표별 채번 → FI·CO 헤더+아이템 테이블에 일괄 INSERT, 원본 헤더 MODIFY(상태·실전표번호) → COMMIT AND WAIT</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 대기(icon_led_yellow) 전표만 대상 수집</span>
@@ -2148,7 +2148,7 @@ gv_belnr = lv_belnr.</pre></div>
 
         <div id="s19" class="snippet-panel">
           <div class="code-header">
-            <h3>4-테이블 JOIN + 차대변 분리 (ZRE1FI0004 · GET_DATA)</h3>
+            <h3>4-테이블 JOIN + 차대변 분리 (총계정원장 ·GET_DATA)</h3>
             <p>전표 헤더·명세·전표유형명·계정과목명을 4-테이블 INNER JOIN으로 단일 SELECT — 도메인 값(계정유형명) 추가 후 shkzg 기준 차/대 금액 컬럼 분리</p>
           </div>
           <div class="code-block"><pre><span class="cm">" zte1fi0005(헤더)·zte1fi0006(명세)·zte1fi0002(전표유형)·zte1fi0001(계정마스터) JOIN</span>
@@ -2194,7 +2194,7 @@ gv_belnr = lv_belnr.</pre></div>
 
         <div id="s20" class="snippet-panel">
           <div class="code-header">
-            <h3>KTOKS 5-그룹 2단계 Tree 계층 (ZRE1FI0004 · MAKE_HIERARCHY)</h3>
+            <h3>KTOKS 5-그룹 2단계 Tree 계층 (총계정원장 ·MAKE_HIERARCHY)</h3>
             <p>자산/부채/자본/수익/비용 5개 KTOKS 그룹을 상위 노드로, 각 G/L 계정을 하위 노드로 구성 — shkzg 기준 계정별 차/대 금액 집계 후 add_node 삽입</p>
           </div>
           <div class="code-block"><pre><span class="cm">" KTOKS 5개 그룹 매핑 테이블 초기화</span>
@@ -2239,7 +2239,7 @@ lt_ktoks_text = <span class="kw">VALUE #</span>(
 
         <div id="s21" class="snippet-panel">
           <div class="code-header">
-            <h3>BS 월별 3-라인 iXML 차트 (ZRE1FI0004 · DISPLAY_CHART_MONTHLY)</h3>
+            <h3>BS 월별 3-라인 iXML 차트 (총계정원장 ·DISPLAY_CHART_MONTHLY)</h3>
             <p>자산·부채·자본 3개 계열을 월별 누적 합산 — SAP Chart Engine에 UTF-8 XML을 직접 조립·전달하는 iXML 방식, KTOKS 필터 유무에 따라 3-라인/1-라인 분기</p>
           </div>
           <div class="code-block"><pre><span class="cm">" 1~12월 고정 테이블 초기화</span>
