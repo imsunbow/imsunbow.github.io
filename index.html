@@ -347,7 +347,7 @@
       </p>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-num">10+</div>
+          <div class="hero-stat-num">11+</div>
           <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
         </div>
         <div>
@@ -388,6 +388,17 @@
         <div class="card-tags">
           <span class="tag hl">ALV Grid</span><span class="tag hl">TextEditor</span>
           <span class="tag">전표 밸런스 검증</span><span class="tag">Number Range</span><span class="tag">F4 Value Help</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-type abap">ABAP</span>
+        <h3>Excel 업로드 일괄 반제</h3>
+        <div class="card-id">ZRE1FI0010</div>
+        <p>엑셀 파일에서 입출금 내역을 업로드해 전표를 일괄 반제하는 프로그램. ALSM_EXCEL_TO_INTERNAL_TABLE + ASSIGN COMPONENT로 동적 필드 매핑, FAE 3-쿼리로 전표·BP 유효성 일괄 검증(통화불일치/초과입금/누적금액 추적), 채번 후 반제전표·입출금내역 INSERT + 원전표·출하테이블 MODIFY 일괄 처리.</p>
+        <div class="card-tags">
+          <span class="tag hl">Excel 업로드</span><span class="tag hl">일괄 반제</span>
+          <span class="tag">동적 필드 매핑</span><span class="tag">FAE 유효성 검증</span><span class="tag">누적금액 추적</span>
         </div>
       </div>
 
@@ -662,6 +673,16 @@
         </button>
         <button class="snippet-btn" onclick="showSnippet('s18', this)">
           <span class="stype abap">ABAP</span>SVG 차트 HTML 생성
+        </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0010</div>
+        <button class="snippet-btn" onclick="showSnippet('s31', this)">
+          <span class="stype abap">ABAP</span>Excel→내부테이블 동적 필드 매핑
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s32', this)">
+          <span class="stype abap">ABAP</span>FAE 유효성 검증 (누적금액 추적)
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s33', this)">
+          <span class="stype abap">ABAP</span>일괄 반제 FAE+채번+INSERT/MODIFY
         </button>
         <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0009</div>
         <button class="snippet-btn" onclick="showSnippet('s28', this)">
@@ -1476,6 +1497,182 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
   <span class="kw">IMPORTING</span>  assigned_url = lv_url
   <span class="kw">CHANGING</span>   data_table   = lt_html.
 <span class="kw">CALL METHOD</span> gcl_chart_html-&gt;show_url( <span class="kw">EXPORTING</span> url = lv_url ).</pre></div>
+        </div>
+
+        <div id="s31" class="snippet-panel">
+          <div class="code-header">
+            <h3>Excel → 내부테이블 동적 필드 매핑 (ZRE1FI0010 · GET_DATA)</h3>
+            <p>ALSM_EXCEL_TO_INTERNAL_TABLE로 엑셀 파싱 후 col 번호 기준 ASSIGN COMPONENT로 동적 필드 매핑 — 전표번호 ALPHA 패딩, 금액 콤마 제거, FIELD-SYMBOL 활용</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 엑셀 파일 → alsmex_tabline 내부 테이블 변환 (1048576행)</span>
+<span class="kw">CALL FUNCTION</span> <span class="str">'ALSM_EXCEL_TO_INTERNAL_TABLE'</span>
+  <span class="kw">EXPORTING</span>
+    filename    = pa_fname
+    i_begin_col = <span class="num">1</span>  i_begin_row = <span class="num">2</span>
+    i_end_col   = <span class="num">5</span>  i_end_row   = <span class="num">1048576</span>
+  <span class="kw">TABLES</span>
+    intern      = lt_excel.
+
+<span class="kw">LOOP AT</span> lt_excel <span class="kw">INTO</span> ls_excel.
+  <span class="kw">AT NEW</span> row.
+    <span class="kw">APPEND INITIAL LINE TO</span> gt_bank <span class="kw">ASSIGNING</span> &lt;lfs_line&gt;.
+  <span class="kw">ENDAT</span>.
+
+  <span class="cm">" col 번호 → 구조체 컴포넌트 동적 매핑</span>
+  <span class="kw">CASE</span> ls_excel-col.
+    <span class="kw">WHEN</span> <span class="num">1</span>. <span class="kw">ASSIGN COMPONENT</span> <span class="str">'PARTNER_NO'</span> <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
+    <span class="kw">WHEN</span> <span class="num">2</span>.
+      <span class="cm">" 전표번호 ALPHA 패딩 (앞자리 0 채우기)</span>
+      lv_belnr = <span class="kw">CONV</span> zte1fi0005-belnr( ls_excel-value ).
+      <span class="kw">CALL FUNCTION</span> <span class="str">'CONVERSION_EXIT_ALPHA_INPUT'</span>
+        <span class="kw">EXPORTING</span>  input  = lv_belnr
+        <span class="kw">IMPORTING</span>  output = lv_belnr.
+      ls_excel-value = lv_belnr.
+      <span class="kw">ASSIGN COMPONENT</span> <span class="str">'REF_BELNR'</span> <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
+    <span class="kw">WHEN</span> <span class="num">3</span>. <span class="kw">ASSIGN COMPONENT</span> <span class="str">'BUDAT'</span>  <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
+    <span class="kw">WHEN</span> <span class="num">4</span>.
+      <span class="cm">" 금액 콤마 제거 후 매핑</span>
+      <span class="kw">REPLACE ALL OCCURRENCES OF</span> <span class="str">','</span> <span class="kw">IN</span> ls_excel-value <span class="kw">WITH</span> <span class="str">''</span>.
+      <span class="kw">ASSIGN COMPONENT</span> <span class="str">'WRBTR'</span>  <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
+    <span class="kw">WHEN</span> <span class="num">5</span>. <span class="kw">ASSIGN COMPONENT</span> <span class="str">'WAERS'</span>  <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
+  <span class="kw">ENDCASE</span>.
+
+  <span class="kw">IF</span> &lt;lv_field&gt; <span class="kw">IS ASSIGNED</span>.
+    &lt;lv_field&gt; = ls_excel-value.
+    <span class="kw">UNASSIGN</span> &lt;lv_field&gt;.
+  <span class="kw">ENDIF</span>.
+<span class="kw">ENDLOOP</span>.</pre></div>
+        </div>
+
+        <div id="s32" class="snippet-panel">
+          <div class="code-header">
+            <h3>FAE 유효성 검증 · 누적금액 추적 (ZRE1FI0010 · CHECK_VALIDITY)</h3>
+            <p>전표·BP·전표유형을 FAE 3-쿼리로 일괄 조회 후 통화불일치/없는전표/BP조합불일치/초과입금 순차 검증 — 동일 전표 여러 행 처리 시 lt_accum으로 누적 입금액 추적</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" FAE 3-쿼리: 전표+BP 조합 / 전표번호만 / BP번호만</span>
+<span class="kw">SELECT</span> a~bukrs a~gjahr a~belnr a~blart a~partner_no
+       a~waers <span class="kw">AS</span> open_waers a~clear_status
+       b~open_amt c~ltext
+       d~comp_name d~waers <span class="kw">AS</span> bp_waers d~bp_type
+  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_fi
+  <span class="kw">FROM</span> zte1fi0005 <span class="kw">AS</span> a
+ <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> b <span class="kw">ON</span> b~bukrs <span class="kw">EQ</span> a~bukrs <span class="kw">AND</span> b~gjahr <span class="kw">EQ</span> a~gjahr <span class="kw">AND</span> b~belnr <span class="kw">EQ</span> a~belnr
+ <span class="kw">INNER JOIN</span> zte1fi0002 <span class="kw">AS</span> c <span class="kw">ON</span> a~blart <span class="kw">EQ</span> c~blart
+  <span class="kw">LEFT OUTER JOIN</span> zte1cm0004 <span class="kw">AS</span> d <span class="kw">ON</span> a~partner_no <span class="kw">EQ</span> d~partner_no
+   <span class="kw">FOR ALL ENTRIES IN</span> gt_bank
+ <span class="kw">WHERE</span> a~belnr      <span class="kw">EQ</span> gt_bank-ref_belnr
+   <span class="kw">AND</span> a~partner_no <span class="kw">EQ</span> gt_bank-partner_no
+   <span class="kw">AND</span> a~loekz <span class="kw">EQ</span> space.
+
+<span class="kw">LOOP AT</span> gt_bank <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_bank&gt;).
+
+  <span class="cm">" IDOC 금액 → SAP 내부 포맷 변환</span>
+  <span class="kw">CALL FUNCTION</span> <span class="str">'CURRENCY_AMOUNT_IDOC_TO_SAP'</span>
+    <span class="kw">EXPORTING</span>  currency    = &lt;lfs_bank&gt;-wrbtr_waers
+               idoc_amount = &lt;lfs_bank&gt;-wrbtr
+    <span class="kw">IMPORTING</span>  sap_amount  = &lt;lfs_bank&gt;-wrbtr.
+
+  <span class="cm">" 전표+BP 조합 매핑</span>
+  <span class="kw">READ TABLE</span> lt_fi <span class="kw">INTO</span> ls_fi
+    <span class="kw">WITH KEY</span> belnr = &lt;lfs_bank&gt;-ref_belnr  partner_no = &lt;lfs_bank&gt;-partner_no.
+
+  <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
+    <span class="cm">" 조합 실패 → 전표/BP 각각 개별 체크 후 remark 누적</span>
+    &lt;lfs_bank&gt;-icon   = icon_led_red.
+    &lt;lfs_bank&gt;-remark = <span class="str">'전표-BP 조합 불일치'</span>.
+    <span class="kw">CONTINUE</span>.
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" 이전 행에서 이미 차감된 누적 입금액 반영 (동일 전표 멀티행)</span>
+  <span class="kw">READ TABLE</span> lt_accum <span class="kw">INTO</span> ls_accum
+    <span class="kw">WITH KEY</span> ref_belnr = &lt;lfs_bank&gt;-ref_belnr  partner_no = &lt;lfs_bank&gt;-partner_no.
+  <span class="kw">IF</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+    &lt;lfs_bank&gt;-open_amt = &lt;lfs_bank&gt;-open_amt - ls_accum-sum_wrbtr.
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" 초과입금 체크</span>
+  <span class="kw">IF</span> &lt;lfs_bank&gt;-wrbtr <span class="kw">GT</span> &lt;lfs_bank&gt;-open_amt.
+    &lt;lfs_bank&gt;-icon   = icon_led_red.
+    &lt;lfs_bank&gt;-remark = <span class="str">'입금액이 미결금액 초과'</span>.
+    <span class="kw">CONTINUE</span>.
+  <span class="kw">ENDIF</span>.
+
+  <span class="cm">" 반제 상태별 아이콘/비고 결정</span>
+  <span class="kw">CASE</span> &lt;lfs_bank&gt;-clear_status.
+    <span class="kw">WHEN</span> <span class="str">'N'</span> <span class="kw">OR</span> <span class="str">'P'</span>.
+      &lt;lfs_bank&gt;-icon   = <span class="kw">COND #</span>( <span class="kw">WHEN</span> &lt;lfs_bank&gt;-wrbtr <span class="kw">EQ</span> &lt;lfs_bank&gt;-open_amt
+                                    <span class="kw">THEN</span> icon_led_green <span class="kw">ELSE</span> icon_led_yellow ).
+      &lt;lfs_bank&gt;-remark = <span class="kw">COND #</span>( <span class="kw">WHEN</span> &lt;lfs_bank&gt;-wrbtr <span class="kw">EQ</span> &lt;lfs_bank&gt;-open_amt
+                                    <span class="kw">THEN</span> <span class="str">'완전반제 가능'</span> <span class="kw">ELSE</span> <span class="str">'부분반제 가능'</span> ).
+    <span class="kw">WHEN</span> <span class="str">'C'</span>. &lt;lfs_bank&gt;-icon = icon_led_red.  &lt;lfs_bank&gt;-remark = <span class="str">'이미 반제된 전표'</span>. <span class="kw">CONTINUE</span>.
+  <span class="kw">ENDCASE</span>.
+
+  <span class="cm">" 누적 입금액 갱신</span>
+  <span class="kw">READ TABLE</span> lt_accum <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_accum&gt;)
+    <span class="kw">WITH KEY</span> ref_belnr = &lt;lfs_bank&gt;-ref_belnr  partner_no = &lt;lfs_bank&gt;-partner_no.
+  <span class="kw">IF</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>. &lt;lfs_accum&gt;-sum_wrbtr += &lt;lfs_bank&gt;-wrbtr.
+  <span class="kw">ELSE</span>. <span class="kw">APPEND</span> <span class="kw">VALUE #</span>( ref_belnr  = &lt;lfs_bank&gt;-ref_belnr
+                       partner_no = &lt;lfs_bank&gt;-partner_no
+                       sum_wrbtr  = &lt;lfs_bank&gt;-wrbtr ) <span class="kw">TO</span> lt_accum. <span class="kw">ENDIF</span>.
+<span class="kw">ENDLOOP</span>.</pre></div>
+        </div>
+
+        <div id="s33" class="snippet-panel">
+          <div class="code-header">
+            <h3>일괄 반제 FAE 조회 + 채번 + INSERT/MODIFY (ZRE1FI0010 · CLEAR_ALL)</h3>
+            <p>유효 행(초록/노랑)만 수집 → FAE 3-쿼리(헤더·아이템·출하테이블) → 전표별 채번 → 반제전표 헤더+아이템 INSERT, 원전표 UPDATE, 출하테이블 UPDATE, 입출금내역 INSERT → COMMIT AND WAIT</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 유효 행(초록/노랑)만 대상 수집 → 중복 제거</span>
+<span class="kw">LOOP AT</span> gt_bank <span class="kw">ASSIGNING</span> &lt;lfs_bank&gt;
+  <span class="kw">WHERE</span> icon <span class="kw">EQ</span> icon_led_green <span class="kw">OR</span> icon <span class="kw">EQ</span> icon_led_yellow.
+  <span class="kw">APPEND</span> <span class="kw">VALUE #</span>( bukrs = &lt;lfs_bank&gt;-bukrs  gjahr = &lt;lfs_bank&gt;-gjahr
+                  ref_belnr = &lt;lfs_bank&gt;-ref_belnr ) <span class="kw">TO</span> lt_target.
+<span class="kw">ENDLOOP</span>.
+<span class="kw">SORT</span> lt_target <span class="kw">BY</span> bukrs gjahr ref_belnr.
+<span class="kw">DELETE ADJACENT DUPLICATES FROM</span> lt_target <span class="kw">COMPARING</span> bukrs gjahr ref_belnr.
+
+<span class="cm">" FAE 일괄 조회: 원전표 헤더 / 아이템 / 출하테이블</span>
+<span class="kw">SELECT</span> bukrs gjahr belnr blart bldat budat partner_no waers clear_status ref_belnr
+  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_head_org <span class="kw">FROM</span> zte1fi0005
+   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
+  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr
+    <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-ref_belnr <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
+
+<span class="kw">SELECT</span> bukrs gjahr belnr buzei hkont partner_no wrbtr open_amt close_amt
+       waers augdt augbl koart shkzg bschl
+  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_all_item <span class="kw">FROM</span> zte1fi0006
+   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
+  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr
+    <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-ref_belnr <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
+
+<span class="cm">" 행별 채번 → 반제 후 미결금액/상태 계산 → INSERT/UPDATE 적재</span>
+<span class="kw">LOOP AT</span> gt_bank <span class="kw">ASSIGNING</span> &lt;lfs_bank&gt;
+  <span class="kw">WHERE</span> icon <span class="kw">EQ</span> icon_led_green <span class="kw">OR</span> icon <span class="kw">EQ</span> icon_led_yellow.
+
+  <span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
+    <span class="kw">EXPORTING</span> nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
+    <span class="kw">IMPORTING</span> number      = lv_aug_belnr.
+
+  lv_new_open = &lt;lfs_bank&gt;-open_amt - &lt;lfs_bank&gt;-wrbtr.
+  lv_status   = <span class="kw">COND #</span>( <span class="kw">WHEN</span> lv_new_open <span class="kw">EQ</span> <span class="num">0</span> <span class="kw">THEN</span> <span class="str">'C'</span> <span class="kw">ELSE</span> <span class="str">'P'</span> ).
+
+  <span class="cm">" 반제전표 헤더·입출금내역·원전표 헤더 적재</span>
+  ls_head_ins-belnr = lv_aug_belnr.  ls_head_ins-blart = <span class="str">'ZR'</span>.
+  ls_head_ins-clear_status = <span class="str">'C'</span>.   ls_head_ins-status = <span class="str">'P'</span>.
+  <span class="kw">APPEND</span> ls_head_ins <span class="kw">TO</span> lt_head_ins.
+
+  ls_head_upd-clear_status = lv_status.  ls_head_upd-augbl = lv_aug_belnr.
+  <span class="kw">APPEND</span> ls_head_upd <span class="kw">TO</span> lt_head_upd.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" DB 반영: INSERT(반제헤더+아이템+입출금) → MODIFY(원전표헤더+아이템+출하) → COMMIT</span>
+<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_ins. <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_ins. <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">INSERT</span> zte1fi0009 <span class="kw">FROM TABLE</span> lt_save.     <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">MODIFY</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_upd. <span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">MODIFY</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_upd. <span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">MODIFY</span> zte1sd0012 <span class="kw">FROM TABLE</span> lt_head_ship. <span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">COMMIT WORK AND WAIT</span>.</pre></div>
         </div>
 
         <div id="s28" class="snippet-panel">
