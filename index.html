@@ -347,7 +347,7 @@
       </p>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-num">7+</div>
+          <div class="hero-stat-num">8+</div>
           <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
         </div>
         <div>
@@ -431,6 +431,17 @@
         <div class="card-tags">
           <span class="tag hl">HTTP Client</span><span class="tag hl">JSON 파싱</span>
           <span class="tag">외부 API 연동</span><span class="tag">MODIFY upsert</span><span class="tag">배치 프로그램</span>
+        </div>
+      </div>
+
+      <div class="card featured">
+        <span class="card-type abap">ABAP</span>
+        <h3>총계정원장 조회</h3>
+        <div class="card-id">ZRE1FI0004</div>
+        <p>4-테이블 INNER JOIN(헤더·명세·전표유형·계정마스터)으로 전기 데이터를 단일 SELECT. KTOKS 5그룹 기준 2단계 ALV Column Tree로 계정별 차/대 집계 표시, SAP iXML Chart Engine으로 계정그룹별 바차트·BS 월별 3-라인 추이 차트 동적 렌더링.</p>
+        <div class="card-tags">
+          <span class="tag hl">ALV Column Tree</span><span class="tag hl">iXML 차트</span>
+          <span class="tag">4-테이블 JOIN</span><span class="tag">차대변 분리</span><span class="tag">KTOKS 그룹</span>
         </div>
       </div>
 
@@ -628,6 +639,16 @@
         </button>
         <button class="snippet-btn" onclick="showSnippet('s18', this)">
           <span class="stype abap">ABAP</span>SVG 차트 HTML 생성
+        </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0004</div>
+        <button class="snippet-btn" onclick="showSnippet('s19', this)">
+          <span class="stype abap">ABAP</span>4-테이블 JOIN + 차대변 분리
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s20', this)">
+          <span class="stype abap">ABAP</span>KTOKS 그룹 Tree 계층 구성
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s21', this)">
+          <span class="stype abap">ABAP</span>BS 월별 추이 iXML 차트
         </button>
         <div class="code-sidebar-label" style="margin-top:16px;">Fiori / UI5</div>
         <button class="snippet-btn" onclick="showSnippet('s4', this)">
@@ -1402,6 +1423,149 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
   <span class="kw">IMPORTING</span>  assigned_url = lv_url
   <span class="kw">CHANGING</span>   data_table   = lt_html.
 <span class="kw">CALL METHOD</span> gcl_chart_html-&gt;show_url( <span class="kw">EXPORTING</span> url = lv_url ).</pre></div>
+        </div>
+
+        <div id="s19" class="snippet-panel">
+          <div class="code-header">
+            <h3>4-테이블 JOIN + 차대변 분리 (ZRE1FI0004 · GET_DATA)</h3>
+            <p>전표 헤더·명세·전표유형명·계정과목명을 4-테이블 INNER JOIN으로 단일 SELECT — 도메인 값(계정유형명) 추가 후 shkzg 기준 차/대 금액 컬럼 분리</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" zte1fi0005(헤더)·zte1fi0006(명세)·zte1fi0002(전표유형)·zte1fi0001(계정마스터) JOIN</span>
+<span class="kw">SELECT</span> h~bukrs h~gjahr h~budat h~blart h~belnr h~hwaer
+       i~buzei i~koart i~hkont i~shkzg i~wrbtr i~open_amt
+       t2~ltext t1~txt20
+  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> gt_item
+  <span class="kw">FROM</span> zte1fi0005 <span class="kw">AS</span> h
+ <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> i
+    <span class="kw">ON</span>  h~bukrs <span class="kw">EQ</span> i~bukrs
+   <span class="kw">AND</span> h~gjahr <span class="kw">EQ</span> i~gjahr
+   <span class="kw">AND</span> h~belnr <span class="kw">EQ</span> i~belnr
+ <span class="kw">INNER JOIN</span> zte1fi0002 <span class="kw">AS</span> t2 <span class="kw">ON</span> h~blart <span class="kw">EQ</span> t2~blart
+ <span class="kw">INNER JOIN</span> zte1fi0001 <span class="kw">AS</span> t1 <span class="kw">ON</span> i~hkont <span class="kw">EQ</span> t1~saknr
+ <span class="kw">WHERE</span> h~bukrs <span class="kw">EQ</span> pa_bukrs
+   <span class="kw">AND</span> h~gjahr <span class="kw">EQ</span> pa_gjahr
+   <span class="kw">AND</span> h~belnr <span class="kw">LIKE</span> <span class="str">'0%'</span>
+   <span class="kw">AND</span> h~loekz <span class="kw">EQ</span> space
+ <span class="kw">ORDER BY</span> h~bukrs h~gjahr h~belnr i~buzei.
+
+<span class="cm">" 계정유형 도메인 텍스트 조회 (ZDE1_FI_KOART)</span>
+<span class="kw">CALL FUNCTION</span> <span class="str">'GET_DOMAIN_VALUES'</span>
+  <span class="kw">EXPORTING</span>  domname    = <span class="str">'ZDE1_FI_KOART'</span>
+  <span class="kw">TABLES</span>     values_tab = lt_koart.
+
+<span class="kw">LOOP AT</span> gt_item <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
+  <span class="cm">" shkzg 기준 차변/대변 금액 컬럼 분리</span>
+  <span class="kw">CASE</span> &lt;lfs_item&gt;-shkzg.
+    <span class="kw">WHEN</span> <span class="str">'S'</span>.
+      &lt;lfs_item&gt;-debit_amt   = &lt;lfs_item&gt;-open_amt.
+      &lt;lfs_item&gt;-debit_waers = &lt;lfs_item&gt;-hwaer.
+    <span class="kw">WHEN</span> <span class="str">'H'</span>.
+      &lt;lfs_item&gt;-credit_amt   = &lt;lfs_item&gt;-open_amt.
+      &lt;lfs_item&gt;-credit_waers = &lt;lfs_item&gt;-hwaer.
+  <span class="kw">ENDCASE</span>.
+  <span class="cm">" 계정유형 도메인 텍스트 매핑</span>
+  <span class="kw">READ TABLE</span> lt_koart <span class="kw">INTO DATA</span>(ls_koart)
+    <span class="kw">WITH KEY</span> domvalue_l = &lt;lfs_item&gt;-koart.
+  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+  &lt;lfs_item&gt;-ktext = ls_koart-ddtext.
+<span class="kw">ENDLOOP</span>.</pre></div>
+        </div>
+
+        <div id="s20" class="snippet-panel">
+          <div class="code-header">
+            <h3>KTOKS 5-그룹 2단계 Tree 계층 (ZRE1FI0004 · MAKE_HIERARCHY)</h3>
+            <p>자산/부채/자본/수익/비용 5개 KTOKS 그룹을 상위 노드로, 각 G/L 계정을 하위 노드로 구성 — shkzg 기준 계정별 차/대 금액 집계 후 add_node 삽입</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" KTOKS 5개 그룹 매핑 테이블 초기화</span>
+lt_ktoks_text = <span class="kw">VALUE #</span>(
+  ( ktoks = <span class="str">'ASST'</span> text = <span class="str">'자산'</span> )  ( ktoks = <span class="str">'LIAB'</span> text = <span class="str">'부채'</span> )
+  ( ktoks = <span class="str">'EQTY'</span> text = <span class="str">'자본'</span> )  ( ktoks = <span class="str">'REVE'</span> text = <span class="str">'수익'</span> )
+  ( ktoks = <span class="str">'EXPN'</span> text = <span class="str">'비용'</span> ) ).
+
+<span class="kw">LOOP AT</span> lt_ktoks_text <span class="kw">INTO</span> ls_ktoks_text.
+  <span class="cm">" 해당 KTOKS에 계정이 하나라도 있어야 상위 노드 생성</span>
+  <span class="kw">READ TABLE</span> lt_acct <span class="kw">INTO</span> ls_acct
+    <span class="kw">WITH KEY</span> ktoks = ls_ktoks_text-ktoks <span class="kw">BINARY SEARCH</span>.
+  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+
+  <span class="fn">PERFORM</span> add_node <span class="kw">USING</span> gs_item ls_ktoks_text-text
+                          <span class="str">''</span> lv_level_1 <span class="str">'X'</span>.   <span class="cm">" isfolder = X</span>
+
+  <span class="cm">" 하위 노드: 해당 KTOKS 내 G/L 계정 순회</span>
+  <span class="kw">LOOP AT</span> lt_acct <span class="kw">INTO</span> ls_acct <span class="kw">WHERE</span> ktoks = ls_ktoks_text-ktoks.
+    <span class="kw">CLEAR</span> gs_item.
+    <span class="cm">" 계정별 차/대 금액 집계</span>
+    <span class="kw">LOOP AT</span> lt_item <span class="kw">INTO DATA</span>(ls_item) <span class="kw">WHERE</span> hkont = ls_acct-hkont.
+      <span class="kw">CASE</span> ls_item-shkzg.
+        <span class="kw">WHEN</span> <span class="str">'S'</span>.
+          gs_item-debit_amt = gs_item-debit_amt + ls_item-wrbtr.
+          gs_item-wrbtr     = gs_item-wrbtr     + ls_item-wrbtr.
+        <span class="kw">WHEN</span> <span class="str">'H'</span>.
+          gs_item-credit_amt = gs_item-credit_amt + ls_item-wrbtr.
+          gs_item-wrbtr      = gs_item-wrbtr      - ls_item-wrbtr.
+      <span class="kw">ENDCASE</span>.
+      gs_item-debit_waers = ls_item-hwaer.  gs_item-hwaer = ls_item-hwaer.
+    <span class="kw">ENDLOOP</span>.
+    <span class="fn">PERFORM</span> add_node <span class="kw">USING</span> gs_item ls_acct-txt20
+                            lv_level_1 lv_level_2 <span class="str">' '</span>.
+  <span class="kw">ENDLOOP</span>.
+<span class="kw">ENDLOOP</span>.
+
+<span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_nodes( it_node_key = lt_expand ).
+<span class="kw">CALL METHOD</span> gcl_tree-&gt;update_calculations.
+<span class="kw">CALL METHOD</span> gcl_tree-&gt;frontend_update.</pre></div>
+        </div>
+
+        <div id="s21" class="snippet-panel">
+          <div class="code-header">
+            <h3>BS 월별 3-라인 iXML 차트 (ZRE1FI0004 · DISPLAY_CHART_MONTHLY)</h3>
+            <p>자산·부채·자본 3개 계열을 월별 누적 합산 — SAP Chart Engine에 UTF-8 XML을 직접 조립·전달하는 iXML 방식, KTOKS 필터 유무에 따라 3-라인/1-라인 분기</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 1~12월 고정 테이블 초기화</span>
+<span class="kw">DO</span> <span class="num">12</span> <span class="kw">TIMES</span>.
+  <span class="kw">CLEAR</span> ls_month.  ls_month-month = sy-index.
+  <span class="kw">IF</span> sy-index <span class="kw">LT</span> <span class="num">10</span>. <span class="kw">CONCATENATE</span> <span class="str">'0'</span> ls_month-month <span class="kw">INTO</span> ls_month-month. <span class="kw">ENDIF</span>.
+  <span class="kw">APPEND</span> ls_month <span class="kw">TO</span> lt_month.
+<span class="kw">ENDDO</span>.
+
+<span class="cm">" 전체 조회: BS 3-라인 (자산/부채/자본 shkzg 부호 반영)</span>
+<span class="kw">LOOP AT</span> gt_grid_item <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
+  lv_mm = &lt;lfs_item&gt;-budat+<span class="num">4</span>(<span class="num">2</span>).
+  <span class="kw">READ TABLE</span> gt_tree <span class="kw">INTO DATA</span>(ls_tree) <span class="kw">WITH KEY</span> hkont = &lt;lfs_item&gt;-hkont.
+  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+  <span class="kw">CHECK</span> ls_tree-ktoks <span class="kw">EQ</span> <span class="str">'ASST'</span> <span class="kw">OR</span> ls_tree-ktoks <span class="kw">EQ</span> <span class="str">'LIAB'</span> <span class="kw">OR</span> ls_tree-ktoks <span class="kw">EQ</span> <span class="str">'EQTY'</span>.
+  <span class="kw">READ TABLE</span> lt_month <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_month&gt;) <span class="kw">WITH KEY</span> month = lv_mm.
+  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+  <span class="kw">CASE</span> ls_tree-ktoks.
+    <span class="kw">WHEN</span> <span class="str">'ASST'</span>. <span class="cm">" 자산: S+ / H-</span>
+      <span class="kw">IF</span> &lt;lfs_item&gt;-shkzg = <span class="str">'S'</span>. &lt;lfs_month&gt;-asst_sum = &lt;lfs_month&gt;-asst_sum + &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>.
+      <span class="kw">ELSE</span>.                        &lt;lfs_month&gt;-asst_sum = &lt;lfs_month&gt;-asst_sum - &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>. <span class="kw">ENDIF</span>.
+    <span class="kw">WHEN</span> <span class="str">'LIAB'</span>. <span class="cm">" 부채: H+ / S-</span>
+      <span class="kw">IF</span> &lt;lfs_item&gt;-shkzg = <span class="str">'H'</span>. &lt;lfs_month&gt;-liab_sum = &lt;lfs_month&gt;-liab_sum + &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>.
+      <span class="kw">ELSE</span>.                        &lt;lfs_month&gt;-liab_sum = &lt;lfs_month&gt;-liab_sum - &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>. <span class="kw">ENDIF</span>.
+    <span class="kw">WHEN</span> <span class="str">'EQTY'</span>. <span class="cm">" 자본: H+ / S-</span>
+      <span class="kw">IF</span> &lt;lfs_item&gt;-shkzg = <span class="str">'H'</span>. &lt;lfs_month&gt;-eqty_sum = &lt;lfs_month&gt;-eqty_sum + &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>.
+      <span class="kw">ELSE</span>.                        &lt;lfs_month&gt;-eqty_sum = &lt;lfs_month&gt;-eqty_sum - &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>. <span class="kw">ENDIF</span>.
+  <span class="kw">ENDCASE</span>.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" XML 조립 (누적 합계, 3-Series: 자산·부채·자본)</span>
+<span class="kw">LOOP AT</span> lt_month <span class="kw">INTO</span> ls_month.
+  lv_acc_asst = lv_acc_asst + ls_month-asst_sum.
+  lv_acc_liab = lv_acc_liab + ls_month-liab_sum.
+  lv_acc_eqty = lv_acc_eqty + ls_month-eqty_sum.
+  lv_cat    = lv_cat    &amp;&amp; |&lt;Category&gt;{ pa_gjahr }년 { ls_month-month }월&lt;/Category&gt;|.
+  lv_s_asst = lv_s_asst &amp;&amp; |&lt;Point&gt;&lt;Value&gt;{ lv_acc_asst }&lt;/Value&gt;&lt;/Point&gt;|.
+  lv_s_liab = lv_s_liab &amp;&amp; |&lt;Point&gt;&lt;Value&gt;{ lv_acc_liab }&lt;/Value&gt;&lt;/Point&gt;|.
+  lv_s_eqty = lv_s_eqty &amp;&amp; |&lt;Point&gt;&lt;Value&gt;{ lv_acc_eqty }&lt;/Value&gt;&lt;/Point&gt;|.
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" Chart Engine에 UTF-8 변환 후 렌더링</span>
+lv_xcust = cl_abap_codepage=&gt;convert_to( source = lv_cust codepage = <span class="str">`UTF-8`</span> ).
+lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span class="str">`UTF-8`</span> ).
+<span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;set_customizing( <span class="kw">EXPORTING</span> xdata = lv_xcust ).
+<span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;set_data(        <span class="kw">EXPORTING</span> xdata = lv_xdata ).
+<span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;render.</pre></div>
         </div>
 
       </div><!-- /code-main -->
