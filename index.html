@@ -347,7 +347,7 @@
       </p>
       <div class="hero-stats">
         <div>
-          <div class="hero-stat-num">9+</div>
+          <div class="hero-stat-num">10+</div>
           <div class="hero-stat-lbl">ABAP 커스텀 프로그램</div>
         </div>
         <div>
@@ -388,6 +388,17 @@
         <div class="card-tags">
           <span class="tag hl">ALV Grid</span><span class="tag hl">TextEditor</span>
           <span class="tag">전표 밸런스 검증</span><span class="tag">Number Range</span><span class="tag">F4 Value Help</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="card-type abap">ABAP</span>
+        <h3>전표 반제 처리</h3>
+        <div class="card-id">ZRE1FI0009</div>
+        <p>AR/AP 라디오버튼에 따라 매출채권·매입채무 전표를 조회하는 반제 프로그램. 입출금 내역(zte1fi0009)과 전표를 4-테이블 JOIN으로 연결, 입출금액 vs 미결금액 비교로 완전반제(C)/부분반제(P) 자동 결정. AR 반제 시 청구문서 상태 동기화 포함.</p>
+        <div class="card-tags">
+          <span class="tag hl">반제(Clearing)</span><span class="tag hl">AR/AP</span>
+          <span class="tag">동적 FCAT</span><span class="tag">미결금액 차감</span><span class="tag">청구문서 연동</span>
         </div>
       </div>
 
@@ -651,6 +662,16 @@
         </button>
         <button class="snippet-btn" onclick="showSnippet('s18', this)">
           <span class="stype abap">ABAP</span>SVG 차트 HTML 생성
+        </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0009</div>
+        <button class="snippet-btn" onclick="showSnippet('s28', this)">
+          <span class="stype abap">ABAP</span>AR/AP 동적 FCAT 분기
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s29', this)">
+          <span class="stype abap">ABAP</span>반제 내역 4-테이블 JOIN+GROUP BY
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s30', this)">
+          <span class="stype abap">ABAP</span>반제 처리 (미결금액 차감+전표 생성)
         </button>
         <div class="code-sidebar-label" style="margin-top:16px;">ZRE1FI0007</div>
         <button class="snippet-btn" onclick="showSnippet('s22', this)">
@@ -1455,6 +1476,164 @@ ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
   <span class="kw">IMPORTING</span>  assigned_url = lv_url
   <span class="kw">CHANGING</span>   data_table   = lt_html.
 <span class="kw">CALL METHOD</span> gcl_chart_html-&gt;show_url( <span class="kw">EXPORTING</span> url = lv_url ).</pre></div>
+        </div>
+
+        <div id="s28" class="snippet-panel">
+          <div class="code-header">
+            <h3>AR/AP 라디오버튼 동적 FCAT 분기 (ZRE1FI0009 · SET_FCAT_LAYOUT)</h3>
+            <p>매출채권(AR·DR)/매입채무(AP·KR) 라디오버튼에 따라 거래처 참조 테이블을 동적으로 분기 — 동일 컬럼(PARTNER_NO/COMP_NAME)이지만 ref_table이 SD·MM 테이블로 달라짐</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 고정 헤더 FCAT 등록 (상태 아이콘·전표번호·일자·전표유형 공통)</span>
+<span class="fn">PERFORM</span> set_fcat_top <span class="kw">USING</span>:
+  <span class="str">'X'</span> <span class="str">'ICON'</span>   <span class="str">'상태'</span>     <span class="str">''</span>           <span class="str">''</span> <span class="num">4</span>,
+  <span class="str">'X'</span> <span class="str">'BELNR'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="num">15</span>,
+  <span class="str">' '</span> <span class="str">'BLDAT'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="num">15</span>,
+  <span class="str">' '</span> <span class="str">'BUDAT'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="num">15</span>,
+  <span class="str">' '</span> <span class="str">'BLART'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0002'</span> <span class="str">''</span> <span class="num">10</span>,
+  <span class="str">' '</span> <span class="str">'LTEXT'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0002'</span> <span class="str">''</span> <span class="num">10</span>.
+
+<span class="cm">" AR/AP 라디오버튼에 따라 거래처 ref_table 동적 분기</span>
+<span class="kw">CASE</span> abap_true.
+  <span class="kw">WHEN</span> pa_ar.  <span class="cm">" 매출채권 — 고객 마스터(SD)</span>
+    <span class="fn">PERFORM</span> set_fcat_top <span class="kw">USING</span>:
+    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span> <span class="str">''</span> <span class="str">'ZTE1SD0001'</span> <span class="str">''</span>      <span class="num">15</span>,
+    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>  <span class="str">''</span> <span class="str">'ZTE1CM0004'</span> <span class="str">''</span>      <span class="num">18</span>.
+  <span class="kw">WHEN</span> pa_ap.  <span class="cm">" 매입채무 — 공급업체 마스터(MM)</span>
+    <span class="fn">PERFORM</span> set_fcat_top <span class="kw">USING</span>:
+    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span> <span class="str">''</span> <span class="str">'ZTE1MM0010'</span> <span class="str">'LIFNR'</span> <span class="num">15</span>,
+    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>  <span class="str">''</span> <span class="str">'ZTE1CM0004'</span> <span class="str">''</span>      <span class="num">18</span>.
+<span class="kw">ENDCASE</span>.
+
+<span class="cm">" 하단 아이템 FCAT — 차대변 통화키 자동 연결 (cfieldname)</span>
+<span class="fn">PERFORM</span> set_fcat_item <span class="kw">USING</span>:
+  <span class="str">'X'</span> <span class="str">'BUZEI'</span>        <span class="str">'라인번호'</span>       <span class="str">'ZTE1FI0006'</span> <span class="str">''</span>          <span class="num">6</span>,
+  <span class="str">' '</span> <span class="str">'DEBIT_AMT'</span>    <span class="str">'차변 미결금액'</span>  <span class="str">'ZTE1FI0006'</span> <span class="str">'OPEN_AMT'</span>  <span class="num">10</span>,
+  <span class="str">' '</span> <span class="str">'DEBIT_WAERS'</span>  <span class="str">'통화'</span>           <span class="str">'ZTE1FI0006'</span> <span class="str">''</span>          <span class="num">10</span>,
+  <span class="str">' '</span> <span class="str">'CREDIT_AMT'</span>   <span class="str">'대변 미결금액'</span>  <span class="str">'ZTE1FI0006'</span> <span class="str">'OPEN_AMT'</span>  <span class="num">10</span>,
+  <span class="str">' '</span> <span class="str">'CREDIT_WAERS'</span> <span class="str">'통화'</span>           <span class="str">'ZTE1FI0006'</span> <span class="str">''</span>          <span class="num">10</span>.
+
+<span class="cm">" 입출금 내역 FCAT — 원전표금액 합산용 cfieldname 연결</span>
+<span class="fn">PERFORM</span> set_fcat_clearing <span class="kw">USING</span>:
+  <span class="str">'X'</span> <span class="str">'REF_BELNR'</span>    <span class="str">'기존 전표 번호'</span> <span class="str">'ZTE1FI0009'</span> <span class="str">''</span>        <span class="num">10</span>,
+  <span class="str">' '</span> <span class="str">'WRBTR'</span>        <span class="str">'입출금금액'</span>     <span class="str">'ZTE1FI0009'</span> <span class="str">''</span>        <span class="num">10</span>,
+  <span class="str">' '</span> <span class="str">'OG_WRBTR'</span>     <span class="str">'원전표 금액'</span>    <span class="str">'ZTE1FI0005'</span> <span class="str">'WRBTR'</span>   <span class="num">10</span>,
+  <span class="str">' '</span> <span class="str">'CLEAR_STATUS'</span> <span class="str">'반제상태'</span>       <span class="str">'ZTE1FI0009'</span> <span class="str">''</span>        <span class="num">10</span>.</pre></div>
+        </div>
+
+        <div id="s29" class="snippet-panel">
+          <div class="code-header">
+            <h3>반제 내역 4-테이블 JOIN + GROUP BY SUM (ZRE1FI0009 · GET_CLEARING_DATA)</h3>
+            <p>입출금 내역(zte1fi0009)·전표헤더·전표명세·계좌마스터를 4-테이블 JOIN — 명세의 차변(shkzg=S) SUM으로 원전표 금액 집계, 반제상태 도메인 텍스트 후처리</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 4-테이블 JOIN: 입출금내역 + 전표헤더 + 전표명세(차변 SUM) + 계좌마스터</span>
+<span class="kw">SELECT</span> a~bukrs  a~gjahr  a~ref_belnr  a~budat   a~wrbtr
+       a~open_amt <span class="kw">AS</span> open_amt   a~waers  a~augdt  a~tx_seq
+       b~clear_status
+       <span class="fn">SUM</span>( c~wrbtr ) <span class="kw">AS</span> og_wrbtr   <span class="cm">" 원전표 차변 합산</span>
+       <span class="fn">MAX</span>( c~waers ) <span class="kw">AS</span> og_waers
+       d~bank_no d~bank_name
+  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> gt_clearing
+  <span class="kw">FROM</span> zte1fi0009 <span class="kw">AS</span> a
+ <span class="kw">INNER JOIN</span> zte1fi0005 <span class="kw">AS</span> b
+    <span class="kw">ON</span>  a~bukrs     <span class="kw">EQ</span> b~bukrs
+   <span class="kw">AND</span> a~gjahr     <span class="kw">EQ</span> b~gjahr
+   <span class="kw">AND</span> a~ref_belnr <span class="kw">EQ</span> b~belnr
+ <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> c
+    <span class="kw">ON</span>  b~bukrs <span class="kw">EQ</span> c~bukrs
+   <span class="kw">AND</span> b~gjahr <span class="kw">EQ</span> c~gjahr
+   <span class="kw">AND</span> b~belnr <span class="kw">EQ</span> c~belnr
+   <span class="kw">AND</span> c~shkzg <span class="kw">EQ</span> <span class="str">'S'</span>   <span class="cm">" 차변만 집계</span>
+ <span class="kw">INNER JOIN</span> zte1fi0008 <span class="kw">AS</span> d
+    <span class="kw">ON</span>  a~hkont <span class="kw">EQ</span> d~hkont
+   <span class="kw">AND</span> a~waers  <span class="kw">EQ</span> d~waers
+ <span class="kw">WHERE</span> a~bukrs     <span class="kw">IN</span> lr_bukrs
+   <span class="kw">AND</span> a~gjahr     <span class="kw">IN</span> lr_gjahr
+   <span class="kw">AND</span> a~ref_belnr <span class="kw">IN</span> lr_belnr
+   <span class="kw">AND</span> a~loekz     <span class="kw">EQ</span> space
+ <span class="kw">GROUP BY</span> a~bukrs a~gjahr a~ref_belnr a~budat a~wrbtr a~open_amt
+          a~waers a~augdt a~tx_seq b~clear_status d~bank_no d~bank_name
+ <span class="kw">ORDER BY</span> a~ref_belnr a~tx_seq <span class="kw">DESCENDING</span>.
+
+<span class="cm">" 도메인 텍스트 후처리 (ZDE1_FI_CLEAR_STATUS → clear_status_txt)</span>
+<span class="kw">CALL FUNCTION</span> <span class="str">'GET_DOMAIN_VALUES'</span>
+  <span class="kw">EXPORTING</span>  domname    = <span class="str">'ZDE1_FI_CLEAR_STATUS'</span>
+  <span class="kw">TABLES</span>     values_tab = lt_clearing_status.
+
+<span class="kw">LOOP AT</span> gt_clearing <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_clearing&gt;).
+  <span class="kw">READ TABLE</span> lt_clearing_status <span class="kw">INTO DATA</span>(ls_status)
+    <span class="kw">WITH KEY</span> domvalue_l = &lt;lfs_clearing&gt;-clear_status.
+  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+  &lt;lfs_clearing&gt;-clear_status_txt = ls_status-ddtext.
+<span class="kw">ENDLOOP</span>.</pre></div>
+        </div>
+
+        <div id="s30" class="snippet-panel">
+          <div class="code-header">
+            <h3>반제 처리 · 미결금액 차감 + 반제전표 생성 (ZRE1FI0009 · DO_CLEARING)</h3>
+            <p>입출금 금액과 미결금액 비교로 완전반제(C)/부분반제(P) 결정 — 전표 아이템·헤더 UPDATE 후 채번, 반제전표(ZR) INSERT, AR일 때 청구문서 상태도 동기화, COMMIT AND WAIT</p>
+          </div>
+          <div class="code-block"><pre><span class="cm">" 미결금액 조회 후 입출금액 비교 → 반제 상태 결정</span>
+<span class="kw">SELECT SINGLE</span> open_amt <span class="kw">INTO CORRESPONDING FIELDS OF</span> gs_item
+  <span class="kw">FROM</span> zte1fi0006 <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> ps_header-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> ps_header-gjahr
+                        <span class="kw">AND</span> belnr <span class="kw">EQ</span> ps_header-belnr <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
+
+lv_clear_status = <span class="kw">COND #</span>( <span class="kw">WHEN</span> ps_clearing-wrbtr <span class="kw">GE</span> gs_item-open_amt
+                           <span class="kw">THEN</span> <span class="str">'C'</span>  <span class="cm">" 완전반제</span>
+                           <span class="kw">ELSE</span> <span class="str">'P'</span> ).  <span class="cm">" 부분반제</span>
+
+<span class="cm">" 미결금액 차감</span>
+<span class="kw">IF</span> lv_clear_status <span class="kw">EQ</span> <span class="str">'C'</span>.
+  gs_item-open_amt  = <span class="num">0</span>.
+  gs_item-close_amt = lv_open_amt.
+<span class="kw">ELSE</span>.
+  gs_item-open_amt  = lv_open_amt - ps_clearing-wrbtr.
+  gs_item-close_amt = ps_clearing-wrbtr.
+<span class="kw">ENDIF</span>.
+
+<span class="cm">" 전표 아이템 UPDATE (미결금액·반제일자)</span>
+<span class="kw">UPDATE</span> zte1fi0006
+   <span class="kw">SET</span> augdt = gs_item-augdt  open_amt  = gs_item-open_amt
+       augbl = gs_item-augbl  close_amt = gs_item-close_amt
+       aedat = sy-datum  aezet = sy-uzeit  aenam = sy-uname
+ <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> ps_header-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> ps_header-gjahr
+   <span class="kw">AND</span> belnr <span class="kw">EQ</span> ps_header-belnr.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" 전표 헤더 UPDATE (반제상태)</span>
+<span class="kw">UPDATE</span> zte1fi0005
+   <span class="kw">SET</span> clear_status = lv_clear_status
+       aedat = sy-datum  aezet = sy-uzeit  aenam = sy-uname
+ <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> ps_header-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> ps_header-gjahr
+   <span class="kw">AND</span> belnr <span class="kw">EQ</span> ps_header-belnr.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" AR 전용 — 청구문서 상태 동기화</span>
+<span class="kw">IF</span> pa_ar <span class="kw">EQ</span> abap_true.
+  <span class="kw">UPDATE</span> zte1sd0012 <span class="kw">SET</span> billing_status = <span class="str">'C'</span>
+   <span class="kw">WHERE</span> ref_fi_belnr <span class="kw">EQ</span> ps_header-belnr.
+  <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">ENDIF</span>.
+
+<span class="cm">" 채번 후 반제전표(ZR) 헤더+아이템 INSERT</span>
+<span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
+  <span class="kw">EXPORTING</span> nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
+  <span class="kw">IMPORTING</span> number      = lv_belnr.
+
+ls_header_insert-belnr  = lv_belnr.  ls_header_insert-blart = <span class="str">'ZR'</span>.
+ls_header_insert-status = <span class="str">'D'</span>.       ls_header_insert-clear_status = <span class="str">'C'</span>.
+<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_header_insert.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_insert.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+
+<span class="cm">" 통장 입출금 내역 반제 상태 UPDATE → COMMIT AND WAIT</span>
+<span class="kw">UPDATE</span> zte1fi0009 <span class="kw">SET</span> clear_status = lv_clear_status  augbl = lv_belnr
+                       aedat = sy-datum  aezet = sy-uzeit  aenam = sy-uname
+ <span class="kw">WHERE</span> bukrs  <span class="kw">EQ</span> ps_header-bukrs <span class="kw">AND</span> gjahr  <span class="kw">EQ</span> ps_header-gjahr
+   <span class="kw">AND</span> tx_seq <span class="kw">EQ</span> ps_clearing-tx_seq.
+<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">RETURN</span>. <span class="kw">ENDIF</span>.
+<span class="kw">COMMIT WORK AND WAIT</span>.</pre></div>
         </div>
 
         <div id="s22" class="snippet-panel">
