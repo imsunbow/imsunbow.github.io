@@ -548,13 +548,13 @@
       <div class="code-sidebar">
         <div class="code-sidebar-label">ABAP</div>
         <button class="snippet-btn active" onclick="showSnippet('s1', this)">
-          <span class="stype abap">ABAP</span>전표 밸런스 검증
+          <span class="stype abap">ABAP</span>전기 키 유효성 검증
         </button>
         <button class="snippet-btn" onclick="showSnippet('s2', this)">
-          <span class="stype abap">ABAP</span>결재 상태 처리
+          <span class="stype abap">ABAP</span>차대변 잔액 계산
         </button>
         <button class="snippet-btn" onclick="showSnippet('s3', this)">
-          <span class="stype abap">ABAP</span>감가상각 계산
+          <span class="stype abap">ABAP</span>DB 저장 / COMMIT
         </button>
         <div class="code-sidebar-label" style="margin-top:16px;">Fiori / UI5</div>
         <button class="snippet-btn" onclick="showSnippet('s4', this)">
@@ -573,110 +573,146 @@
 
         <div id="s1" class="snippet-panel active">
           <div class="code-header">
-            <h3>전표 밸런스 검증 (ZE1FI0001)</h3>
-            <p>임시전표 저장 전 차변/대변 합계가 일치하는지 검증하는 로직</p>
+            <h3>전기 키 유효성 검증 (ZE1FI0001 · ADD_STATE_LINE)</h3>
+            <p>전표 유형(blart)별로 허용되는 전기 키(bschl)를 검증하고, G/L 계정과목 첫 자리로 계정 분류까지 체크</p>
           </div>
-          <div class="code-block"><pre><span class="cm">" 전표 아이템 내역에서 차변/대변 합계 계산</span>
-<span class="kw">DATA</span>: lv_debit  <span class="kw">TYPE</span> <span class="cls">bseg-dmbtr</span>,
-      lv_credit <span class="kw">TYPE</span> <span class="cls">bseg-dmbtr</span>.
+          <div class="code-block"><pre><span class="cm">" 전표유형별 전기 키 유효성 검증</span>
+<span class="kw">CASE</span> gs_state_header-blart.
+  <span class="kw">WHEN</span> <span class="str">'SA'</span>.
+    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'40'</span>
+    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'50'</span>.
+      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'일반전표(SA)는 전기 키 40, 50만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+      <span class="kw">RETURN</span>.
+    <span class="kw">ENDIF</span>.
+  <span class="kw">WHEN</span> <span class="str">'DR'</span>.
+    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'05'</span>
+    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'40'</span>
+    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'50'</span>.
+      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'외상매출전표(DR)는 전기 키 05, 40, 50만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+      <span class="kw">RETURN</span>.
+    <span class="kw">ENDIF</span>.
+  <span class="kw">WHEN</span> <span class="str">'KR'</span>.
+    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'25'</span>
+    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'31'</span>
+    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'40'</span>
+    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'50'</span>.
+      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'외상매입전표(KR)는 전기 키 25, 31, 40, 50만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+      <span class="kw">RETURN</span>.
+    <span class="kw">ENDIF</span>.
+  <span class="kw">WHEN</span> <span class="str">'AA'</span>.
+    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'70'</span>
+    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'75'</span>.
+      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'고정자산전표(AA)는 전기 키 70, 75만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+      <span class="kw">RETURN</span>.
+    <span class="kw">ENDIF</span>.
+<span class="kw">ENDCASE</span>.
 
-<span class="kw">LOOP AT</span> gt_item <span class="kw">INTO</span> gs_item.
-  <span class="kw">CASE</span> gs_item-shkzg.
-    <span class="kw">WHEN</span> <span class="str">'S'</span>.  <span class="cm">" 차변 (Soll)</span>
-      lv_debit = lv_debit + gs_item-dmbtr.
-    <span class="kw">WHEN</span> <span class="str">'H'</span>.  <span class="cm">" 대변 (Haben)</span>
-      lv_credit = lv_credit + gs_item-dmbtr.
-  <span class="kw">ENDCASE</span>.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" 차대변 불일치 시 저장 차단</span>
-<span class="kw">IF</span> lv_debit <span class="op">NE</span> lv_credit.
-  <span class="fn">MESSAGE</span> <span class="str">'차변과 대변 합계가 일치하지 않습니다.'</span>
-    <span class="kw">TYPE</span> <span class="str">'E'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 밸런스 통과 → 번호 범위 채번 후 DB 저장</span>
-<span class="fn">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
-  <span class="kw">EXPORTING</span>
-    nr_range_nr = <span class="str">'01'</span>
-    object      = <span class="str">'ZFI_TEMP'</span>
-  <span class="kw">IMPORTING</span>
-    number      = lv_docno.
-
-gs_header-belnr = lv_docno.
-<span class="fn">INSERT</span> zfi_temp_h <span class="kw">FROM</span> gs_header.
-<span class="fn">INSERT</span> zfi_temp_i <span class="kw">FROM TABLE</span> gt_item.</pre></div>
+<span class="cm">" 전기 키에 따른 G/L 계정 분류 검증 (계정번호 첫 자리로 판단)</span>
+<span class="kw">CASE</span> gs_state_item-bschl.
+  <span class="kw">WHEN</span> <span class="str">'05'</span>.
+    <span class="kw">IF</span> gs_state_item-hkont(1) <span class="op">NE</span> <span class="str">'1'</span>.
+      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'전기 키 05는 자산(매출채권) 계정만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+      <span class="kw">RETURN</span>.
+    <span class="kw">ENDIF</span>.
+  <span class="kw">WHEN</span> <span class="str">'25'</span> <span class="kw">OR</span> <span class="str">'31'</span>.
+    <span class="kw">IF</span> gs_state_item-hkont(1) <span class="op">NE</span> <span class="str">'2'</span>.
+      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'전기 키 25/31은 부채 계정만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+      <span class="kw">RETURN</span>.
+    <span class="kw">ENDIF</span>.
+  <span class="kw">WHEN</span> <span class="str">'70'</span> <span class="kw">OR</span> <span class="str">'75'</span>.
+    <span class="kw">IF</span> gs_state_item-hkont(2) <span class="op">NE</span> <span class="str">'13'</span>.
+      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'전기 키 70/75는 고정자산 계정만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+      <span class="kw">RETURN</span>.
+    <span class="kw">ENDIF</span>.
+<span class="kw">ENDCASE</span>.</pre></div>
         </div>
 
         <div id="s2" class="snippet-panel">
           <div class="code-header">
-            <h3>결재 상태 처리 (ZRE1FI0008)</h3>
-            <p>임시전표 승인/반려 시 상태값을 업데이트하고 정식 전기로 연계하는 로직</p>
+            <h3>차대변 잔액 계산 (ZE1FI0001 · CHECK_BALANCE)</h3>
+            <p>전기 키(bschl)로 차변/대변을 분리해 합계를 계산하고, 차액이 0인지 여부를 LED 아이콘으로 표시</p>
           </div>
-          <div class="code-block"><pre><span class="cm">" 결재 액션에 따라 전표 상태 분기</span>
-<span class="kw">CASE</span> lv_action.
-  <span class="kw">WHEN</span> <span class="str">'APPROVE'</span>.
-    <span class="cm">" 승인: 상태를 P(완료)로 변경 후 정식 전기 연계</span>
-    <span class="kw">UPDATE</span> zfi_temp_h
-      <span class="kw">SET</span>   status = <span class="str">'P'</span>
-            approved_by   = sy-uname
-            approved_date = sy-datum
-      <span class="kw">WHERE</span> belnr = lv_belnr.
+          <div class="code-block"><pre><span class="kw">LOOP AT</span> gt_state_add <span class="kw">INTO</span> gs_state_add.
 
-    <span class="cm">" BAPI로 FI 정식 전표 생성</span>
-    <span class="fn">CALL FUNCTION</span> <span class="str">'BAPI_ACC_DOCUMENT_POST'</span>
-      <span class="kw">EXPORTING</span>
-        documentheader = ls_header
-      <span class="kw">TABLES</span>
-        accountgl      = lt_accountgl
-        currencyamount = lt_curramt
-        return         = lt_return.
+  lv_tabix = sy-tabix.
 
-    <span class="fn">CALL FUNCTION</span> <span class="str">'BAPI_TRANSACTION_COMMIT'</span>
-      <span class="kw">EXPORTING</span> wait = <span class="str">'X'</span>.
+  <span class="cm">" 전기 키에 대해 차대변 분리 및 계정 분류(koart) 할당</span>
+  <span class="kw">CASE</span> gs_state_add-bschl.
+    <span class="kw">WHEN</span> <span class="str">'40'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'S'</span>.
+    <span class="kw">WHEN</span> <span class="str">'50'</span>. gv_credit_sum += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'H'</span>. gs_state_add-koart = <span class="str">'S'</span>.
+    <span class="kw">WHEN</span> <span class="str">'05'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'D'</span>.
+    <span class="kw">WHEN</span> <span class="str">'25'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'K'</span>.
+    <span class="kw">WHEN</span> <span class="str">'31'</span>. gv_credit_sum += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'H'</span>. gs_state_add-koart = <span class="str">'K'</span>.
+    <span class="kw">WHEN</span> <span class="str">'70'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'A'</span>.
+    <span class="kw">WHEN</span> <span class="str">'75'</span>. gv_credit_sum += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'H'</span>. gs_state_add-koart = <span class="str">'A'</span>.
+  <span class="kw">ENDCASE</span>.
 
-  <span class="kw">WHEN</span> <span class="str">'REJECT'</span>.
-    <span class="cm">" 반려: 상태를 J로 변경, 반려 사유 저장</span>
-    <span class="kw">UPDATE</span> zfi_temp_h
-      <span class="kw">SET</span>   status      = <span class="str">'J'</span>
-            reject_note = lv_reason
-            reject_date = sy-datum
-      <span class="kw">WHERE</span> belnr = lv_belnr.
-<span class="kw">ENDCASE</span>.</pre></div>
+  <span class="kw">MODIFY</span> gt_state_add <span class="kw">FROM</span> gs_state_add <span class="kw">INDEX</span> lv_tabix
+    <span class="kw">TRANSPORTING</span> shkzg koart.
+
+<span class="kw">ENDLOOP</span>.
+
+<span class="cm">" 차대 모두 0인 경우 아이콘 처리 건너뜀</span>
+<span class="kw">CHECK</span> gv_debit_sum <span class="op">NE</span> <span class="num">0</span> <span class="kw">AND</span> gv_credit_sum <span class="op">NE</span> <span class="num">0</span>.
+
+gv_diff = <span class="fn">abs</span>( gv_debit_sum - gv_credit_sum ).
+
+<span class="cm">" 차액 0이면 초록 LED, 아니면 빨간 LED → 전표생성 버튼 활성/비활성 연동</span>
+gs_state_add-icon = <span class="kw">COND</span> #(
+  <span class="kw">WHEN</span> gv_diff <span class="op">EQ</span> <span class="num">0</span> <span class="kw">THEN</span> icon_led_green
+                    <span class="kw">ELSE</span> icon_led_red ).</pre></div>
         </div>
 
         <div id="s3" class="snippet-panel">
           <div class="code-header">
-            <h3>감가상각 계산 (ZE1FI0002)</h3>
-            <p>고정자산 현황에서 취득원가·상각률로 장부가액을 실시간 계산하는 로직</p>
+            <h3>DB 저장 / COMMIT-ROLLBACK (ZE1FI0001 · SAVE_DATA)</h3>
+            <p>헤더·아이템을 각각 INSERT하고 하나라도 실패하면 ROLLBACK, 모두 성공하면 COMMIT WAIT 처리</p>
           </div>
-          <div class="code-block"><pre><span class="cm">" 자산별 감가상각 누계액 및 장부가액 계산</span>
-<span class="kw">LOOP AT</span> gt_asset <span class="kw">INTO</span> gs_asset.
+          <div class="code-block"><pre><span class="kw">MOVE-CORRESPONDING</span> gs_state_header <span class="kw">TO</span> ls_save_header.
 
-  <span class="cm">" 경과 연수 = 현재 회계연도 - 취득 연도</span>
-  lv_years = sy-datum+0(4) - gs_asset-acquisition_date+0(4).
+ls_save_header-belnr        = gv_belnr.
+ls_save_header-status       = <span class="str">'D'</span>.        <span class="cm">" 결재 대기</span>
+ls_save_header-hwaer        = <span class="str">'KRW'</span>.
+ls_save_header-waers        = <span class="str">'KRW'</span>.
+ls_save_header-clear_status = <span class="str">'N'</span>.       <span class="cm">" 미결</span>
+ls_save_header-header_txt   = gv_header_text.
+ls_save_header-erdat        = sy-datum.
+ls_save_header-erzet        = sy-uzeit.
+ls_save_header-ernam        = sy-uname.
 
-  <span class="cm">" 정액법 상각: 취득원가 / 내용 연수</span>
-  <span class="kw">IF</span> gs_asset-useful_life <span class="op">GT</span> <span class="num">0</span>.
-    lv_annual_dep = gs_asset-acquisition_cost
-                    / gs_asset-useful_life.
+<span class="kw">MOVE-CORRESPONDING</span> gt_state_add <span class="kw">TO</span> lt_save_item.
 
-    lv_accum_dep  = lv_annual_dep * lv_years.
-
-    <span class="cm">" 누계액이 취득원가를 초과하지 않도록 제한</span>
-    <span class="kw">IF</span> lv_accum_dep <span class="op">GT</span> gs_asset-acquisition_cost.
-      lv_accum_dep = gs_asset-acquisition_cost.
-    <span class="kw">ENDIF</span>.
+<span class="kw">LOOP AT</span> lt_save_item <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
+  &lt;lfs_item&gt;-belnr = gv_belnr.
+  &lt;lfs_item&gt;-ktopl = <span class="str">'CAKR'</span>.
+  &lt;lfs_item&gt;-erdat = sy-datum.
+  &lt;lfs_item&gt;-erzet = sy-uzeit.
+  &lt;lfs_item&gt;-ernam = sy-uname.
+  <span class="kw">IF</span> &lt;lfs_item&gt;-waers <span class="op">EQ</span> <span class="str">'KRW'</span>.
+    &lt;lfs_item&gt;-wrbtr = &lt;lfs_item&gt;-open_amt.
+    &lt;lfs_item&gt;-dmbtr = &lt;lfs_item&gt;-open_amt.
   <span class="kw">ENDIF</span>.
+<span class="kw">ENDLOOP</span>.
 
-  <span class="cm">" 장부가액 = 취득원가 - 감가상각 누계액</span>
-  gs_asset-book_value = gs_asset-acquisition_cost
-                        - lv_accum_dep.
-  gs_asset-accum_dep  = lv_accum_dep.
+<span class="cm">" 헤더 INSERT → 실패 시 즉시 ROLLBACK</span>
+<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_save_header.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
+  <span class="kw">ROLLBACK WORK</span>.
+  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'헤더 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+  <span class="kw">RETURN</span>.
+<span class="kw">ENDIF</span>.
 
-  <span class="fn">MODIFY</span> gt_asset <span class="kw">FROM</span> gs_asset.
-<span class="kw">ENDLOOP</span>.</pre></div>
+<span class="cm">" 아이템 INSERT → 실패 시 헤더까지 함께 ROLLBACK</span>
+<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_save_item.
+<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
+  <span class="kw">ROLLBACK WORK</span>.
+  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'아이템 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
+  <span class="kw">RETURN</span>.
+<span class="kw">ENDIF</span>.
+
+<span class="cm">" 둘 다 성공했을 때만 COMMIT (WAIT: 완료 보장)</span>
+<span class="kw">COMMIT WORK AND WAIT</span>.
+<span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'헤더 및 아이템 항목들이 저장 완료되었습니다.'</span>.</pre></div>
         </div>
 
         <div id="s4" class="snippet-panel">
