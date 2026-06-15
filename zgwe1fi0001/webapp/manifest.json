@@ -1,7 +1,7 @@
 {
   "_version": "1.60.0",
   "sap.app": {
-    "id": "uiux.test2.uiuxtest2",
+    "id": "zgwe1fi0001.zgwe1fi0001",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -12,8 +12,19 @@
     "resources": "resources.json",
     "sourceTemplate": {
       "id": "@sap/generator-fiori:basic",
-      "version": "1.19.3",
-      "toolsId": "5b398942-5f12-44cd-8795-24f90280506f"
+      "version": "1.20.2",
+      "toolsId": "f8a5c17f-0644-4aee-893a-43b985614b3c"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata/sap/ZGWE1FI0001_SRV/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/mainService/metadata.xml",
+          "odataVersion": "2.0"
+        }
+      }
     }
   },
   "sap.ui": {
@@ -35,7 +46,7 @@
   "sap.ui5": {
     "flexEnabled": false,
     "dependencies": {
-      "minUI5Version": "1.120.39",
+      "minUI5Version": "1.120.23",
       "libs": {
         "sap.m": {},
         "sap.ui.core": {}
@@ -49,8 +60,13 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "uiux.test2.uiuxtest2.i18n.i18n"
+          "bundleName": "zgwe1fi0001.zgwe1fi0001.i18n.i18n"
         }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {}
       }
     },
     "resources": {
@@ -68,54 +84,28 @@
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
-        "path": "uiux.test2.uiuxtest2.view",
+        "path": "zgwe1fi0001.zgwe1fi0001.view",
         "async": true,
-        "viewPath": "uiux.test2.uiuxtest2.view"
+        "viewPath": "zgwe1fi0001.zgwe1fi0001.view"
       },
-        "routes": [       
+      "routes": [
         {
-          "name": "MainView",
-          "pattern": "",
+          "name": "RouteMainView",
+          "pattern": ":?query:",
           "target": [
             "TargetMainView"
           ]
-        },
-        {
-          "name": "LeftView",
-          "pattern": "LeftPattern",
-          "target": [
-            "GoLeft"
-          ]
-        },
-        {
-          "name": "RightView",
-          "pattern": "RightPattern",
-          "target": [
-            "GoRight"
-          ]
         }
       ],
-
       "targets": {
         "TargetMainView": {
           "id": "MainView",
           "name": "MainView"
-        },
-        "GoLeft": {
-          "id": "LeftView",
-          "name": "LeftView"
-        },
-        "GoRight": {
-          "id": "RightView",
-          "name": "RightView"
         }
-
-    }
-
-  },
-      
+      }
+    },
     "rootView": {
-      "viewName": "uiux.test2.uiuxtest2.view.App",
+      "viewName": "zgwe1fi0001.zgwe1fi0001.view.App",
       "type": "XML",
       "id": "App",
       "async": true
