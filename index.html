@@ -579,6 +579,33 @@
       overflow-y: auto;
       padding: 12px 0;
     }
+    /* ── LIGHTBOX ── */
+    .lightbox-trigger {
+      display: block; cursor: zoom-in;
+      border-radius: 8px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,.15);
+      transition: opacity .15s;
+    }
+    .lightbox-trigger:hover { opacity: .85; }
+    .lightbox-trigger img { width: 100%; height: auto; display: block; }
+    .lightbox-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(0,0,0,.85);
+      backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+      padding: 24px;
+      cursor: zoom-out;
+    }
+    .lightbox-overlay.open { display: flex; }
+    .lightbox-overlay img {
+      max-width: 100%; max-height: 90vh;
+      border-radius: 8px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.6);
+      animation: lbFade .2s ease;
+    }
+    @keyframes lbFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+
     /* ── BC SECTION ── */
     .bc-wrapper {
       margin-bottom: 40px;
@@ -961,6 +988,14 @@
         </div>
         <span class="bc-project-theme">수익성 분석을 적용한 통합 재무 및 공급망 관리 서비스</span>
       </div>
+      <!-- 조직도 -->
+      <div style="padding: 20px 28px; border-bottom: 1px solid var(--gray200); background: var(--gray50);">
+        <div style="font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--blue); margin-bottom:10px;">Organization</div>
+        <a class="lightbox-trigger" onclick="openLightbox('images/organization/Cyclone-조직도.png'); return false;" href="#">
+          <img src="images/organization/Cyclone-조직도.png" alt="Cyclone 조직도"/>
+        </a>
+      </div>
+
       <div class="bc-body">
         <div class="bc-model">
           <div class="bc-model-title">핵심 사업 모델</div>
@@ -1251,6 +1286,11 @@
 
 
 <!-- ══════════════ CODE MODAL ══════════════ -->
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt=""/>
+</div>
+
 <div id="code-modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div class="modal-container">
     <div class="modal-header">
@@ -3052,6 +3092,17 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     thumbEl.classList.add('active');
     document.getElementById('gallery-' + galleryId + '-caption').textContent = caption;
   }
+
+  function openLightbox(src) {
+    document.getElementById('lightbox-img').src = src;
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
   function showProg(id, btn) {
     document.querySelectorAll('.prog-panel').forEach(p => p.style.display = 'none');
