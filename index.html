@@ -599,10 +599,12 @@
     }
     .lightbox-overlay.open { display: flex; }
     .lightbox-overlay img {
-      max-width: 100%; max-height: 90vh;
+      max-width: 90vw; max-height: 85vh;
       border-radius: 8px;
       box-shadow: 0 24px 80px rgba(0,0,0,.6);
       animation: lbFade .2s ease;
+      transform-origin: center center;
+      user-select: none;
     }
     @keyframes lbFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
 
@@ -982,6 +984,9 @@
       <a class="lightbox-trigger" onclick="openLightbox('images/organization/Cyclone-조직도.png'); return false;" href="#">
         <img src="images/organization/Cyclone-조직도.png" alt="Cyclone 조직도"/>
       </a>
+      <div class="narrative" style="margin-top:16px; margin-bottom:0;">
+        <p>총 <strong>7개 부서</strong>로 구성된 조직 구조를 설계했습니다. 각 부서는 <strong>Profit Center(PC)</strong> 단위로 운영되며, 그 하위에 원가 집계 단위인 <strong>Cost Center(CC)</strong>를 배치하는 계층형 구조를 적용했습니다. 이를 통해 부서별 수익성 분석과 비용 추적이 가능한 재무 체계를 구축했습니다.</p>
+      </div>
     </div>
 
     <!-- BC 섹션 -->
@@ -3095,8 +3100,18 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     document.getElementById('gallery-' + galleryId + '-caption').textContent = caption;
   }
 
+  // ── Lightbox with zoom & pan ──
+  let lbScale = 1, lbX = 0, lbY = 0, lbDragging = false, lbDragStart = {};
+  function lbApply() {
+    const img = document.getElementById('lightbox-img');
+    img.style.transform = `translate(${lbX}px,${lbY}px) scale(${lbScale})`;
+    img.style.cursor = lbScale > 1 ? (lbDragging ? 'grabbing' : 'grab') : 'zoom-out';
+  }
   function openLightbox(src) {
-    document.getElementById('lightbox-img').src = src;
+    lbScale = 1; lbX = 0; lbY = 0;
+    const img = document.getElementById('lightbox-img');
+    img.src = src;
+    img.style.transform = '';
     document.getElementById('lightbox').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -3105,6 +3120,36 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     document.body.style.overflow = '';
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+  // wheel zoom
+  document.getElementById('lightbox').addEventListener('wheel', e => {
+    e.preventDefault();
+    const delta = e.deltaY < 0 ? 1.15 : 0.87;
+    lbScale = Math.min(Math.max(lbScale * delta, 1), 8);
+    if (lbScale === 1) { lbX = 0; lbY = 0; }
+    lbApply();
+  }, { passive: false });
+
+  // drag pan
+  const lbImg = document.getElementById('lightbox-img');
+  lbImg.addEventListener('mousedown', e => {
+    if (lbScale <= 1) return;
+    e.preventDefault(); lbDragging = true;
+    lbDragStart = { x: e.clientX - lbX, y: e.clientY - lbY };
+    lbApply();
+  });
+  document.addEventListener('mousemove', e => {
+    if (!lbDragging) return;
+    lbX = e.clientX - lbDragStart.x;
+    lbY = e.clientY - lbDragStart.y;
+    lbApply();
+  });
+  document.addEventListener('mouseup', () => { lbDragging = false; lbApply(); });
+
+  // click overlay to close only if not dragging & not zoomed
+  document.getElementById('lightbox').addEventListener('click', e => {
+    if (e.target === document.getElementById('lightbox') && lbScale <= 1) closeLightbox();
+  });
 
   function showProg(id, btn) {
     document.querySelectorAll('.prog-panel').forEach(p => p.style.display = 'none');
