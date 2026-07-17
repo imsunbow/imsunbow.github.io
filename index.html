@@ -607,6 +607,19 @@
       user-select: none;
     }
     @keyframes lbFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
+    .lightbox-controls {
+      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
+      display: flex; gap: 8px; z-index: 501; cursor: default;
+    }
+    .lightbox-controls button {
+      min-width: 40px; height: 40px; padding: 0 12px;
+      border-radius: 999px; border: 1px solid rgba(255,255,255,.2);
+      background: rgba(20,20,20,.7); backdrop-filter: blur(6px);
+      color: #fff; font-size: 15px; font-weight: 600;
+      cursor: pointer; transition: background .15s, transform .1s;
+    }
+    .lightbox-controls button:hover { background: rgba(255,255,255,.15); }
+    .lightbox-controls button:active { transform: scale(.94); }
 
     /* ── BC SECTION ── */
     .bc-wrapper {
@@ -1549,6 +1562,11 @@
 <!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
   <img id="lightbox-img" src="" alt=""/>
+  <div class="lightbox-controls" onclick="event.stopPropagation()">
+    <button type="button" onclick="lbZoomBy(0.8)" aria-label="축소">−</button>
+    <button type="button" onclick="lbReset()" aria-label="원본 크기">100%</button>
+    <button type="button" onclick="lbZoomBy(1.25)" aria-label="확대">+</button>
+  </div>
 </div>
 
 <div id="code-modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
@@ -3374,14 +3392,43 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
   }
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
 
-  // wheel zoom
+  // zoom toward a given viewport point (cursor / click), keeping that point stationary
+  function lbZoomToward(clientX, clientY, factor) {
+    const img = document.getElementById('lightbox-img');
+    const rect = img.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const newScale = Math.min(Math.max(lbScale * factor, 1), 8);
+    const ratio = newScale / lbScale;
+    lbX = (clientX - cx) - (clientX - cx - lbX) * ratio;
+    lbY = (clientY - cy) - (clientY - cy - lbY) * ratio;
+    lbScale = newScale;
+    if (lbScale === 1) { lbX = 0; lbY = 0; }
+    lbApply();
+  }
+
+  // wheel zoom (zooms toward cursor position)
   document.getElementById('lightbox').addEventListener('wheel', e => {
     e.preventDefault();
     const delta = e.deltaY < 0 ? 1.15 : 0.87;
-    lbScale = Math.min(Math.max(lbScale * delta, 1), 8);
-    if (lbScale === 1) { lbX = 0; lbY = 0; }
-    lbApply();
+    lbZoomToward(e.clientX, e.clientY, delta);
   }, { passive: false });
+
+  // double-click to toggle zoom in/out at click point
+  document.getElementById('lightbox-img').addEventListener('dblclick', e => {
+    e.preventDefault();
+    if (lbScale > 1) { lbReset(); }
+    else { lbZoomToward(e.clientX, e.clientY, 2.5); }
+  });
+
+  function lbZoomBy(factor) {
+    const rect = document.getElementById('lightbox-img').getBoundingClientRect();
+    lbZoomToward(rect.left + rect.width / 2, rect.top + rect.height / 2, factor);
+  }
+  function lbReset() {
+    lbScale = 1; lbX = 0; lbY = 0;
+    lbApply();
+  }
 
   // drag pan
   const lbImg = document.getElementById('lightbox-img');
