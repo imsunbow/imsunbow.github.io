@@ -3432,7 +3432,9 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
 
   // drag pan
   const lbImg = document.getElementById('lightbox-img');
-  lbImg.addEventListener('mousedown', e => {
+  let lbDownPos = null;
+  document.getElementById('lightbox').addEventListener('mousedown', e => {
+    lbDownPos = { x: e.clientX, y: e.clientY };
     if (lbScale <= 1) return;
     e.preventDefault(); lbDragging = true;
     lbDragStart = { x: e.clientX - lbX, y: e.clientY - lbY };
@@ -3446,9 +3448,11 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
   });
   document.addEventListener('mouseup', () => { lbDragging = false; lbApply(); });
 
-  // click overlay to close only if not dragging & not zoomed
+  // click overlay to close — only for a genuine click (no drag movement), not zoomed, and not on the controls
   document.getElementById('lightbox').addEventListener('click', e => {
-    if (e.target === document.getElementById('lightbox') && lbScale <= 1) closeLightbox();
+    if (e.target.closest('.lightbox-controls')) return;
+    const movedDuringClick = lbDownPos && (Math.abs(e.clientX - lbDownPos.x) > 6 || Math.abs(e.clientY - lbDownPos.y) > 6);
+    if (e.target === document.getElementById('lightbox') && lbScale <= 1 && !movedDuringClick) closeLightbox();
   });
 
   function showProg(id, btn) {
