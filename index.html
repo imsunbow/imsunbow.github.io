@@ -438,6 +438,7 @@
     .gallery-main img {
       display: none;
       width: 100%; height: auto;
+      cursor: zoom-in;
     }
     .gallery-main img.active { display: block; }
     .gallery-caption {
@@ -3369,6 +3370,12 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
       window.scrollTo(0, 0);
     }
   }
+
+  // click any gallery's main screenshot to open it in the zoomable lightbox
+  document.addEventListener('click', e => {
+    const img = e.target.closest('.gallery-main img');
+    if (img) openLightbox(img.src);
+  });
 
   function switchGallery(galleryId, index, caption, thumbEl) {
     const gallery = document.getElementById('gallery-' + galleryId);
