@@ -589,6 +589,27 @@
     }
     .lightbox-trigger:hover { opacity: .85; }
     .lightbox-trigger img { width: 100%; height: auto; display: block; }
+    /* ── ERD TABS ── */
+    .erd-tabs {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-bottom: 12px;
+    }
+    .erd-tab-btn {
+      padding: 7px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--gray200);
+      background: var(--gray50);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: background .15s, color .15s, border-color .15s;
+    }
+    .erd-tab-btn:hover { background: var(--gray100); }
+    .erd-tab-btn.active {
+      background: var(--blue); border-color: var(--blue);
+      color: #fff;
+    }
+    .erd-panel { display: none; }
+    .erd-panel.active { display: block; }
     .lightbox-overlay {
       display: none;
       position: fixed; inset: 0; z-index: 500;
@@ -1007,6 +1028,62 @@
       </a>
       <div class="narrative" style="margin-top:16px; margin-bottom:0;">
         <p>총 <strong>7개 부서</strong>로 구성된 조직 구조를 설계했습니다. 각 부서는 <strong>Profit Center(PC)</strong> 단위로 운영되며, 그 하위에 원가 집계 단위인 <strong>Cost Center(CC)</strong>를 배치하는 계층형 구조를 적용했습니다. 이를 통해 부서별 수익성 분석과 비용 추적이 가능한 재무 체계를 구축했습니다.</p>
+      </div>
+    </div>
+
+    <!-- ERD -->
+    <div style="margin-bottom:32px;">
+      <div class="section-label">Data Model</div>
+      <div class="section-title" style="margin-bottom:12px;">ERD</div>
+      <div class="erd-tabs">
+        <button class="erd-tab-btn active" onclick="showErd('full', this)">전체</button>
+        <button class="erd-tab-btn" onclick="showErd('fi', this)">FI</button>
+        <button class="erd-tab-btn" onclick="showErd('co', this)">CO</button>
+        <button class="erd-tab-btn" onclick="showErd('mm', this)">MM</button>
+        <button class="erd-tab-btn" onclick="showErd('sd', this)">SD</button>
+        <button class="erd-tab-btn" onclick="showErd('pp', this)">PP</button>
+        <button class="erd-tab-btn" onclick="showErd('qm', this)">QM</button>
+        <button class="erd-tab-btn" onclick="showErd('cm', this)">CM</button>
+      </div>
+      <div class="erd-panel active" id="erd-full">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_full.png'); return false;" href="#">
+          <img src="images/erd/erd_full.png" alt="전체 ERD"/>
+        </a>
+      </div>
+      <div class="erd-panel" id="erd-fi">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_fi.png'); return false;" href="#">
+          <img src="images/erd/erd_fi.png" alt="FI ERD"/>
+        </a>
+      </div>
+      <div class="erd-panel" id="erd-co">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_co.png'); return false;" href="#">
+          <img src="images/erd/erd_co.png" alt="CO ERD"/>
+        </a>
+      </div>
+      <div class="erd-panel" id="erd-mm">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_mm.png'); return false;" href="#">
+          <img src="images/erd/erd_mm.png" alt="MM ERD"/>
+        </a>
+      </div>
+      <div class="erd-panel" id="erd-sd">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_sd.png'); return false;" href="#">
+          <img src="images/erd/erd_sd.png" alt="SD ERD"/>
+        </a>
+      </div>
+      <div class="erd-panel" id="erd-pp">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_pp.png'); return false;" href="#">
+          <img src="images/erd/erd_pp.png" alt="PP ERD"/>
+        </a>
+      </div>
+      <div class="erd-panel" id="erd-qm">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_qm.png'); return false;" href="#">
+          <img src="images/erd/erd_qm.png" alt="QM ERD"/>
+        </a>
+      </div>
+      <div class="erd-panel" id="erd-cm">
+        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_cm.png'); return false;" href="#">
+          <img src="images/erd/erd_cm.png" alt="CM ERD"/>
+        </a>
       </div>
     </div>
 
@@ -3627,6 +3704,13 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     const img = e.target.closest('.gallery-main img');
     if (img) openLightbox(img.src);
   });
+
+  function showErd(key, btn) {
+    document.querySelectorAll('.erd-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('erd-' + key).classList.add('active');
+    document.querySelectorAll('.erd-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
 
   function switchGallery(galleryId, index, caption, thumbEl) {
     const gallery = document.getElementById('gallery-' + galleryId);
