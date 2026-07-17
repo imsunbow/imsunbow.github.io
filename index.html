@@ -1156,6 +1156,9 @@
         <button class="prog-btn" onclick="showProg('p10', this)">
           <span class="pb-badge abap">ABAP</span>환율 자동 수집(Back Job)
         </button>
+        <button class="prog-btn" onclick="showProg('p11', this)">
+          <span class="pb-badge fiori">Fiori</span>직원 급여 관리
+        </button>
       </div>
 
       <!-- 우측 프로그램 상세 -->
@@ -1560,6 +1563,47 @@
           <button class="prog-code-btn" onclick="openCode('s10')">코드 보기 →</button>
         </div>
 
+        <div id="p11" class="prog-panel" style="display:none">
+          <div class="prog-detail-type fiori">Fiori</div>
+          <h2>직원 급여 관리 프로그램</h2>
+          <p>사원·코스트센터 데이터를 조회하여 급여를 산정·지급하는 Fiori 앱.<br/>손익센터별 VizFrame 도넛 차트로 급여 분포 시각화, 슬라이스 클릭 시 상세 팝오버.<br/>사원 CRUD 및 코스트센터별 급여 전표 생성 처리.</p>
+          <div class="prog-detail-tags">
+            <span class="tag hl">VizFrame 차트</span><span class="tag hl">사원 CRUD</span>
+            <span class="tag">OData Create/Update</span><span class="tag">동적 채번</span><span class="tag">Value Help</span>
+          </div>
+
+          <!-- 스크린샷 갤러리 -->
+          <div class="gallery" id="gallery-p11">
+            <div class="gallery-main">
+              <img src="images/p11_직원급여관리/직원 급여 관리_초기 화면.png" class="active" alt="초기 화면"/>
+              <img src="images/p11_직원급여관리/직원 급여 관리_사원 추가.png" alt="사원 추가"/>
+              <img src="images/p11_직원급여관리/직원 급여 관리_전표 생성.png" alt="전표 생성"/>
+              <img src="images/p11_직원급여관리/직원 급여 관리_ 월급 지급.png" alt="월급 지급"/>
+              <img src="images/p11_직원급여관리/직원 급여 관리_급여 전표 확인.png" alt="급여 전표 확인"/>
+            </div>
+            <div class="gallery-caption" id="gallery-p11-caption">초기 화면</div>
+            <div class="gallery-thumbs">
+              <div class="gallery-thumb active" onclick="switchGallery('p11',0,'초기 화면',this)">
+                <img src="images/p11_직원급여관리/직원 급여 관리_초기 화면.png" alt=""/>
+              </div>
+              <div class="gallery-thumb" onclick="switchGallery('p11',1,'사원 추가',this)">
+                <img src="images/p11_직원급여관리/직원 급여 관리_사원 추가.png" alt=""/>
+              </div>
+              <div class="gallery-thumb" onclick="switchGallery('p11',2,'전표 생성',this)">
+                <img src="images/p11_직원급여관리/직원 급여 관리_전표 생성.png" alt=""/>
+              </div>
+              <div class="gallery-thumb" onclick="switchGallery('p11',3,'월급 지급',this)">
+                <img src="images/p11_직원급여관리/직원 급여 관리_ 월급 지급.png" alt=""/>
+              </div>
+              <div class="gallery-thumb" onclick="switchGallery('p11',4,'급여 전표 확인',this)">
+                <img src="images/p11_직원급여관리/직원 급여 관리_급여 전표 확인.png" alt=""/>
+              </div>
+            </div>
+          </div>
+
+          <button class="prog-code-btn" onclick="openCode('s34')">코드 보기 →</button>
+        </div>
+
       </div><!-- /prog-detail -->
     </div><!-- /prog-layout -->
   </section>
@@ -1697,6 +1741,16 @@
         </button>
         <button class="snippet-btn" onclick="showSnippet('s6', this)">
           <span class="stype fiori">Fiori</span>클라이언트 필터링
+        </button>
+        <div class="code-sidebar-label" style="margin-top:16px;">직원 급여 관리</div>
+        <button class="snippet-btn" onclick="showSnippet('s34', this)">
+          <span class="stype fiori">Fiori</span>손익센터별 차트 데이터 집계
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s35', this)">
+          <span class="stype fiori">Fiori</span>사원 추가/수정 (OData Create/Update)
+        </button>
+        <button class="snippet-btn" onclick="showSnippet('s36', this)">
+          <span class="stype fiori">Fiori</span>코스트센터별 급여 전표 생성
         </button>
       </div>
 
@@ -3368,6 +3422,171 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
 <span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;set_customizing( <span class="kw">EXPORTING</span> xdata = lv_xcust ).
 <span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;set_data(        <span class="kw">EXPORTING</span> xdata = lv_xdata ).
 <span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;render.</pre></div>
+        </div>
+
+        <div id="s34" class="snippet-panel">
+          <div class="code-header">
+            <h3>손익센터별 차트 데이터 집계 (직원 급여 관리 ·_buildChartData)</h3>
+            <p>코스트센터(Kostl) → 손익센터(Prctr) 메타를 매핑한 뒤, 사원의 RankPay를 코스트센터명 서브그룹으로 집계 — 손익센터별로 그룹핑해 도넛 차트에 전달</p>
+          </div>
+          <div class="code-block"><pre><span class="fn">_buildChartData</span>(aCC) {
+  <span class="kw">const</span> aEmps = <span class="kw">this</span>._allEmployees || [];
+  <span class="kw">if</span> (!aCC) { aCC = <span class="kw">this</span>._allCC || []; }
+
+  <span class="cm">// Kostl → Prctr/PrctrName/KostlName 맵</span>
+  <span class="kw">const</span> oKostlMeta = {};
+  aCC.<span class="fn">forEach</span>((o) => {
+    oKostlMeta[o.Kostl] = { Prctr: o.Prctr, PrctrName: o.PrctrName, KostlName: o.KostlName };
+  });
+
+  <span class="cm">// Prctr별 그룹 초기화 (minKostl: 그룹 내 최소 Kostl 추적)</span>
+  <span class="kw">const</span> oPrctrGroups = {};
+  aCC.<span class="fn">forEach</span>((o) => {
+    <span class="kw">if</span> (!oPrctrGroups[o.Prctr]) {
+      oPrctrGroups[o.Prctr] = { Prctr: o.Prctr, PrctrName: o.PrctrName, kostls: {}, minKostl: o.Kostl };
+    } <span class="kw">else if</span> (o.Kostl < oPrctrGroups[o.Prctr].minKostl) {
+      oPrctrGroups[o.Prctr].minKostl = o.Kostl;
+    }
+  });
+
+  <span class="cm">// 사원을 Prctr 그룹 / KostlName 서브그룹으로 집계</span>
+  aEmps.<span class="fn">forEach</span>((o) => {
+    <span class="kw">const</span> oMeta = oKostlMeta[o.Kostl];
+    <span class="kw">if</span> (!oMeta || !oPrctrGroups[oMeta.Prctr]) { <span class="kw">return</span>; }
+    <span class="kw">const</span> sLabel = oMeta.KostlName || o.Kostl;
+    <span class="kw">const</span> oGrp = oPrctrGroups[oMeta.Prctr];
+    oGrp.kostls[sLabel] = (oGrp.kostls[sLabel] || <span class="num">0</span>) + (<span class="fn">parseFloat</span>(o.RankPay) || <span class="num">0</span>);
+  });
+
+  <span class="cm">// 배열로 변환 — Prctr은 그룹 내 최소 Kostl 기준 오름차순 정렬</span>
+  <span class="kw">const</span> aGroups = Object.<span class="fn">values</span>(oPrctrGroups).<span class="fn">sort</span>((a, b) =>
+    a.minKostl.<span class="fn">localeCompare</span>(b.minKostl)
+  );
+  aGroups.<span class="fn">forEach</span>((oGrp) => {
+    oGrp.items = Object.<span class="fn">keys</span>(oGrp.kostls).<span class="fn">sort</span>().<span class="fn">map</span>((sName) => ({
+      SubGroup: sName,
+      RankPayNum: oGrp.kostls[sName]
+    }));
+  });
+
+  <span class="kw">this</span>.<span class="fn">_renderCharts</span>(aGroups);
+},</pre></div>
+        </div>
+
+        <div id="s35" class="snippet-panel">
+          <div class="code-header">
+            <h3>사원 추가/수정 (직원 급여 관리 ·onConfirmEmpDialog)</h3>
+            <p>필수 입력값 검증 후 신규/수정 여부에 따라 OData create 또는 update 호출 — 성공 시 로컬 사원 배열·코스트센터 집계·차트를 함께 갱신</p>
+          </div>
+          <div class="code-block"><pre><span class="fn">onConfirmEmpDialog</span>() {
+  <span class="kw">const</span> oViewModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"viewModel"</span>);
+  <span class="kw">const</span> oEmp = oViewModel.<span class="fn">getProperty</span>(<span class="str">"/editEmployee"</span>);
+  <span class="kw">const</span> bIsNew = oViewModel.<span class="fn">getProperty</span>(<span class="str">"/isNewEmployee"</span>);
+  <span class="kw">const</span> sPath = oViewModel.<span class="fn">getProperty</span>(<span class="str">"/editPath"</span>);
+
+  <span class="kw">const</span> aMissing = [];
+  <span class="kw">if</span> (!oEmp.EmpName) { aMissing.<span class="fn">push</span>(<span class="str">"사원명"</span>); }
+  <span class="kw">if</span> (!oEmp.DeptNo)  { aMissing.<span class="fn">push</span>(<span class="str">"부서번호"</span>); }
+  <span class="kw">if</span> (!oEmp.Kostl)   { aMissing.<span class="fn">push</span>(<span class="str">"코스트센터"</span>); }
+  <span class="kw">if</span> (aMissing.length) {
+    MessageBox.<span class="fn">warning</span>(<span class="str">`필수 입력항목을 확인해 주세요: ${aMissing.join(", ")}`</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="kw">const</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
+
+  <span class="kw">if</span> (bIsNew) {
+    oModel.<span class="fn">create</span>(<span class="str">"/PayrollEmpSet"</span>, oEmp, {
+      success: (oNew) => {
+        <span class="kw">this</span>._allEmployees = [...(<span class="kw">this</span>._allEmployees || []), oNew];
+        <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"local"</span>).<span class="fn">setProperty</span>(<span class="str">"/employees"</span>, <span class="kw">this</span>._allEmployees);
+        <span class="kw">this</span>.<span class="fn">_recalcCC</span>();
+        <span class="kw">this</span>.<span class="fn">_buildChartData</span>();
+        MessageToast.<span class="fn">show</span>(<span class="str">"사원이 추가되었습니다."</span>);
+        <span class="kw">this</span>._oEmpDialog.<span class="fn">close</span>();
+      },
+      error: (oError) => {
+        <span class="kw">const</span> sMsg = <span class="kw">this</span>.<span class="fn">_parseErrorMsg</span>(oError);
+        MessageBox.<span class="fn">error</span>(<span class="str">"추가 실패: "</span> + sMsg);
+      }
+    });
+  } <span class="kw">else</span> {
+    oModel.<span class="fn">update</span>(sPath, oEmp, {
+      success: () => {
+        <span class="kw">this</span>._allEmployees = (<span class="kw">this</span>._allEmployees || []).<span class="fn">map</span>((o) =>
+          o.EmpId === oEmp.EmpId ? Object.<span class="fn">assign</span>({}, o, oEmp) : o
+        );
+        <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"local"</span>).<span class="fn">setProperty</span>(<span class="str">"/employees"</span>, <span class="kw">this</span>._allEmployees);
+        <span class="kw">this</span>.<span class="fn">_recalcCC</span>();
+        <span class="kw">this</span>.<span class="fn">_buildChartData</span>();
+        MessageToast.<span class="fn">show</span>(<span class="str">"수정되었습니다."</span>);
+        <span class="kw">this</span>._oEmpDialog.<span class="fn">close</span>();
+      },
+      error: (oError) => {
+        <span class="kw">const</span> sMsg = <span class="kw">this</span>.<span class="fn">_parseErrorMsg</span>(oError);
+        MessageBox.<span class="fn">error</span>(<span class="str">"수정 실패: "</span> + sMsg);
+      }
+    });
+  }
+},</pre></div>
+        </div>
+
+        <div id="s36" class="snippet-panel">
+          <div class="code-header">
+            <h3>코스트센터별 급여 전표 생성 (직원 급여 관리 ·onCreateDocument / _callCreatePayroll)</h3>
+            <p>이미 지급된 코스트센터를 걸러낸 뒤 확인 팝업 → OData create로 PayrollCCSet에 전표 생성, 성공 시 해당 코스트센터의 PayStatus·전표번호를 로컬 반영</p>
+          </div>
+          <div class="code-block"><pre><span class="fn">onCreateDocument</span>() {
+  <span class="kw">const</span> aItems = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ccTable"</span>).<span class="fn">getSelectedItems</span>();
+  <span class="kw">if</span> (aItems.length === <span class="num">0</span>) {
+    MessageBox.<span class="fn">warning</span>(<span class="str">"전표를 생성할 코스트센터를 선택해 주세요."</span>);
+    <span class="kw">return</span>;
+  }
+
+  <span class="kw">const</span> aKostlList = aItems.<span class="fn">map</span>((oItem) => oItem.<span class="fn">getBindingContext</span>(<span class="str">"local"</span>).<span class="fn">getObject</span>());
+
+  <span class="kw">const</span> aAlreadyPaid = aKostlList.<span class="fn">filter</span>((o) => o.PayStatus === <span class="str">"X"</span>);
+  <span class="kw">if</span> (aAlreadyPaid.length > <span class="num">0</span>) {
+    <span class="kw">const</span> sNames = aAlreadyPaid.<span class="fn">map</span>((o) => o.KostlName || o.Kostl).<span class="fn">join</span>(<span class="str">", "</span>);
+    MessageBox.<span class="fn">warning</span>(<span class="str">`이미 이번 달 급여가 지급된 코스트센터가 포함되어 있습니다:\n${sNames}`</span>);
+    <span class="kw">return</span>;
+  }
+
+  MessageBox.<span class="fn">confirm</span>(
+    <span class="str">`선택한 코스트센터에 급여 전표를 생성하시겠습니까?\n\n${aKostlList.map((o) => `• ${o.KostlName || o.Kostl}`).join("\n")}`</span>,
+    { title: <span class="str">"전표 생성 확인"</span>, onClose: (sAction) => {
+        <span class="kw">if</span> (sAction !== MessageBox.Action.OK) { <span class="kw">return</span>; }
+        <span class="kw">this</span>.<span class="fn">_callCreatePayroll</span>(aKostlList);
+      }
+    }
+  );
+},
+
+<span class="fn">_callCreatePayroll</span>(aKostlList) {
+  <span class="kw">const</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
+  <span class="kw">let</span> iDone = <span class="num">0</span>, iError = <span class="num">0</span>;
+  <span class="kw">const</span> iTotal = aKostlList.length;
+
+  <span class="kw">const</span> fnApplyResult = (sKostl, oResponse) => {
+    <span class="kw">const</span> sBelnr = (oResponse && oResponse.Belnr) || <span class="str">""</span>;
+    <span class="kw">this</span>._allCC = (<span class="kw">this</span>._allCC || []).<span class="fn">map</span>((o) =>
+      o.Kostl === sKostl ? Object.<span class="fn">assign</span>({}, o, { PayStatus: <span class="str">"X"</span>, Belnr: sBelnr }) : o
+    );
+    <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"local"</span>).<span class="fn">setProperty</span>(<span class="str">"/ccItems"</span>, <span class="kw">this</span>._allCC);
+    <span class="kw">this</span>.<span class="fn">_updateKPI</span>();
+  };
+
+  aKostlList.<span class="fn">forEach</span>((oCC) => {
+    <span class="kw">const</span> oPayload = {
+      Kostl: oCC.Kostl, KostlName: oCC.KostlName || <span class="str">""</span>, Kokrs: oCC.Kokrs || <span class="str">""</span>,
+      Prctr: oCC.Prctr || <span class="str">""</span>, PrctrName: oCC.PrctrName || <span class="str">""</span>, Waers: oCC.Waers || <span class="str">"KRW"</span>
+    };
+    oModel.<span class="fn">create</span>(<span class="str">"/PayrollCCSet"</span>, oPayload, {
+      success: (oResponse) => { iDone++; <span class="fn">fnApplyResult</span>(oCC.Kostl, oResponse); },
+      error: (oError) => { iError++; MessageBox.<span class="fn">error</span>(<span class="str">`전표 생성 실패 (${oCC.Kostl}): ${this._parseErrorMsg(oError)}`</span>); }
+    });
+  });
+}</pre></div>
         </div>
 
       </div><!-- /code-main -->
