@@ -1493,10 +1493,10 @@
         <div id="p9" class="prog-panel" style="display:none">
           <div class="prog-detail-type fiori">Fiori</div>
           <h2>임시전표 결재 프로그램</h2>
-          <p>임시전표를 결재·반려하는 후속 프로그램.<br/>ALV 커스텀 툴바로 개별/일괄 결재 처리.<br/>승인 시 채번 후 FI·CO 전표 동기 생성.</p>
+          <p>임시전표를 결재·반려하는 Fiori 앱.<br/>KPI 대시보드 차트 클릭으로 리스트 실시간 필터링.<br/>개별/일괄 결재 및 반려 사유 입력 처리.</p>
           <div class="prog-detail-tags">
             <span class="tag hl">결재 워크플로우</span><span class="tag hl">일괄결재</span>
-            <span class="tag">ALV 커스텀 툴바</span><span class="tag">FAE 조회</span><span class="tag">FI·CO 동기 전기</span>
+            <span class="tag">OData Update</span><span class="tag">차트-리스트 연동</span><span class="tag">순차 비동기 처리</span>
           </div>
 
           <!-- 스크린샷 갤러리 -->
@@ -1670,13 +1670,13 @@
         </button>
         <div class="code-sidebar-label" style="margin-top:16px;">임시전표 결재</div>
         <button class="snippet-btn" onclick="showSnippet('s25', this)">
-          <span class="stype abap">ABAP</span>ALV 커스텀 툴바 등록
+          <span class="stype fiori">Fiori</span>결재 승인/반려 처리
         </button>
         <button class="snippet-btn" onclick="showSnippet('s26', this)">
-          <span class="stype abap">ABAP</span>FI/CO 전표 생성 (채번+INSERT)
+          <span class="stype fiori">Fiori</span>대시보드 차트 집계
         </button>
         <button class="snippet-btn" onclick="showSnippet('s27', this)">
-          <span class="stype abap">ABAP</span>일괄결재 FAE+채번+일괄 INSERT
+          <span class="stype fiori">Fiori</span>일괄 결재 (순차 OData UPDATE)
         </button>
         <div class="code-sidebar-label" style="margin-top:16px;">총계정원장</div>
         <button class="snippet-btn" onclick="showSnippet('s19', this)">
@@ -3019,176 +3019,208 @@ gv_last_day = sy-datum.
 
         <div id="s25" class="snippet-panel">
           <div class="code-header">
-            <h3>ALV 커스텀 툴바 등록 (임시전표 결재 ·HANDLE_TOOLBAR / HANDLE_UCOMM)</h3>
-            <p>ALV 툴바에 결재·반려·일괄결재 버튼을 동적으로 추가 — Separator(구분선) 삽입 후 icon_allow/icon_reject 아이콘 지정, UCOMM 이벤트에서 PERFORM 분기</p>
+            <h3>결재 승인/반려 처리 (임시전표 결재 ·onApprove / onReject)</h3>
+            <p>MessageBox 확인 후 OData update로 Status 변경 — 반려는 Dialog로 사유(ReasonTxt)를 입력받아 함께 전송, 성공 시 대시보드 차트 재집계 후 리스트로 복귀</p>
           </div>
-          <div class="code-block"><pre><span class="cm">" ALV 툴바 이벤트 — 커스텀 버튼 3개 등록</span>
-<span class="kw">FORM</span> <span class="fn">handle_toolbar</span> <span class="kw">USING</span> pcl_object <span class="kw">TYPE REF TO</span> cl_alv_event_toolbar_set.
+          <div class="code-block"><pre><span class="cm">//  결재</span>
+<span class="fn">onApprove</span>: <span class="kw">function</span> () {
+  <span class="kw">var</span> oContext = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"idDetailPage"</span>).<span class="fn">getBindingContext</span>();
 
-  <span class="kw">DATA</span>: ls_button <span class="kw">TYPE</span> stb_button.
+  <span class="kw">if</span> (!oContext) {
+    MessageToast.<span class="fn">show</span>(<span class="str">"전표를 선택하세요."</span>);
+    <span class="kw">return</span>;
+  }
 
-  ls_button-butn_type = <span class="num">3</span>.  <span class="cm">" Separator (구분선)</span>
-  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.
-  <span class="kw">CLEAR</span> ls_button.
+  <span class="kw">var</span> oData = oContext.<span class="fn">getObject</span>();
 
-  ls_button-function  = <span class="str">'APPROVE'</span>.
-  ls_button-icon      = icon_allow.
-  ls_button-text      = <span class="str">'임시전표 결재'</span>.
-  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.
-  <span class="kw">CLEAR</span> ls_button.
+  <span class="kw">if</span> (oData.Status !== <span class="str">"D"</span>) {
+    MessageToast.<span class="fn">show</span>(<span class="str">"결재 대기 상태만 결재 가능합니다."</span>);
+    <span class="kw">return</span>;
+  }
 
-  ls_button-function  = <span class="str">'REJECT'</span>.
-  ls_button-icon      = icon_reject.
-  ls_button-text      = <span class="str">'임시전표 반려'</span>.
-  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.
-  <span class="kw">CLEAR</span> ls_button.
+  <span class="kw">var</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
+  <span class="kw">var</span> sPath = oContext.<span class="fn">getPath</span>();
+  <span class="kw">var</span> that = <span class="kw">this</span>;
 
-  ls_button-function  = <span class="str">'APPROVE_ALL'</span>.
-  ls_button-icon      = icon_allow.
-  ls_button-text      = <span class="str">'일괄 결재'</span>.
-  <span class="kw">APPEND</span> ls_button <span class="kw">TO</span> pcl_object-&gt;mt_toolbar.
+  MessageBox.<span class="fn">confirm</span>(
+    oData.Belnr + <span class="str">"번 전표를 결재하시겠습니까?"</span>,
+    {
+      title: <span class="str">"임시전표 결재"</span>,
+      onClose: <span class="kw">function</span> (sAction) {
+        <span class="kw">if</span> (sAction === MessageBox.Action.OK) {
+          oModel.<span class="fn">update</span>(sPath, { Status: <span class="str">"P"</span> }, {
+            success: <span class="kw">function</span> () {
+              MessageToast.<span class="fn">show</span>(<span class="str">"결재 완료되었습니다."</span>);
+              oModel.<span class="fn">refresh</span>(<span class="kw">true</span>);
+              that.<span class="fn">_calculateChartCounts</span>(oModel);
+              that.<span class="fn">byId</span>(<span class="str">"idNavContainer"</span>).<span class="fn">back</span>();
+            },
+            error: <span class="kw">function</span> () {
+              MessageToast.<span class="fn">show</span>(<span class="str">"결재 처리 중 오류가 발생했습니다."</span>);
+            }
+          });
+        }
+      }
+    }
+  );
+},
 
-<span class="kw">ENDFORM</span>.
+<span class="cm">// 반려</span>
+<span class="fn">onReject</span>: <span class="kw">function</span> () {
+  <span class="kw">var</span> oContext = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"idDetailPage"</span>).<span class="fn">getBindingContext</span>();
+  <span class="kw">var</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
+  <span class="kw">var</span> sPath = oContext.<span class="fn">getPath</span>();
+  <span class="kw">var</span> that = <span class="kw">this</span>;
 
-<span class="cm">" ALV UCOMM 이벤트 — 버튼 클릭 분기</span>
-<span class="kw">FORM</span> <span class="fn">handle_ucomm</span> <span class="kw">USING</span> pv_ucomm <span class="kw">TYPE</span> sy-ucomm.
-  <span class="kw">CASE</span> pv_ucomm.
+  <span class="kw">var</span> oDialog = <span class="kw">new</span> Dialog({
+    title: <span class="str">"반려 사유 입력"</span>,
+    type: <span class="str">"Message"</span>,
+    content: [ <span class="kw">new</span> TextArea(<span class="str">"idRejectReason"</span>, { width: <span class="str">"100%"</span>, rows: <span class="num">4</span>,
+      placeholder: <span class="str">"반려 사유를 입력하세요"</span> }) ],
+    beginButton: <span class="kw">new</span> Button({
+      text: <span class="str">"반려 확정"</span>,
+      type: <span class="str">"Reject"</span>,
+      press: <span class="kw">function</span> () {
+        <span class="kw">var</span> sReason = sap.ui.getCore().<span class="fn">byId</span>(<span class="str">"idRejectReason"</span>).<span class="fn">getValue</span>();
+        <span class="kw">if</span> (!sReason) { MessageToast.<span class="fn">show</span>(<span class="str">"반려 사유를 입력하세요."</span>); <span class="kw">return</span>; }
 
-    <span class="kw">WHEN</span> <span class="str">'APPROVE'</span>.
-      <span class="fn">PERFORM</span> approve_doc.
-    <span class="kw">WHEN</span> <span class="str">'REJECT'</span>.
-      <span class="fn">PERFORM</span> reject_doc.
-    <span class="kw">WHEN</span> <span class="str">'APPROVE_ALL'</span>.
-      <span class="fn">PERFORM</span> approve_doc_all.
+        oModel.<span class="fn">update</span>(sPath, { Status: <span class="str">"J"</span>, ReasonTxt: sReason }, {
+          success: <span class="kw">function</span> () {
+            MessageToast.<span class="fn">show</span>(<span class="str">"반려 처리 완료되었습니다."</span>);
+            oModel.<span class="fn">refresh</span>(<span class="kw">true</span>);
+            that.<span class="fn">_calculateChartCounts</span>(oModel);
+            that.<span class="fn">byId</span>(<span class="str">"idNavContainer"</span>).<span class="fn">back</span>();
+          },
+          error: <span class="kw">function</span> () { MessageToast.<span class="fn">show</span>(<span class="str">"반려 처리 중 오류가 발생했습니다."</span>); }
+        });
+        oDialog.<span class="fn">close</span>();
+      }
+    }),
+    endButton: <span class="kw">new</span> Button({ text: <span class="str">"취소"</span>, press: <span class="kw">function</span> () { oDialog.<span class="fn">close</span>(); } }),
+    afterClose: <span class="kw">function</span> () { oDialog.<span class="fn">destroy</span>(); }
+  });
 
-  <span class="kw">ENDCASE</span>.
-<span class="kw">ENDFORM</span>.</pre></div>
+  oDialog.<span class="fn">open</span>();
+},</pre></div>
         </div>
 
         <div id="s26" class="snippet-panel">
           <div class="code-header">
-            <h3>FI/CO 전표 생성 · 채번 (임시전표 결재 ·INSERT_DOC)</h3>
-            <p>NUMBER_GET_NEXT로 채번 후 헤더·아이템을 FI 테이블(zte1fi0005/0006)과 CO 테이블(zte1co0006/0007)에 각각 INSERT — KRW 고정 통화, 타임스탬프 재할당, ROLLBACK on failure</p>
+            <h3>대시보드 차트 집계 (임시전표 결재 ·_calculateChartCounts)</h3>
+            <p>ApprovalHeaderSet 전량 조회 후 상태(D/P/J)별 건수·비율·최대 대기일수를 클라이언트에서 계산해 차트용 JSON 모델에 반영</p>
           </div>
-          <div class="code-block"><pre><span class="cm">" Number Range 채번 (ZNRE1FI01)</span>
-<span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
-  <span class="kw">EXPORTING</span>  nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
-  <span class="kw">IMPORTING</span>  number      = lv_belnr.
+          <div class="code-block"><pre><span class="cm">// 백엔드 OData에서 상태별 전표 개수를 계산하는 내부 메소드</span>
+<span class="fn">_calculateChartCounts</span>: <span class="kw">function</span> (oModel) {
+  <span class="kw">var</span> oChartModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"chart"</span>);
+  <span class="kw">var</span> today = <span class="kw">new</span> Date();
+  <span class="kw">var</span> iThisMonth = today.<span class="fn">getMonth</span>();
+  <span class="kw">var</span> iThisYear = today.<span class="fn">getFullYear</span>();
 
-<span class="kw">MOVE-CORRESPONDING</span> gs_header <span class="kw">TO</span> ls_header.
-<span class="kw">MOVE-CORRESPONDING</span> gt_item   <span class="kw">TO</span> lt_item.
+  oModel.<span class="fn">read</span>(<span class="str">"/ApprovalHeaderSet"</span>, {
+    success: <span class="kw">function</span> (oData) {
+      <span class="kw">var</span> iWait = <span class="num">0</span>, iDone = <span class="num">0</span>, iReject = <span class="num">0</span>, iThisMonthCount = <span class="num">0</span>;
 
-<span class="cm">" 헤더 필드 세팅 (신규 전표번호·통화·상태·타임스탬프)</span>
-ls_header-belnr        = lv_belnr.
-ls_header-hwaer        = <span class="str">'KRW'</span>.
-ls_header-waers        = <span class="str">'KRW'</span>.
-ls_header-status       = <span class="str">'P'</span>.
-ls_header-clear_status = <span class="str">'N'</span>.
-ls_header-erdat        = sy-datum.
-ls_header-erzet        = sy-uzeit.
-ls_header-ernam        = sy-uname.
+      oData.results.<span class="fn">forEach</span>(<span class="kw">function</span> (item) {
+        <span class="kw">if</span> (item.Status === <span class="str">"D"</span>) { iWait++; }
+        <span class="kw">else if</span> (item.Status === <span class="str">"P"</span>) { iDone++; }
+        <span class="kw">else if</span> (item.Status === <span class="str">"J"</span>) { iReject++; }
 
-<span class="cm">" 아이템 순회 — 전표번호·통화 재할당 및 타임스탬프 세팅</span>
-<span class="kw">LOOP AT</span> lt_item <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
-  &lt;lfs_item&gt;-bukrs = pv_bukrs.
-  &lt;lfs_item&gt;-gjahr = pv_gjahr.
-  &lt;lfs_item&gt;-belnr = lv_belnr.
-  &lt;lfs_item&gt;-ktopl = <span class="str">'CAKR'</span>.
-  &lt;lfs_item&gt;-erdat = sy-datum.
-  &lt;lfs_item&gt;-erzet = sy-uzeit.
-  &lt;lfs_item&gt;-ernam = sy-uname.
-  <span class="kw">IF</span> &lt;lfs_item&gt;-waers <span class="kw">EQ</span> <span class="str">'KRW'</span>.
-    &lt;lfs_item&gt;-dmbtr = &lt;lfs_item&gt;-open_amt.  &lt;lfs_item&gt;-wrbtr = &lt;lfs_item&gt;-open_amt.
-  <span class="kw">ENDIF</span>.
-<span class="kw">ENDLOOP</span>.
+        <span class="kw">if</span> (item.Erdat) {
+          <span class="kw">var</span> d = <span class="kw">new</span> Date(item.Erdat);
+          <span class="kw">if</span> (d.<span class="fn">getMonth</span>() === iThisMonth && d.<span class="fn">getFullYear</span>() === iThisYear) { iThisMonthCount++; }
+        }
+      });
 
-<span class="cm">" FI 헤더 → CO 헤더 → FI 아이템 → CO 아이템 순서로 INSERT</span>
-<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_header.
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
+      <span class="kw">var</span> iTotal = iWait + iDone + iReject;
+      <span class="kw">var</span> sRejectRate = iTotal > <span class="num">0</span> ? Math.<span class="fn">round</span>((iReject / iTotal) * <span class="num">100</span>) + <span class="str">"%"</span> : <span class="str">"0%"</span>;
+      <span class="kw">var</span> sDoneRate   = iTotal > <span class="num">0</span> ? Math.<span class="fn">round</span>((iDone   / iTotal) * <span class="num">100</span>) + <span class="str">"%"</span> : <span class="str">"0%"</span>;
 
-<span class="kw">MOVE-CORRESPONDING</span> ls_header <span class="kw">TO</span> ls_header_co.
-ls_header_co-kokrs = ls_header-bukrs.
-<span class="kw">INSERT</span> zte1co0006 <span class="kw">FROM</span> ls_header_co.
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
+      <span class="kw">var</span> iMaxPending = <span class="num">0</span>;
+      oData.results.<span class="fn">forEach</span>(<span class="kw">function</span> (item) {
+        <span class="kw">if</span> (item.Status === <span class="str">"D"</span> && item.Erdat) {
+          <span class="kw">var</span> iDays = Math.<span class="fn">floor</span>((today - <span class="kw">new</span> Date(item.Erdat)) / <span class="num">86400000</span>);
+          <span class="kw">if</span> (iDays > iMaxPending) { iMaxPending = iDays; }
+        }
+      });
 
-<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item.
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
-
-<span class="kw">MOVE-CORRESPONDING</span> lt_item <span class="kw">TO</span> lt_item_co.
-<span class="cm">" CO 아이템 kokrs/dmbtr 추가 매핑 후 INSERT</span>
-<span class="kw">INSERT</span> zte1co0007 <span class="kw">FROM TABLE</span> lt_item_co.
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">EXIT</span>. <span class="kw">ENDIF</span>.
-
-gv_belnr = lv_belnr.</pre></div>
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/WaitCount"</span>, iWait);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/DoneCount"</span>, iDone);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/RejectCount"</span>, iReject);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/RejectRate"</span>, sRejectRate);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/DoneRate"</span>, sDoneRate);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/MaxPendingDays"</span>, iMaxPending + <span class="str">"일"</span>);
+      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/chartData"</span>, [
+        { label: <span class="str">"결재 대기"</span>, count: iWait },
+        { label: <span class="str">"결재 완료"</span>, count: iDone },
+        { label: <span class="str">"반려"</span>,     count: iReject }
+      ]);
+    }.<span class="fn">bind</span>(<span class="kw">this</span>),
+    error: <span class="kw">function</span> () { console.<span class="fn">error</span>(<span class="str">"대시보드 차트용 데이터 집계 중 백엔드 통신 오류 발생"</span>); }
+  });
+},</pre></div>
         </div>
 
         <div id="s27" class="snippet-panel">
           <div class="code-header">
-            <h3>일괄결재 FAE + 채번 + 일괄 INSERT (임시전표 결재 ·APPROVE_DOC_ALL)</h3>
-            <p>대기 전표 전체를 FOR ALL ENTRIES로 헤더·아이템 일괄 조회 후 전표별 채번 → FI·CO 헤더+아이템 테이블에 일괄 INSERT, 원본 헤더 MODIFY(상태·실전표번호) → COMMIT AND WAIT</p>
+            <h3>일괄 결재 (임시전표 결재 ·onApproveAll)</h3>
+            <p>현재 필터링된 리스트 바인딩에서 결재 대기(Status=D) 컨텍스트만 추출해 OData update를 콜백 재귀로 순차 호출 — BusyIndicator로 진행 중 표시, 완료 후 성공/실패 건수 집계</p>
           </div>
-          <div class="code-block"><pre><span class="cm">" 대기(icon_led_yellow) 전표만 대상 수집</span>
-<span class="kw">LOOP AT</span> gt_header <span class="kw">INTO</span> gs_header <span class="kw">WHERE</span> icon <span class="kw">EQ</span> icon_led_yellow.
-  <span class="kw">APPEND</span> gs_header <span class="kw">TO</span> lt_target.
-<span class="kw">ENDLOOP</span>.
+          <div class="code-block"><pre><span class="cm">// ===================== 일괄 결재 =====================</span>
+<span class="fn">onApproveAll</span>: <span class="kw">function</span> () {
+  <span class="kw">var</span> oList = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"idList"</span>);
+  <span class="kw">var</span> oBinding = oList.<span class="fn">getBinding</span>(<span class="str">"items"</span>);
+  <span class="kw">var</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
+  <span class="kw">var</span> that = <span class="kw">this</span>;
 
-<span class="cm">" FOR ALL ENTRIES: 헤더·아이템 일괄 조회</span>
-<span class="kw">SELECT</span> * <span class="kw">INTO TABLE</span> lt_head_org <span class="kw">FROM</span> zte1fi0005
-   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
-  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-belnr
-    <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr  <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
+  <span class="kw">if</span> (!oBinding) { MessageToast.<span class="fn">show</span>(<span class="str">"결재할 전표 목록이 없습니다."</span>); <span class="kw">return</span>; }
 
-<span class="kw">SELECT</span> bukrs belnr gjahr buzei bschl shkzg hkont partner_no open_amt waers
-  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_all_item <span class="kw">FROM</span> zte1fi0006
-   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
-  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-belnr
-    <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr  <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
+  <span class="kw">var</span> aContexts = oBinding.<span class="fn">getContexts</span>(<span class="num">0</span>, oBinding.<span class="fn">getLength</span>());
+  <span class="kw">var</span> aPending = [];
 
-<span class="cm">" 전표별 채번 → FI/CO 헤더 INSERT 적재</span>
-<span class="kw">LOOP AT</span> lt_target <span class="kw">INTO</span> gs_header.
-  <span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
-    <span class="kw">EXPORTING</span> nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
-    <span class="kw">IMPORTING</span> number      = lv_belnr.
-  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
+  aContexts.<span class="fn">forEach</span>(<span class="kw">function</span> (oCtx) {
+    <span class="kw">if</span> (oCtx) {
+      <span class="kw">var</span> oData = oCtx.<span class="fn">getObject</span>();
+      <span class="kw">if</span> (oData && oData.Status === <span class="str">"D"</span>) { aPending.<span class="fn">push</span>(oCtx.<span class="fn">getPath</span>()); }
+    }
+  });
 
-  <span class="cm">" FI 헤더 적재 (신규 belnr, status=P)</span>
-  ls_head_ins-belnr  = lv_belnr.  ls_head_ins-status = <span class="str">'P'</span>.
-  ls_head_ins-hwaer  = <span class="str">'KRW'</span>.    ls_head_ins-erdat  = sy-datum.
-  <span class="kw">APPEND</span> ls_head_ins <span class="kw">TO</span> lt_head_ins.
+  <span class="kw">if</span> (aPending.length === <span class="num">0</span>) { MessageToast.<span class="fn">show</span>(<span class="str">"현재 목록에 결재 대기 중인 전표가 없습니다."</span>); <span class="kw">return</span>; }
 
-  <span class="cm">" 원본 헤더 UPDATE 적재 (status=P, act_belnr=신규번호)</span>
-  ls_head_upd-status    = <span class="str">'P'</span>.  ls_head_upd-act_belnr = lv_belnr.
-  <span class="kw">APPEND</span> ls_head_upd <span class="kw">TO</span> lt_head_upd.
-<span class="kw">ENDLOOP</span>.
+  <span class="kw">var</span> iTotal = aPending.length;
+  <span class="kw">var</span> iSuccess = <span class="num">0</span>;
+  <span class="kw">var</span> iError = <span class="num">0</span>;
 
-<span class="cm">" DB 반영: FI 헤더/CO 헤더/FI 아이템/CO 아이템 INSERT → 원본 헤더 MODIFY</span>
-<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_ins..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">INSERT</span> zte1co0006 <span class="kw">FROM TABLE</span> lt_head_co..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_ins..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">INSERT</span> zte1co0007 <span class="kw">FROM TABLE</span> lt_item_co..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">MODIFY</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_upd..
-<span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">COMMIT WORK AND WAIT</span>.
-<span class="kw">MESSAGE</span> s000 <span class="kw">WITH</span> |{ lv_cnt }건 일괄결재 완료.|.</pre></div>
+  MessageBox.<span class="fn">confirm</span>(iTotal + <span class="str">"건의 전표를 일괄 결재하시겠습니까?"</span>, {
+    title: <span class="str">"일괄 결재"</span>,
+    onClose: <span class="kw">function</span> (sAction) {
+      <span class="kw">if</span> (sAction === MessageBox.Action.OK) {
+        sap.ui.core.BusyIndicator.<span class="fn">show</span>(<span class="num">0</span>);
+
+        <span class="cm">// 건별 순차 호출</span>
+        <span class="kw">var</span> fnNext = <span class="kw">function</span> (iIndex) {
+          <span class="kw">if</span> (iIndex >= iTotal) {
+            sap.ui.core.BusyIndicator.<span class="fn">hide</span>();
+            oModel.<span class="fn">refresh</span>(<span class="kw">true</span>);
+            that.<span class="fn">_calculateChartCounts</span>(oModel);
+
+            <span class="kw">if</span> (iError === <span class="num">0</span>) { MessageToast.<span class="fn">show</span>(iSuccess + <span class="str">"건 일괄 결재 완료."</span>); }
+            <span class="kw">else</span> { MessageBox.<span class="fn">warning</span>(<span class="str">"성공 "</span> + iSuccess + <span class="str">"건 / 실패 "</span> + iError + <span class="str">"건"</span>); }
+
+            that.<span class="fn">byId</span>(<span class="str">"idNavContainer"</span>).<span class="fn">back</span>();
+            <span class="kw">return</span>;
+          }
+
+          oModel.<span class="fn">update</span>(aPending[iIndex], { Status: <span class="str">"P"</span> }, {
+            success: <span class="kw">function</span> () { iSuccess++; <span class="fn">fnNext</span>(iIndex + <span class="num">1</span>); },
+            error: <span class="kw">function</span> () { iError++; <span class="fn">fnNext</span>(iIndex + <span class="num">1</span>); }
+          });
+        };
+
+        <span class="fn">fnNext</span>(<span class="num">0</span>);
+      }
+    }
+  });
+}</pre></div>
         </div>
 
         <div id="s19" class="snippet-panel">
