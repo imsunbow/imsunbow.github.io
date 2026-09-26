@@ -5,8 +5,8 @@
 ## 파일 역할
 
 - index.html: 소개, 경력, 역량, 학력·자격.
-- projects.html: 현재 메타넷 업무 요약과 교육 프로젝트 목록.
-- cyclone.html: SAP Code Academy의 Cyclone 교육 프로젝트 상세.
+- projects.html: 현재 메타넷 업무 요약과 SAP Code Academy 1기 최종 프로젝트 소개.
+- cyclone.html: SAP Code Academy 1기 최종 프로젝트 Cyclone 상세.
 - styles.css: 공통 디자인, 상세 화면, 모바일 스타일.
 - project.js: 상세 페이지의 업무 선택, ERD, 이미지 갤러리와 확대 창.
 - images/: 프로필 사진과 프로젝트 이미지.
@@ -15,7 +15,7 @@
 ## 수정 방법
 
 소개와 현재 경력은 index.html, 프로젝트 목록은 projects.html에서 수정합니다.
-교육 프로젝트 자료는 cyclone.html에 추가합니다. 클릭 동작은 HTML의
+최종 프로젝트 자료는 cyclone.html에 추가합니다. 클릭 동작은 HTML의
 data-program, data-erd, data-gallery, data-lightbox 속성과 project.js에서 관리합니다.
 HTML에 인라인 스타일이나 이벤트 핸들러를 추가하지 않습니다.
 
