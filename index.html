@@ -6,7 +6,7 @@
   <title>이재민 | SAP PP Consultant</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -23,8 +23,6 @@
       --white:  #ffffff;
       --green:  #1a7f52;
       --orange: #b05a00;
-      --code-bg: #0d1117;
-      --code-border: #30363d;
     }
 
     html { scroll-behavior: smooth; }
@@ -322,83 +320,6 @@
     }
     .algo-link:hover { background: rgba(59,102,212,.15); }
 
-    /* ── CODE TAB ── */
-    .code-layout {
-      display: grid;
-      grid-template-columns: 200px 1fr;
-      gap: 0;
-      height: 100%;
-      border: 1px solid var(--gray200);
-      border-radius: 0 0 12px 12px;
-      overflow: hidden;
-    }
-    .code-sidebar {
-      background: var(--gray50);
-      border-right: 1px solid var(--gray200);
-      padding: 16px 0;
-      overflow-y: auto;
-      height: 100%;
-    }
-    .code-sidebar-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--gray400);
-      padding: 0 16px 8px;
-    }
-    .snippet-btn {
-      display: block; width: 100%;
-      text-align: left; padding: 10px 16px;
-      background: none; border: none; cursor: pointer;
-      font-family: inherit; font-size: 13px;
-      color: var(--gray600);
-      border-left: 3px solid transparent;
-      transition: background .15s, color .15s;
-    }
-    .snippet-btn:hover { background: var(--gray100); color: var(--navy); }
-    .snippet-btn.active {
-      background: #e8edf9; color: var(--blue);
-      border-left-color: var(--blue); font-weight: 600;
-    }
-    .snippet-btn .stype {
-      font-size: 10px; font-weight: 700; letter-spacing: .5px;
-      text-transform: uppercase;
-      display: block; margin-bottom: 2px;
-    }
-    .snippet-btn .stype.abap { color: #1e7a4e; }
-    .snippet-btn .stype.fiori { color: #1e4fa0; }
-    .code-main { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-    .code-header {
-      padding: 16px 24px;
-      border-bottom: 1px solid var(--gray200);
-      background: var(--white);
-    }
-    .code-header h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .code-header p { font-size: 13px; color: var(--gray600); }
-    .code-block {
-      flex: 1;
-      background: var(--code-bg);
-      overflow: auto;
-      position: relative;
-    }
-    .code-block pre {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px;
-      line-height: 1.7;
-      padding: 24px 28px;
-      color: #e6edf3;
-      white-space: pre;
-    }
-    .snippet-panel { display: none; height: 100%; overflow: hidden; }
-    .snippet-panel.active { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-
-    /* syntax colors */
-    .kw  { color: #ff7b72; }
-    .cm  { color: #6e7681; font-style: italic; }
-    .str { color: #a5d6ff; }
-    .fn  { color: #d2a8ff; }
-    .num { color: #79c0ff; }
-    .op  { color: #ffa657; }
-    .cls { color: #ffa657; }
-
     /* ── ABOUT (학력/자격증) ── */
     .about-section {
       display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px;
@@ -462,40 +383,6 @@
     .gallery-thumb.active { border-color: var(--blue); }
     .gallery-thumb:hover { border-color: var(--navy); }
 
-    /* ── CARD SNIPPETS ── */
-    .card-snippet-toggle {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 14px; padding: 6px 14px;
-      font-size: 12px; font-weight: 600; color: var(--blue);
-      background: transparent; border: 1px solid var(--blue);
-      border-radius: 6px; cursor: pointer; transition: background .15s, color .15s;
-    }
-    .card-snippet-toggle:hover { background: var(--blue); color: white; }
-    .card-snippet-toggle .arrow { transition: transform .2s; display: inline-block; }
-    .card-snippet-toggle.open .arrow { transform: rotate(180deg); }
-    .card-snippets-wrap {
-      display: none; margin-top: 16px;
-      border-top: 1px solid var(--gray200); padding-top: 16px;
-    }
-    .card-snippets-wrap.open { display: block; }
-    .cs-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-    .cs-tab {
-      padding: 4px 12px; font-size: 12px; font-weight: 500;
-      border: 1px solid var(--gray200); border-radius: 20px;
-      background: var(--gray50); color: var(--gray600); cursor: pointer;
-      transition: background .12s, color .12s;
-    }
-    .cs-tab.active { background: var(--navy); color: white; border-color: var(--navy); }
-    .cs-panel { display: none; }
-    .cs-panel.active { display: block; }
-    .cs-panel .code-header h3 { font-size: 13px; font-weight: 600; color: var(--navy); margin-bottom: 4px; }
-    .cs-panel .code-header p  { font-size: 12px; color: var(--gray600); margin-bottom: 10px; }
-    .cs-panel .code-block {
-      background: var(--code-bg); border: 1px solid var(--code-border);
-      border-radius: 8px; overflow-x: auto; padding: 16px 20px;
-    }
-    .cs-panel .code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.7; color: #c9d1d9; white-space: pre; }
-
     /* ── CONTACT ── */
     .contact-bar {
       background: var(--navy);
@@ -506,61 +393,13 @@
     .contact-bar a { color: #7da8fb; text-decoration: none; }
     .contact-bar h2 { font-size: 20px; color: white; margin-bottom: 12px; }
 
-    /* ── CODE MODAL ── */
-    .modal-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 300;
-      background: rgba(10,15,30,.65);
-      backdrop-filter: blur(6px);
-      overflow-y: auto;
-      padding: 48px 20px;
-      align-items: center;
-      justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-container {
-      background: var(--white);
-      border-radius: 12px;
-      width: 100%; max-width: 820px;
-      max-height: 85vh;
-      overflow: hidden;
-      display: flex; flex-direction: column;
-      position: relative;
-      box-shadow: 0 16px 48px rgba(0,0,0,.35);
-      animation: modalSlide .22s ease;
-    }
-    @keyframes modalSlide {
-      from { transform: translateY(24px); opacity: 0; }
-      to   { transform: translateY(0);    opacity: 1; }
-    }
-    .modal-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 20px;
-      border-bottom: 1px solid var(--gray200);
-      flex-shrink: 0;
-    }
-    .modal-title { font-size: 14px; font-weight: 700; color: var(--navy); }
-    .modal-close {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 5px 12px;
-      background: var(--gray100); border: 1px solid var(--gray200);
-      border-radius: 6px; cursor: pointer;
-      font-size: 12px; font-weight: 600; color: var(--gray600);
-      transition: background .15s, color .15s;
-    }
-    .modal-close:hover { background: var(--gray200); color: var(--navy); }
-    .modal-body { flex: 1; overflow: hidden; display: flex; flex-direction: column; }
-
     @media (max-width: 640px) {
       nav { padding: 0 16px; }
       .hero { padding: 48px 20px 52px; }
       .hero-stats { gap: 24px; }
       section { padding: 48px 16px; }
       .cards { grid-template-columns: 1fr; }
-      .code-layout { grid-template-columns: 1fr; }
-      .code-sidebar { border-right: none; border-bottom: 1px solid var(--gray200); }
       .algo-banner { flex-direction: column; gap: 24px; }
-      .modal-container { padding: 20px 16px 28px; }
       .prog-layout { grid-template-columns: 1fr; }
       .prog-list { border-right: none; border-bottom: 1px solid var(--gray200); max-height: 260px; }
     }
@@ -801,24 +640,19 @@
       background: var(--blue); color: white;
       padding: 2px 8px; border-radius: 4px; margin-bottom: 12px;
     }
-    .prog-code-btn {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 9px 20px;
-      background: var(--navy); color: white;
-      border: none; border-radius: 8px; cursor: pointer;
-      font-size: 13px; font-weight: 600; font-family: inherit;
-      transition: background .15s;
-    }
-    .prog-code-btn:hover { background: var(--navy2); }
+
   </style>
+<link rel="stylesheet" href="refined.css"/>
 </head>
 <body>
 
 <!-- NAV -->
 <nav>
-  <span class="nav-logo">이재민의 Portfolio</span>
+  <span class="nav-logo">JAEMIN LEE<span class="nav-dot">.</span></span>
   <ul class="nav-links">
-    <li><a href="#" class="active" onclick="showTab('overview', this); return false;">포트폴리오</a></li>
+    <li><a href="#overview" data-tab="overview" class="active" onclick="showTab('overview', this); return false;">소개</a></li>
+    <li><a href="#programs" data-tab="programs" onclick="showTab('programs', this); return false;">프로젝트</a></li>
+    <li><a href="mailto:imsunbow@gmail.com">연락하기 ↗</a></li>
   </ul>
 </nav>
 
@@ -829,22 +663,26 @@
   <div class="hero">
     <div class="hero-inner">
       <div class="hero-text">
-        <span class="hero-tag">SAP PP Consultant</span>
-        <h1>이재민<br/><em>SAP PP Consultant</em></h1>
-        <p class="hero-sub">
-          메타넷에서 식품 제조사 SAP PP(생산관리) 모듈을 담당하는 컨설턴트입니다. ABAP·Fiori 개발 경험을 바탕으로 PP 모듈 온보딩용 AI 챗봇과 모니터링 대시보드를 직접 구축하며 실무에 기여하고 있습니다.
-        </p>
+        <span class="hero-tag"><span class="status-dot"></span> METANET · SAP PP CONSULTANT</span>
+        <h1>비즈니스를 이해하고,<br/><em>시스템으로 연결합니다.</em></h1>
+        <p class="hero-sub">SAP PP 컨설턴트 이재민입니다.<br/>메타넷에서 생산관리 업무를 경험하며,<br class="desktop-break"/> 개발 경험을 더해 업무에 필요한 도구를 만듭니다.</p>
+        <div class="hero-actions">
+          <a class="primary-link" href="#projects">경력 살펴보기 <span>↓</span></a>
+          <a class="secondary-link" href="#programs" onclick="showTab('programs', document.querySelector('[data-tab=programs]')); return false;">프로젝트 보기 ↗</a>
+        </div>
       </div>
-      <div class="hero-photo">
-        <img src="이재민_면접사진.png" alt="이재민"/>
+      <div class="profile-card">
+        <div class="profile-topline"><span>PROFILE / 01</span><span>METANET</span></div>
+        <div class="hero-photo"><img src="이재민_면접사진.png" alt="이재민 프로필 사진"/></div>
+        <div class="profile-caption"><strong>이재민 <span>Jaemin Lee</span></strong><p>SAP PP Consultant</p></div>
       </div>
     </div>
+    <div class="hero-footnote"><span>PRODUCTION PLANNING</span><span>BUSINESS PROCESS</span><span>TECHNICAL BACKGROUND</span></div>
   </div>
-
   <!-- TIMELINE -->
   <section id="projects">
     <div class="section-label">Experience</div>
-    <div class="section-title">경력 타임라인</div>
+    <div class="section-title">경험이 쌓이는 과정.</div>
 
     <div class="timeline">
 
@@ -888,7 +726,7 @@
             <span class="tl-tag">FI Module</span>
             <span class="tl-tag">개발 리드</span>
           </div>
-          <a onclick="showTab('programs', document.querySelector('.nav-links a:nth-child(2)')); return false;" href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--blue);padding:6px 14px;border-radius:6px;transition:background .15s;" onmouseover="this.style.background='#e8edf9'" onmouseout="this.style.background='transparent'">
+          <a onclick="showTab('programs', document.querySelector('[data-tab=programs]')); return false;" href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--blue);padding:6px 14px;border-radius:6px;transition:background .15s;" onmouseover="this.style.background='#e8edf9'" onmouseout="this.style.background='transparent'">
             프로젝트 상세 →
           </a>
         </div>
@@ -935,8 +773,8 @@
 
   <!-- SKILLS -->
   <section id="skills">
-    <div class="section-label">Stack</div>
-    <div class="section-title">기술 스택</div>
+    <div class="section-label">Capabilities</div>
+    <div class="section-title">업무를 연결하는 역량.</div>
     <div class="skills-grid">
       <div class="skill-group">
         <h4>Core <span style="font-weight:400;color:var(--gray400);">· 주력</span></h4>
@@ -1042,7 +880,7 @@
 
   <!-- CONTACT -->
   <div class="contact-bar" id="contact">
-    <h2>이재민의 Portfolio</h2>
+    <div class="section-label">GET IN TOUCH</div><h2>더 나은 업무의 흐름을 함께.</h2>
     <p>SAP PP Consultant · <a href="mailto:imsunbow@gmail.com">imsunbow@gmail.com</a> · <a href="https://github.com/imsunbow" target="_blank">GitHub</a> · <a href="https://www.linkedin.com/in/jaemin-lee-68696820b/" target="_blank">LinkedIn</a> · <a href="https://imsunbow.tistory.com/" target="_blank">Blog</a></p>
     <p style="margin-top:16px; font-size:12px; color:#7b88ad; letter-spacing:.3px;">© 2026 이재민(Lee Jaemin). All rights reserved.</p>
   </div>
@@ -1053,8 +891,8 @@
 <!-- ══════════════ TAB: 프로젝트 상세 ══════════════ -->
 <div id="tab-programs" class="tab-page">
   <section style="max-width:1600px;">
-    <div class="section-label">Project Detail</div>
-    <div class="section-title">프로젝트 상세</div>
+    <div class="section-label">Selected Project · SAP Code Academy</div>
+    <div class="section-title">Cyclone ERP 구축 프로젝트</div>
 
     <!-- 조직도 -->
     <div style="margin-bottom:32px;">
@@ -1230,15 +1068,15 @@
 
     <!-- 개발 프로그램 섹션 소제목 -->
     <div style="margin-top:48px; margin-bottom:12px;">
-      <div class="section-label">Development</div>
-      <div class="section-title" style="margin-bottom:0;">개발 프로그램(FI)</div>
+      <div class="section-label">Solutions</div>
+      <div class="section-title" style="margin-bottom:0;">재무 업무별 구현 사례</div>
     </div>
 
     <div class="prog-layout">
       <!-- 좌측 프로그램 목록 -->
       <div class="prog-list">
-        <button class="prog-back-btn" onclick="showTab('overview', document.querySelector('.nav-links a:first-child'))">← 포트폴리오로 돌아가기</button>
-        <div class="prog-group-label">핵심 프로그램</div>
+        <button class="prog-back-btn" onclick="showTab('overview', document.querySelector('[data-tab=overview]'))">← 포트폴리오로 돌아가기</button>
+        <div class="prog-group-label">주요 업무</div>
         <button class="prog-btn active" onclick="showProg('p1', this)">
           <span class="pb-badge abap">ABAP</span>임시전표 작성
         </button>
@@ -1257,7 +1095,7 @@
         <button class="prog-btn" onclick="showProg('p7', this)">
           <span class="pb-badge abap">ABAP</span>전표 반제 처리
         </button>
-        <div class="prog-group-label">기타 프로그램</div>
+        <div class="prog-group-label">확장 업무</div>
         <button class="prog-btn" onclick="showProg('p6', this)">
           <span class="pb-badge abap">ABAP</span>Excel 일괄 반제
         </button>
@@ -1316,8 +1154,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s1')">코드 보기 →</button>
         </div>
 
         <div id="p2" class="prog-panel" style="display:none">
@@ -1357,8 +1193,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s7')">코드 보기 →</button>
         </div>
 
         <div id="p3" class="prog-panel" style="display:none">
@@ -1406,8 +1240,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s13')">코드 보기 →</button>
         </div>
 
         <div id="p4" class="prog-panel" style="display:none">
@@ -1439,8 +1271,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s19')">코드 보기 →</button>
         </div>
 
         <div id="p5" class="prog-panel" style="display:none">
@@ -1485,8 +1315,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s4')">코드 보기 →</button>
         </div>
 
         <div id="p6" class="prog-panel" style="display:none">
@@ -1525,8 +1353,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s31')">코드 보기 →</button>
         </div>
 
         <div id="p7" class="prog-panel" style="display:none">
@@ -1574,8 +1400,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s28')">코드 보기 →</button>
         </div>
 
         <div id="p8" class="prog-panel" style="display:none">
@@ -1603,8 +1427,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s22')">코드 보기 →</button>
         </div>
 
         <div id="p9" class="prog-panel" style="display:none">
@@ -1644,8 +1466,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s25')">코드 보기 →</button>
         </div>
 
         <div id="p10" class="prog-panel" style="display:none">
@@ -1673,8 +1493,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s10')">코드 보기 →</button>
         </div>
 
         <div id="p11" class="prog-panel" style="display:none">
@@ -1714,8 +1532,6 @@
               </div>
             </div>
           </div>
-
-          <button class="prog-code-btn" onclick="openCode('s34')">코드 보기 →</button>
         </div>
 
       </div><!-- /prog-detail -->
@@ -1739,7 +1555,7 @@
 </div><!-- /tab-programs -->
 
 
-<!-- ══════════════ CODE MODAL ══════════════ -->
+
 <!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
   <img id="lightbox-img" src="" alt=""/>
@@ -1750,1979 +1566,7 @@
   </div>
 </div>
 
-<div id="code-modal" class="modal-overlay" onclick="if(event.target===this)closeModal()">
-  <div class="modal-container">
-    <div class="modal-header">
-      <span class="modal-title">Technical Reference</span>
-      <button class="modal-close" onclick="closeModal()">✕ 닫기</button>
-    </div>
-    <div class="modal-body">
-    <div class="code-layout">
-      <!-- SIDEBAR -->
-      <div class="code-sidebar">
-        <div class="code-sidebar-label">임시전표 작성</div>
-        <button class="snippet-btn active" onclick="showSnippet('s1', this)">
-          <span class="stype abap">ABAP</span>전기 키 유효성 검증
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s2', this)">
-          <span class="stype abap">ABAP</span>차대변 잔액 계산
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s3', this)">
-          <span class="stype abap">ABAP</span>DB 저장 / COMMIT
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">고정자산 현황</div>
-        <button class="snippet-btn" onclick="showSnippet('s7', this)">
-          <span class="stype abap">ABAP</span>감가상각 집계
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s8', this)">
-          <span class="stype abap">ABAP</span>매각 전표 저장
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s9', this)">
-          <span class="stype abap">ABAP</span>ALV Tree 노드 구성
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">환율 배치</div>
-        <button class="snippet-btn" onclick="showSnippet('s10', this)">
-          <span class="stype abap">ABAP</span>환율 API 호출
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s11', this)">
-          <span class="stype abap">ABAP</span>JSON 역직렬화
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s12', this)">
-          <span class="stype abap">ABAP</span>환율 DB 저장
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">전표 조회/역분개</div>
-        <button class="snippet-btn" onclick="showSnippet('s13', this)">
-          <span class="stype abap">ABAP</span>역분개 전표 생성
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s14', this)">
-          <span class="stype abap">ABAP</span>전표유형별 동적 컬럼
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s15', this)">
-          <span class="stype abap">ABAP</span>환율 환산 / 차대변 분리
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">재무상태표</div>
-        <button class="snippet-btn" onclick="showSnippet('s16', this)">
-          <span class="stype abap">ABAP</span>잔액 부호 계산/집계
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s17', this)">
-          <span class="stype abap">ABAP</span>재무상태표 Tree 구성
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s18', this)">
-          <span class="stype abap">ABAP</span>SVG 차트 HTML 생성
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">Excel 일괄 반제</div>
-        <button class="snippet-btn" onclick="showSnippet('s31', this)">
-          <span class="stype abap">ABAP</span>Excel→내부테이블 동적 필드 매핑
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s32', this)">
-          <span class="stype abap">ABAP</span>FAE 유효성 검증 (누적금액 추적)
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s33', this)">
-          <span class="stype abap">ABAP</span>일괄 반제 FAE+채번+INSERT/MODIFY
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">반제 처리</div>
-        <button class="snippet-btn" onclick="showSnippet('s28', this)">
-          <span class="stype abap">ABAP</span>AR/AP 동적 FCAT 분기
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s29', this)">
-          <span class="stype abap">ABAP</span>반제 내역 4-테이블 JOIN+GROUP BY
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s30', this)">
-          <span class="stype abap">ABAP</span>반제 처리 (미결금액 차감+전표 생성)
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">여신관리 배치</div>
-        <button class="snippet-btn" onclick="showSnippet('s22', this)">
-          <span class="stype abap">ABAP</span>직전 월 기준기간 계산
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s23', this)">
-          <span class="stype abap">ABAP</span>매출 GROUP BY 집계
-        </button>
 
-        <button class="snippet-btn" onclick="showSnippet('s24', this)">
-          <span class="stype abap">ABAP</span>등급 재산정 / 여신 MODIFY
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">임시전표 결재</div>
-        <button class="snippet-btn" onclick="showSnippet('s25', this)">
-          <span class="stype fiori">Fiori</span>결재 승인/반려 처리
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s26', this)">
-          <span class="stype fiori">Fiori</span>대시보드 차트 집계
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s27', this)">
-          <span class="stype fiori">Fiori</span>일괄 결재 (순차 OData UPDATE)
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">총계정원장</div>
-        <button class="snippet-btn" onclick="showSnippet('s19', this)">
-          <span class="stype abap">ABAP</span>4-테이블 JOIN + 차대변 분리
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s20', this)">
-          <span class="stype abap">ABAP</span>KTOKS 그룹 Tree 계층 구성
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s21', this)">
-          <span class="stype abap">ABAP</span>BS 월별 추이 iXML 차트
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">독촉장 관리 프로그램</div>
-        <button class="snippet-btn" onclick="showSnippet('s4', this)">
-          <span class="stype fiori">Fiori</span>OData 상태 집계
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s5', this)">
-          <span class="stype fiori">Fiori</span>채권 KPI 모델 초기화
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s6', this)">
-          <span class="stype fiori">Fiori</span>클라이언트 필터링
-        </button>
-        <div class="code-sidebar-label" style="margin-top:16px;">직원 급여 관리</div>
-        <button class="snippet-btn" onclick="showSnippet('s34', this)">
-          <span class="stype fiori">Fiori</span>손익센터별 차트 데이터 집계
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s35', this)">
-          <span class="stype fiori">Fiori</span>사원 추가/수정 (OData Create/Update)
-        </button>
-        <button class="snippet-btn" onclick="showSnippet('s36', this)">
-          <span class="stype fiori">Fiori</span>코스트센터별 급여 전표 생성
-        </button>
-      </div>
-
-      <!-- PANELS -->
-      <div class="code-main">
-
-        <div id="s1" class="snippet-panel active">
-          <div class="code-header">
-            <h3>전기 키 유효성 검증 (임시전표 작성 ·ADD_STATE_LINE)</h3>
-            <p>전표 유형(blart)별로 허용되는 전기 키(bschl)를 검증하고, G/L 계정과목 첫 자리로 계정 분류까지 체크</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 전표유형별 전기 키 유효성 검증</span>
-<span class="kw">CASE</span> gs_state_header-blart.
-
-  <span class="kw">WHEN</span> <span class="str">'SA'</span>.
-    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'40'</span>
-    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'50'</span>.
-      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'일반전표(SA)는 전기 키 40, 50만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-      <span class="kw">RETURN</span>.
-    <span class="kw">ENDIF</span>.
-  <span class="kw">WHEN</span> <span class="str">'DR'</span>.
-    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'05'</span>
-    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'40'</span>
-    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'50'</span>.
-      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'외상매출전표(DR)는 전기 키 05, 40, 50만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-      <span class="kw">RETURN</span>.
-    <span class="kw">ENDIF</span>.
-  <span class="kw">WHEN</span> <span class="str">'KR'</span>.
-    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'25'</span>
-    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'31'</span>
-    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'40'</span>
-    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'50'</span>.
-      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'외상매입전표(KR)는 전기 키 25, 31, 40, 50만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-      <span class="kw">RETURN</span>.
-    <span class="kw">ENDIF</span>.
-  <span class="kw">WHEN</span> <span class="str">'AA'</span>.
-    <span class="kw">IF</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'70'</span>
-    <span class="kw">AND</span> gs_state_item-bschl <span class="op">NE</span> <span class="str">'75'</span>.
-      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'고정자산전표(AA)는 전기 키 70, 75만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-      <span class="kw">RETURN</span>.
-    <span class="kw">ENDIF</span>.
-<span class="kw">ENDCASE</span>.
-
-<span class="cm">" 전기 키에 따른 G/L 계정 분류 검증 (계정번호 첫 자리로 판단)</span>
-<span class="kw">CASE</span> gs_state_item-bschl.
-
-  <span class="kw">WHEN</span> <span class="str">'05'</span>.
-    <span class="kw">IF</span> gs_state_item-hkont(1) <span class="op">NE</span> <span class="str">'1'</span>.
-      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'전기 키 05는 자산(매출채권) 계정만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-      <span class="kw">RETURN</span>.
-    <span class="kw">ENDIF</span>.
-  <span class="kw">WHEN</span> <span class="str">'25'</span> <span class="kw">OR</span> <span class="str">'31'</span>.
-    <span class="kw">IF</span> gs_state_item-hkont(1) <span class="op">NE</span> <span class="str">'2'</span>.
-      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'전기 키 25/31은 부채 계정만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-      <span class="kw">RETURN</span>.
-    <span class="kw">ENDIF</span>.
-  <span class="kw">WHEN</span> <span class="str">'70'</span> <span class="kw">OR</span> <span class="str">'75'</span>.
-    <span class="kw">IF</span> gs_state_item-hkont(2) <span class="op">NE</span> <span class="str">'13'</span>.
-      <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'전기 키 70/75는 고정자산 계정만 가능합니다.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-      <span class="kw">RETURN</span>.
-    <span class="kw">ENDIF</span>.
-<span class="kw">ENDCASE</span>.</pre></div>
-        </div>
-
-        <div id="s2" class="snippet-panel">
-          <div class="code-header">
-            <h3>차대변 잔액 계산 (임시전표 작성 ·CHECK_BALANCE)</h3>
-            <p>전기 키(bschl)로 차변/대변을 분리해 합계를 계산하고, 차액이 0인지 여부를 LED 아이콘으로 표시</p>
-          </div>
-          <div class="code-block"><pre><span class="kw">LOOP AT</span> gt_state_add <span class="kw">INTO</span> gs_state_add.
-
-  lv_tabix = sy-tabix.
-
-  <span class="cm">" 전기 키에 대해 차대변 분리 및 계정 분류(koart) 할당</span>
-  <span class="kw">CASE</span> gs_state_add-bschl.
-
-    <span class="kw">WHEN</span> <span class="str">'40'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'S'</span>.
-    <span class="kw">WHEN</span> <span class="str">'50'</span>. gv_credit_sum += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'H'</span>. gs_state_add-koart = <span class="str">'S'</span>.
-    <span class="kw">WHEN</span> <span class="str">'05'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'D'</span>.
-    <span class="kw">WHEN</span> <span class="str">'25'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'K'</span>.
-    <span class="kw">WHEN</span> <span class="str">'31'</span>. gv_credit_sum += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'H'</span>. gs_state_add-koart = <span class="str">'K'</span>.
-    <span class="kw">WHEN</span> <span class="str">'70'</span>. gv_debit_sum  += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'S'</span>. gs_state_add-koart = <span class="str">'A'</span>.
-    <span class="kw">WHEN</span> <span class="str">'75'</span>. gv_credit_sum += gs_state_add-open_amt. gs_state_add-shkzg = <span class="str">'H'</span>. gs_state_add-koart = <span class="str">'A'</span>.
-  <span class="kw">ENDCASE</span>.
-
-  <span class="kw">MODIFY</span> gt_state_add <span class="kw">FROM</span> gs_state_add <span class="kw">INDEX</span> lv_tabix
-    <span class="kw">TRANSPORTING</span> shkzg koart.
-
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" 차대 모두 0인 경우 아이콘 처리 건너뜀</span>
-<span class="kw">CHECK</span> gv_debit_sum <span class="op">NE</span> <span class="num">0</span> <span class="kw">AND</span> gv_credit_sum <span class="op">NE</span> <span class="num">0</span>.
-
-gv_diff = <span class="fn">abs</span>( gv_debit_sum - gv_credit_sum ).
-
-<span class="cm">" 차액 0이면 초록 LED, 아니면 빨간 LED → 전표생성 버튼 활성/비활성 연동</span>
-gs_state_add-icon = <span class="kw">COND</span> #(
-  <span class="kw">WHEN</span> gv_diff <span class="op">EQ</span> <span class="num">0</span> <span class="kw">THEN</span> icon_led_green
-                    <span class="kw">ELSE</span> icon_led_red ).</pre></div>
-        </div>
-
-        <div id="s3" class="snippet-panel">
-          <div class="code-header">
-            <h3>DB 저장 / COMMIT-ROLLBACK (임시전표 작성 ·SAVE_DATA)</h3>
-            <p>헤더·아이템을 각각 INSERT하고 하나라도 실패하면 ROLLBACK, 모두 성공하면 COMMIT WAIT 처리</p>
-          </div>
-          <div class="code-block"><pre><span class="kw">MOVE-CORRESPONDING</span> gs_state_header <span class="kw">TO</span> ls_save_header.
-
-ls_save_header-belnr        = gv_belnr.
-ls_save_header-status       = <span class="str">'D'</span>.        <span class="cm">" 결재 대기</span>
-ls_save_header-hwaer        = <span class="str">'KRW'</span>.
-ls_save_header-waers        = <span class="str">'KRW'</span>.
-ls_save_header-clear_status = <span class="str">'N'</span>.       <span class="cm">" 미결</span>
-ls_save_header-header_txt   = gv_header_text.
-ls_save_header-erdat        = sy-datum.
-ls_save_header-erzet        = sy-uzeit.
-ls_save_header-ernam        = sy-uname.
-
-<span class="kw">MOVE-CORRESPONDING</span> gt_state_add <span class="kw">TO</span> lt_save_item.
-
-<span class="kw">LOOP AT</span> lt_save_item <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
-  &lt;lfs_item&gt;-belnr = gv_belnr.
-  &lt;lfs_item&gt;-ktopl = <span class="str">'CAKR'</span>.
-  &lt;lfs_item&gt;-erdat = sy-datum.
-  &lt;lfs_item&gt;-erzet = sy-uzeit.
-  &lt;lfs_item&gt;-ernam = sy-uname.
-  <span class="kw">IF</span> &lt;lfs_item&gt;-waers <span class="op">EQ</span> <span class="str">'KRW'</span>.
-    &lt;lfs_item&gt;-wrbtr = &lt;lfs_item&gt;-open_amt.
-    &lt;lfs_item&gt;-dmbtr = &lt;lfs_item&gt;-open_amt.
-  <span class="kw">ENDIF</span>.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" 헤더 INSERT → 실패 시 즉시 ROLLBACK</span>
-<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_save_header.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'헤더 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 아이템 INSERT → 실패 시 헤더까지 함께 ROLLBACK</span>
-<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_save_item.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'아이템 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 둘 다 성공했을 때만 COMMIT (WAIT: 완료 보장)</span>
-<span class="kw">COMMIT WORK AND WAIT</span>.
-<span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'헤더 및 아이템 항목들이 저장 완료되었습니다.'</span>.</pre></div>
-        </div>
-
-        <div id="s4" class="snippet-panel">
-          <div class="code-header">
-            <h3>OData 상태별 집계 (zgwe1fi0001 · OverviewView)</h3>
-            <p>백엔드 OData에서 전체 데이터를 읽어 상태별 카운트를 JSON 모델에 반영</p>
-          </div>
-          <div class="code-block"><pre><span class="fn">_calculateChartCounts</span>: <span class="kw">function</span> (oModel) {
-  <span class="kw">var</span> oChartModel = <span class="kw">this</span>.getView().getModel(<span class="str">"chart"</span>);
-
-  <span class="cm">// 리스트 필터에 무관하게 원본 데이터 직접 조회</span>
-  oModel.<span class="fn">read</span>(<span class="str">"/ApprovalHeaderSet"</span>, {
-    <span class="fn">success</span>: <span class="kw">function</span> (oData) {
-      <span class="kw">var</span> iWait = <span class="num">0</span>, iDone = <span class="num">0</span>, iReject = <span class="num">0</span>;
-
-      oData.results.<span class="fn">forEach</span>(<span class="kw">function</span> (item) {
-        <span class="kw">if</span>      (item.Status === <span class="str">"D"</span>) { iWait++;   }
-        <span class="kw">else if</span> (item.Status === <span class="str">"P"</span>) { iDone++;   }
-        <span class="kw">else if</span> (item.Status === <span class="str">"J"</span>) { iReject++; }
-      });
-
-      <span class="cm">// 집계 결과 → JSON 모델 반영 → XML 차트 자동 갱신</span>
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/WaitCount"</span>,   iWait);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/DoneCount"</span>,   iDone);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/RejectCount"</span>, iReject);
-    }.<span class="fn">bind</span>(<span class="kw">this</span>),
-    <span class="fn">error</span>: <span class="kw">function</span> () {
-      sap.m.MessageToast.<span class="fn">show</span>(<span class="str">"집계 데이터 로드 실패"</span>);
-    }
-  });
-},</pre></div>
-        </div>
-
-        <div id="s5" class="snippet-panel">
-          <div class="code-header">
-            <h3>채권 KPI 모델 초기화 (zgwe1fi0002 · OverviewView)</h3>
-            <p>독촉장 관리 앱의 KPI 대시보드용 JSON 모델 초기값 설정</p>
-          </div>
-          <div class="code-block"><pre><span class="fn">onInit</span>: <span class="kw">function</span> () {
-  <span class="kw">this</span>.getView().<span class="fn">setModel</span>(<span class="kw">new</span> JSONModel({
-    kpi: {
-      openCount:      <span class="num">0</span>,   <span class="cm">// 미결 건수</span>
-      overdueCount:   <span class="num">0</span>,   <span class="cm">// 연체 건수</span>
-      totalOpen:      <span class="num">0</span>,   <span class="cm">// 총 미결 금액</span>
-      totalOpenScale: <span class="str">"만"</span>,
-      over90Count:    <span class="num">0</span>,   <span class="cm">// 90일 초과 건수</span>
-      avgOverdue:     <span class="num">0</span>    <span class="cm">// 평균 연체일</span>
-    },
-    overdueRanges: [
-      { label: <span class="str">"1~30일"</span>,    count: <span class="num">0</span> },
-      { label: <span class="str">"31~60일"</span>,   count: <span class="num">0</span> },
-      { label: <span class="str">"61~90일"</span>,   count: <span class="num">0</span> },
-      { label: <span class="str">"90일 초과"</span>, count: <span class="num">0</span> }
-    ],
-    clearStatus: [
-      { label: <span class="str">"미반제"</span>,   count: <span class="num">0</span> },
-      { label: <span class="str">"일부반제"</span>, count: <span class="num">0</span> },
-      { label: <span class="str">"반제완료"</span>, count: <span class="num">0</span> }
-    ]
-  }), <span class="str">"overview"</span>);
-
-  <span class="kw">this</span>.<span class="fn">_loadDunningStats</span>([]);
-},</pre></div>
-        </div>
-
-        <div id="s6" class="snippet-panel">
-          <div class="code-header">
-            <h3>클라이언트 사이드 필터링 (zgwe1fi0002)</h3>
-            <p>OData 서버 에러 회피를 위해 전체 데이터를 로드 후 클라이언트에서 필터링</p>
-          </div>
-          <div class="code-block"><pre><span class="fn">onOverviewSearch</span>: <span class="kw">function</span> () {
-  <span class="kw">var</span> sPartner = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputPartner"</span>).<span class="fn">getValue</span>().<span class="fn">trim</span>();
-  <span class="kw">var</span> sBukrs   = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputBukrs"</span>).<span class="fn">getValue</span>().<span class="fn">trim</span>();
-  <span class="kw">var</span> aFilters = [];
-
-  <span class="kw">if</span> (sPartner) {
-    aFilters.<span class="fn">push</span>(<span class="kw">new</span> Filter(<span class="str">"PartnerNo"</span>, FilterOperator.EQ, sPartner));
-  }
-  <span class="kw">if</span> (sBukrs) {
-    aFilters.<span class="fn">push</span>(<span class="kw">new</span> Filter(<span class="str">"Bukrs"</span>, FilterOperator.EQ, sBukrs));
-  }
-
-  <span class="cm">// 서버 필터 대신 클라이언트 필터로 집계 재계산</span>
-  <span class="kw">this</span>.<span class="fn">_loadDunningStats</span>(aFilters);
-},
-
-<span class="fn">onOverviewReset</span>: <span class="kw">function</span> () {
-  <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputPartner"</span>).<span class="fn">setValue</span>(<span class="str">""</span>);
-  <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ovInputBukrs"</span>).<span class="fn">setValue</span>(<span class="str">""</span>);
-  <span class="kw">this</span>.<span class="fn">_loadDunningStats</span>([]);
-},</pre></div>
-        </div>
-
-        <div id="s7" class="snippet-panel">
-          <div class="code-header">
-            <h3>감가상각 집계 (고정자산 현황 ·CALC_DEPRECIATION)</h3>
-            <p>hkont '13000030' 항목만 걸러 자산별로 COLLECT 집계 후 BINARY SEARCH로 매핑, 장부가액 산출</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 감가상각누계 계정(13000030) 항목만 자산별로 합산</span>
-<span class="kw">LOOP AT</span> gt_item <span class="kw">INTO</span> gs_item <span class="kw">WHERE</span> hkont <span class="op">EQ</span> <span class="str">'13000030'</span>.
-
-  <span class="kw">CLEAR</span> ls_sum.
-  ls_sum-bukrs = gs_item-bukrs.
-  ls_sum-anln1 = gs_item-anln1.
-
-  <span class="cm">" 차대변 지표에 따라 누계액 가감</span>
-  <span class="kw">CASE</span> gs_item-shkzg.
-
-    <span class="kw">WHEN</span> <span class="str">'H'</span>. ls_sum-total += gs_item-dmbtr.   <span class="cm">" 대변: 상각 누적</span>
-    <span class="kw">WHEN</span> <span class="str">'S'</span>. ls_sum-total -= gs_item-dmbtr.   <span class="cm">" 차변: 환입</span>
-  <span class="kw">ENDCASE</span>.
-
-  <span class="kw">COLLECT</span> ls_sum <span class="kw">INTO</span> lt_sum.  <span class="cm">" 동일 key면 total 누적</span>
-
-<span class="kw">ENDLOOP</span>.
-
-<span class="kw">SORT</span> lt_sum <span class="kw">BY</span> bukrs anln1.  <span class="cm">" BINARY SEARCH를 위한 사전 정렬</span>
-
-<span class="cm">" 자산별 감가누계 및 장부가액 할당</span>
-<span class="kw">LOOP AT</span> gt_asset <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_asset&gt;).
-
-  <span class="kw">READ TABLE</span> lt_sum <span class="kw">INTO</span> ls_sum
-    <span class="kw">WITH KEY</span> bukrs = &lt;lfs_asset&gt;-bukrs
-             anln1 = &lt;lfs_asset&gt;-anln1
-    <span class="kw">BINARY SEARCH</span>.
-
-  <span class="kw">IF</span> sy-subrc <span class="op">EQ</span> <span class="num">0</span>.
-    &lt;lfs_asset&gt;-afaku = ls_sum-total.   <span class="cm">" 감가상각 누계액</span>
-  <span class="kw">ENDIF</span>.
-
-  <span class="cm">" 장부가액 = 취득원가 - 감가상각 누계액</span>
-  &lt;lfs_asset&gt;-bchwt = &lt;lfs_asset&gt;-kansw - &lt;lfs_asset&gt;-afaku.
-
-<span class="kw">ENDLOOP</span>.</pre></div>
-        </div>
-
-        <div id="s8" class="snippet-panel">
-          <div class="code-header">
-            <h3>매각 전표 저장 (고정자산 현황 ·SELL_SELECTED_ASSET)</h3>
-            <p>헤더 1건 + 아이템 최대 3건(현금·감가누계·자산계정) INSERT 후 자산 마스터 loekz UPDATE, 실패 시 ROLLBACK</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 차변 - 현금 (장부가액만큼 매각대금 수취)</span>
-<span class="fn">PERFORM</span> add_item <span class="kw">USING</span>    lv_buzei  <span class="str">'11000010'</span>  <span class="str">'S'</span>
-                              gs_asset-bchwt  gs_asset-anln1  <span class="str">'40'</span>  lv_belnr
-                 <span class="kw">CHANGING</span> lt_item.
-
-<span class="cm">" 차변 - 감가상각누계 (누계액 있을 때만 추가)</span>
-<span class="kw">IF</span> gs_asset-afaku <span class="op">GT</span> <span class="num">0</span>.
-  lv_buzei += <span class="num">10</span>.
-  <span class="fn">PERFORM</span> add_item <span class="kw">USING</span>    lv_buzei  <span class="str">'13000030'</span>  <span class="str">'S'</span>
-                                gs_asset-afaku  gs_asset-anln1  <span class="str">'40'</span>  lv_belnr
-                   <span class="kw">CHANGING</span> lt_item.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 대변 - 자산계정 (취득원가 전액 제거)</span>
-lv_buzei += <span class="num">10</span>.
-<span class="fn">PERFORM</span> add_item <span class="kw">USING</span>    lv_buzei  lv_hkont  <span class="str">'H'</span>
-                              gs_asset-kansw  gs_asset-anln1  <span class="str">'50'</span>  lv_belnr
-                 <span class="kw">CHANGING</span> lt_item.
-
-<span class="cm">" 전표 헤더 INSERT</span>
-<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_header.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'매각 전표 헤더 생성 실패'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 전표 아이템 INSERT</span>
-<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'감가상각 전표 아이템 생성 실패'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 자산 마스터 논리 삭제 (loekz 플래그 세팅)</span>
-<span class="kw">UPDATE</span> zte1fi0004
-   <span class="kw">SET</span> loekz = abap_true
-       aedat = sy-datum  aenam = sy-uname
- <span class="kw">WHERE</span> bukrs <span class="op">EQ</span> gs_asset-bukrs
-   <span class="kw">AND</span> anln1 <span class="op">EQ</span> gs_asset-anln1.
-
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'고정자산 매각 실패'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="kw">COMMIT WORK AND WAIT</span>.
-<span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> |{ gs_asset-anln1 }번 고정자산 매각 성공 및 전표 { lv_belnr }번 생성 완료.|.</pre></div>
-        </div>
-
-        <div id="s9" class="snippet-panel">
-          <div class="code-header">
-            <h3>ALV Column Tree 노드 구성 (고정자산 현황 ·SET_FCAT_GRID)</h3>
-            <p>자산 데이터를 연도 → 자산클래스 → 개별 자산 3단계 계층으로 트리 노드에 삽입</p>
-          </div>
-          <div class="code-block"><pre><span class="kw">SORT</span> gt_asset <span class="kw">BY</span> aktiv(4) anlkl anln1.
-<span class="kw">CLEAR</span>: lv_year, lv_anlkl, lv_parent, lv_child.
-
-<span class="kw">LOOP AT</span> gt_asset <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_asset&gt;).
-
-  <span class="cm">" ① 연도 노드 — 연도 바뀔 때마다 새 폴더 생성</span>
-  <span class="kw">IF</span> &lt;lfs_asset&gt;-aktiv(4) <span class="op">NE</span> lv_year.
-    lv_year = &lt;lfs_asset&gt;-aktiv(4).
-    <span class="kw">CLEAR</span>: lv_anlkl, lv_child.
-    ls_node-isfolder = abap_true.
-    ls_node-expander = abap_true.
-    <span class="kw">CALL METHOD</span> gcl_tree-&gt;add_node
-      <span class="kw">EXPORTING</span> i_relat_node_key = space
-                i_relationship   = cl_gui_column_tree=&gt;relat_last_child
-                i_node_text      = lv_year
-                is_node_layout   = ls_node
-      <span class="kw">IMPORTING</span> e_new_node_key   = lv_parent.
-    <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_parent ).
-  <span class="kw">ENDIF</span>.
-
-  <span class="cm">" ② 자산클래스 노드 — 클래스 바뀔 때마다 연도 노드 아래에 추가</span>
-  <span class="kw">IF</span> &lt;lfs_asset&gt;-anlkl <span class="op">NE</span> lv_anlkl <span class="kw">OR</span> lv_child <span class="kw">IS INITIAL</span>.
-    lv_anlkl = &lt;lfs_asset&gt;-anlkl.
-    ls_node-isfolder = abap_true.
-    ls_node-expander = abap_true.
-    <span class="fn">PERFORM</span> set_asset_text <span class="kw">USING</span> &lt;lfs_asset&gt;-anlkl <span class="kw">CHANGING</span> lv_text.
-    <span class="kw">CALL METHOD</span> gcl_tree-&gt;add_node
-      <span class="kw">EXPORTING</span> i_relat_node_key = lv_parent
-                i_relationship   = cl_gui_column_tree=&gt;relat_last_child
-                i_node_text      = lv_text
-                is_node_layout   = ls_node
-      <span class="kw">IMPORTING</span> e_new_node_key   = lv_child.
-    <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_child ).
-  <span class="kw">ENDIF</span>.
-
-  <span class="cm">" ③ 자산 리프 노드 — 자산클래스 노드 아래에 개별 자산 할당</span>
-  <span class="kw">IF</span> lv_child <span class="kw">IS NOT INITIAL</span>.
-    ls_node-isfolder = abap_false.
-    ls_node-expander = abap_false.
-    lv_text = &lt;lfs_asset&gt;-asset_name.
-    ls_tree-anln1 = &lt;lfs_asset&gt;-anln1.
-    ls_tree-kansw = &lt;lfs_asset&gt;-kansw.
-    ls_tree-waers = &lt;lfs_asset&gt;-waers.
-    ls_tree-aktiv = &lt;lfs_asset&gt;-aktiv.
-    ls_tree-kostl = &lt;lfs_asset&gt;-kostl.
-    ls_tree-ktext = &lt;lfs_asset&gt;-ktext.
-    <span class="kw">CALL METHOD</span> gcl_tree-&gt;add_node
-      <span class="kw">EXPORTING</span> i_relat_node_key = lv_child
-                i_relationship   = cl_gui_column_tree=&gt;relat_last_child
-                i_node_text      = lv_text
-                is_node_layout   = ls_node
-                is_outtab_line   = ls_tree.
-  <span class="kw">ENDIF</span>.
-
-<span class="kw">ENDLOOP</span>.
-<span class="kw">CALL METHOD</span> gcl_tree-&gt;frontend_update( ).</pre></div>
-        </div>
-
-        <div id="s10" class="snippet-panel">
-          <div class="code-header">
-            <h3>환율 API 호출 (환율 배치 ·GET_EXCHANGE_RATE_API)</h3>
-            <p>한국수출입은행 Open API를 cl_http_client로 호출, 당일 기준 환율 JSON 수신</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 오늘 날짜 기준 URL 동적 생성</span>
-gv_url = |https://oapi.koreaexim.go.kr/site/program/financial/exchangeJSON?| &&
-         |authkey={ gc_authkey }&searchdate={ sy-datum }&data=AP01|.
-
-<span class="cm">" HTTP 클라이언트 인스턴스 생성</span>
-<span class="kw">CALL METHOD</span> cl_http_client=&gt;create_by_url
-  <span class="kw">EXPORTING</span>
-    url    = gv_url
-  <span class="kw">IMPORTING</span>
-    client = go_http_client.
-
-<span class="cm">" GET 요청 → 송신 → 수신</span>
-go_http_client-&gt;request-&gt;set_method( if_http_request=&gt;co_request_method_get ).
-go_http_client-&gt;send( ).
-go_http_client-&gt;receive( ).
-
-<span class="cm">" 응답 본문을 문자열로 추출</span>
-gv_json_data = go_http_client-&gt;response-&gt;get_cdata( ).</pre></div>
-        </div>
-
-        <div id="s11" class="snippet-panel">
-          <div class="code-header">
-            <h3>JSON 역직렬화 (환율 배치 ·PARSE_JSON_DATA)</h3>
-            <p>수신된 JSON 문자열을 /ui2/cl_json으로 내부 테이블에 직접 매핑, 빈 응답(영업일 외) 별도 처리</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 빈 응답 또는 빈 배열([]) → 영업일 외 등 데이터 없는 경우</span>
-<span class="kw">IF</span> gv_json_data <span class="kw">IS INITIAL</span> <span class="kw">OR</span> gv_json_data = <span class="str">'[]'</span>.
-  <span class="fn">MESSAGE</span> <span class="str">'수신된 환율 데이터가 없습니다. (영업일 확인 필요)'</span>
-    <span class="kw">TYPE</span> <span class="str">'S'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'W'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" JSON 문자열 → ABAP 내부 테이블 역직렬화</span>
-/ui2/cl_json=&gt;deserialize(
-  <span class="kw">EXPORTING</span> json = gv_json_data
-  <span class="kw">CHANGING</span>  data = gt_json
-).</pre></div>
-        </div>
-
-        <div id="s12" class="snippet-panel">
-          <div class="code-header">
-            <h3>환율 DB 저장 (환율 배치 ·SAVE_TO_DB)</h3>
-            <p>100단위 통화 처리, 콤마 제거 후 MODIFY로 저장 — 기존 레코드 갱신, 신규면 삽입</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 역전 날짜: SAP 환율 테이블은 99999999 - 기준일로 정렬</span>
-gv_gdatu_inv = <span class="num">99999999</span> - sy-datum.
-
-<span class="kw">LOOP AT</span> gt_json <span class="kw">INTO</span> gs_json.
-
-  <span class="cm">" 숫자 문자열에서 콤마 제거 (예: "1,320.50" → "1320.50")</span>
-  <span class="kw">REPLACE ALL OCCURRENCES OF</span> <span class="str">','</span> <span class="kw">IN</span> gs_json-deal_bas_r <span class="kw">WITH</span> <span class="str">''</span>.
-  <span class="kw">CONDENSE</span> gs_json-deal_bas_r <span class="kw">NO-GAPS</span>.
-
-  gs_cm0005-kurst = gc_kurst.
-  gs_cm0005-tcurr = gc_tcurr.
-  gs_cm0005-gdatu = gv_gdatu_inv.
-
-  <span class="cm">" 100단위 통화 처리 (예: "JPY(100)" → "JPY"만 추출)</span>
-  <span class="kw">IF</span> gs_json-cur_unit <span class="kw">CS</span> <span class="str">'(100)'</span>.
-    gs_cm0005-fcurr = gs_json-cur_unit+0(3).
-  <span class="kw">ELSE</span>.
-    gs_cm0005-fcurr = gs_json-cur_unit.
-  <span class="kw">ENDIF</span>.
-
-  gs_cm0005-ukurs = gs_json-deal_bas_r.
-  gs_cm0005-erdat = sy-datum.
-  gs_cm0005-erzet = sy-uzeit.
-  gs_cm0005-ernam = sy-uname.
-
-  <span class="kw">APPEND</span> gs_cm0005 <span class="kw">TO</span> gt_cm0005.
-  <span class="kw">CLEAR</span>  gs_cm0005.
-
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" MODIFY = INSERT + UPDATE 겸용 (key 있으면 update, 없으면 insert)</span>
-<span class="kw">MODIFY</span> zte1cm0005 <span class="kw">FROM TABLE</span> gt_cm0005.
-
-<span class="kw">IF</span> sy-dbcnt <span class="op">GT</span> <span class="num">0</span>.
-  <span class="kw">COMMIT WORK</span>.
-  <span class="fn">MESSAGE</span> |환율 데이터 { lines( gt_cm0005 ) }건 저장 완료!| <span class="kw">TYPE</span> <span class="str">'S'</span>.
-<span class="kw">ENDIF</span>.</pre></div>
-        </div>
-
-        <div id="s13" class="snippet-panel">
-          <div class="code-header">
-            <h3>역분개 전표 생성 (전표 조회/역분개 ·SAVE_REVERSE_DOC)</h3>
-            <p>원전표 아이템 금액에 × -1 적용해 역분개 전표 생성, INSERT×2 + UPDATE×2 모두 성공 시 COMMIT</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 역분개 아이템: 원전표 아이템의 금액을 반전(-1)시켜 생성</span>
-<span class="kw">LOOP AT</span> gt_item <span class="kw">INTO DATA</span>(ls_item).
-  ls_rev_doc_item-bukrs      = gs_header-bukrs.
-  ls_rev_doc_item-gjahr      = gs_header-gjahr.
-  ls_rev_doc_item-belnr      = lv_belnr.
-  ls_rev_doc_item-buzei      = sy-tabix * <span class="num">10</span>.
-  ls_rev_doc_item-bschl      = ls_item-bschl.
-  ls_rev_doc_item-shkzg      = ls_item-shkzg.
-  ls_rev_doc_item-hkont      = ls_item-hkont.
-  ls_rev_doc_item-koart      = ls_item-koart.
-  ls_rev_doc_item-waers      = ls_item-waers.
-  ls_rev_doc_item-wrbtr      = ls_item-wrbtr    * <span class="num">-1</span>.  <span class="cm">" 외화 금액 반전</span>
-  ls_rev_doc_item-open_amt   = ls_item-open_amt * <span class="num">-1</span>.
-  ls_rev_doc_item-dmbtr      = ls_item-dmbtr    * <span class="num">-1</span>.  <span class="cm">" 원화 환산 금액 반전</span>
-  ls_rev_doc_item-ukurs      = ls_item-ukurs.
-  ls_rev_doc_item-erdat      = sy-datum.
-  ls_rev_doc_item-ernam      = sy-uname.
-  <span class="kw">APPEND</span> ls_rev_doc_item <span class="kw">TO</span> lt_rev_doc_item.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" 역분개 전표 헤더 INSERT</span>
-<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_rev_doc_header.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'헤더 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 역분개 전표 아이템 INSERT</span>
-<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_rev_doc_item.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'아이템 저장 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 원전표 헤더 UPDATE: 역분개 완료 상태 + 역분개 전표번호 연결</span>
-<span class="kw">UPDATE</span> zte1fi0005
-   <span class="kw">SET</span> status = <span class="str">'X'</span>  stblg  = lv_belnr
-       aedat  = sy-datum  aenam = sy-uname
- <span class="kw">WHERE</span> bukrs <span class="op">EQ</span> gs_header-bukrs
-   <span class="kw">AND</span> belnr <span class="op">EQ</span> gs_header-belnr
-   <span class="kw">AND</span> gjahr <span class="op">EQ</span> gs_header-gjahr.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'원전표 헤더 업데이트 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 원전표 아이템 UPDATE: 타임스탬프만 갱신</span>
-<span class="kw">UPDATE</span> zte1fi0006
-   <span class="kw">SET</span> aedat = sy-datum  aenam = sy-uname
- <span class="kw">WHERE</span> bukrs <span class="op">EQ</span> gs_header-bukrs
-   <span class="kw">AND</span> belnr <span class="op">EQ</span> gs_header-belnr.
-<span class="kw">IF</span> sy-subrc <span class="op">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'원전표 아이템 업데이트 실패.'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="kw">COMMIT WORK AND WAIT</span>.
-<span class="fn">MESSAGE</span> s000 <span class="kw">WITH</span> |역분개 전표 생성 완료. 전표 번호 : { lv_belnr }|.</pre></div>
-        </div>
-
-        <div id="s14" class="snippet-panel">
-          <div class="code-header">
-            <h3>전표유형별 동적 컬럼 구성 (전표 조회/역분개 ·SET_FCAT_GRID)</h3>
-            <p>pa_blart 값에 따라 FCAT에 추가할 컬럼을 다르게 결정 — 역분개·BP·원전표 컬럼이 전표 유형마다 다르게 조합됨</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 전표 유형에 따른 동적 컬럼 할당</span>
-<span class="kw">CASE</span> pa_blart.
-
-  <span class="kw">WHEN</span> <span class="str">'SA'</span>.  <span class="cm">" 일반전표: 역분개 전표번호 + 사유</span>
-    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
-    <span class="str">' '</span> <span class="str">'STBLG'</span>       <span class="str">'역분개 전표 번호'</span>  <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
-    <span class="str">' '</span> <span class="str">'REASON_TXT2'</span> <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
-
-  <span class="kw">WHEN</span> <span class="str">'SR'</span>.  <span class="cm">" 역분개전표: 원전표번호 + 원전표의 역분개 사유</span>
-    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
-    <span class="str">' '</span> <span class="str">'REF_BELNR'</span>   <span class="str">'원전표 번호'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
-    <span class="str">' '</span> <span class="str">'REASON_TXT'</span>  <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
-
-  <span class="kw">WHEN</span> <span class="str">'DR'</span> <span class="kw">OR</span> <span class="str">'KR'</span>.  <span class="cm">" 매출/매입전표: BP 정보 + 역분개 정보</span>
-    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
-    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span>  <span class="str">'협력사 번호'</span>      <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'12'</span>,
-    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>   <span class="str">'협력사명'</span>         <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'18'</span>,
-    <span class="str">' '</span> <span class="str">'STBLG'</span>       <span class="str">''</span>                 <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
-    <span class="str">' '</span> <span class="str">'REASON_TXT2'</span> <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
-
-  <span class="kw">WHEN</span> <span class="str">'AL'</span>.  <span class="cm">" 전체 조회: 모든 컬럼 포함</span>
-    <span class="fn">PERFORM</span> set_fcat_header <span class="kw">USING</span>:
-    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span>  <span class="str">'협력사 번호'</span>      <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'12'</span>,
-    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>   <span class="str">''</span>                 <span class="str">'ZTE1CM0004'</span> <span class="str">''</span> <span class="str">'18'</span>,
-    <span class="str">' '</span> <span class="str">'REF_BELNR'</span>   <span class="str">'원전표 번호'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
-    <span class="str">' '</span> <span class="str">'STBLG'</span>       <span class="str">'역분개 전표 번호'</span>  <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>,
-    <span class="str">' '</span> <span class="str">'REASON_TXT'</span>  <span class="str">'역분개 사유'</span>      <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="str">'12'</span>.
-<span class="kw">ENDCASE</span>.</pre></div>
-        </div>
-
-        <div id="s15" class="snippet-panel">
-          <div class="code-header">
-            <h3>환율 환산 / 차대변 분리 (전표 조회/역분개 ·SET_SH)</h3>
-            <p>IDOC 형식 환율을 SAP 금액으로 변환하고, shkzg 기준으로 차변/대변 금액을 분리해 원화 환산까지 산출</p>
-          </div>
-          <div class="code-block"><pre><span class="kw">LOOP AT</span> gt_item <span class="kw">ASSIGNING FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
-
-  <span class="cm">" IDOC 형식 환율 → SAP 금액 타입으로 변환</span>
-  <span class="kw">CALL FUNCTION</span> <span class="str">'CURRENCY_AMOUNT_IDOC_TO_SAP'</span>
-    <span class="kw">EXPORTING</span>
-      currency    = <span class="str">'KRW'</span>
-      idoc_amount = &lt;lfs_item&gt;-ukurs
-    <span class="kw">IMPORTING</span>
-      sap_amount  = lv_dmbtr.
-
-  <span class="cm">" KRW는 환율이 0으로 저장되므로 강제로 1 할당</span>
-  <span class="kw">IF</span> lv_dmbtr <span class="op">EQ</span> <span class="num">0</span> <span class="kw">AND</span> &lt;lfs_item&gt;-waers = <span class="str">'KRW'</span>.
-    lv_dmbtr = <span class="num">1</span>.
-  <span class="kw">ENDIF</span>.
-
-  <span class="cm">" shkzg 기준 차대변 분리 + 원화 환산 금액 계산</span>
-  <span class="kw">CASE</span> &lt;lfs_item&gt;-shkzg.
-
-    <span class="kw">WHEN</span> <span class="str">'S'</span>.  <span class="cm">" 차변</span>
-      &lt;lfs_item&gt;-debit_amt   = &lt;lfs_item&gt;-wrbtr.
-      &lt;lfs_item&gt;-debit_waers = &lt;lfs_item&gt;-waers.
-      &lt;lfs_item&gt;-debit_dmbtr = &lt;lfs_item&gt;-wrbtr * lv_dmbtr.  <span class="cm">" 원화 환산</span>
-      &lt;lfs_item&gt;-debit_hwaer = <span class="str">'KRW'</span>.
-      <span class="kw">CLEAR</span> &lt;lfs_item&gt;-credit_waers.   <span class="cm">" 대변 통화 비우기</span>
-      &lt;lfs_item&gt;-shkzg_text = <span class="str">'차변'</span>.
-
-    <span class="kw">WHEN</span> <span class="str">'H'</span>.  <span class="cm">" 대변</span>
-      &lt;lfs_item&gt;-credit_amt   = &lt;lfs_item&gt;-wrbtr.
-      &lt;lfs_item&gt;-credit_waers = &lt;lfs_item&gt;-waers.
-      &lt;lfs_item&gt;-credit_dmbtr = &lt;lfs_item&gt;-wrbtr * lv_dmbtr.  <span class="cm">" 원화 환산</span>
-      &lt;lfs_item&gt;-credit_hwaer = <span class="str">'KRW'</span>.
-      <span class="kw">CLEAR</span> &lt;lfs_item&gt;-debit_waers.    <span class="cm">" 차변 통화 비우기</span>
-      &lt;lfs_item&gt;-shkzg_text = <span class="str">'대변'</span>.
-  <span class="kw">ENDCASE</span>.
-
-<span class="kw">ENDLOOP</span>.</pre></div>
-        </div>
-
-        <div id="s16" class="snippet-panel">
-          <div class="code-header">
-            <h3>잔액 부호 계산 / 당기·전년 집계 (재무상태표 · COLLECT_BALANCE_DATA)</h3>
-            <p>계정 성격(KTOKS) + 차대변(SHKZG) 조합으로 잔액 부호를 결정하고, 계정별 당기/전년 금액을 누적 집계</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 계정 성격(KTOKS) + 차대변(SHKZG) 기준 잔액 부호 결정</span>
-<span class="kw">CASE</span> gs_balance-ktoks.
-
-
-  <span class="kw">WHEN</span> <span class="str">'ASST'</span> <span class="kw">OR</span> <span class="str">'EXPN'</span>.  <span class="cm">" 자산·비용 : 차변 증가</span>
-    <span class="kw">IF</span> gs_balance-shkzg = <span class="str">'S'</span>.
-      lv_sign_amt = lv_base_amt.
-    <span class="kw">ELSE</span>.
-      lv_sign_amt = lv_base_amt * <span class="num">-1</span>.
-    <span class="kw">ENDIF</span>.
-
-  <span class="kw">WHEN</span> <span class="str">'LIAB'</span> <span class="kw">OR</span> <span class="str">'EQTY'</span> <span class="kw">OR</span> <span class="str">'REVE'</span>.  <span class="cm">" 부채·자본·수익 : 대변 증가</span>
-    <span class="kw">IF</span> gs_balance-shkzg = <span class="str">'H'</span>.
-      lv_sign_amt = lv_base_amt.
-    <span class="kw">ELSE</span>.
-      lv_sign_amt = lv_base_amt * <span class="num">-1</span>.
-    <span class="kw">ENDIF</span>.
-
-  <span class="kw">WHEN OTHERS</span>.
-    <span class="kw">CONTINUE</span>.  <span class="cm">" BS 대상 아닌 계정 제외</span>
-
-<span class="kw">ENDCASE</span>.
-
-<span class="cm">" 계정 라인 조회 → 신규면 생성, 기존이면 금액 누적</span>
-<span class="kw">READ TABLE</span> gt_bs_tree <span class="kw">INTO</span> ls_tree
-  <span class="kw">WITH KEY</span> node_type = <span class="str">'ACCOUNT'</span>
-           saknr     = gs_balance-saknr.
-
-<span class="kw">IF</span> sy-subrc <> <span class="num">0</span>.  <span class="cm">" 신규 계정</span>
-  ls_tree-node_type = <span class="str">'ACCOUNT'</span>.
-  ls_tree-ktoks     = gs_balance-ktoks.
-  ls_tree-saknr     = gs_balance-saknr.
-  ls_tree-txt20     = gs_balance-txt20.
-  ls_tree-waers     = gs_balance-waers.
-  <span class="kw">IF</span> gs_balance-gjahr = pa_gjahr.
-    ls_tree-curr_amt = lv_sign_amt.
-  <span class="kw">ELSE</span>.
-    ls_tree-prev_amt = lv_sign_amt.  <span class="cm">" 전년도</span>
-  <span class="kw">ENDIF</span>.
-  <span class="kw">APPEND</span> ls_tree <span class="kw">TO</span> gt_bs_tree.
-
-<span class="kw">ELSE</span>.  <span class="cm">" 기존 계정 누적</span>
-  <span class="kw">IF</span> gs_balance-gjahr = pa_gjahr.
-    ls_tree-curr_amt = ls_tree-curr_amt + lv_sign_amt.
-  <span class="kw">ELSE</span>.
-    ls_tree-prev_amt = ls_tree-prev_amt + lv_sign_amt.
-  <span class="kw">ENDIF</span>.
-  <span class="kw">MODIFY</span> gt_bs_tree <span class="kw">FROM</span> ls_tree
-    <span class="kw">TRANSPORTING</span> curr_amt prev_amt
-    <span class="kw">WHERE</span> node_type = <span class="str">'ACCOUNT'</span>
-      <span class="kw">AND</span> saknr     = gs_balance-saknr.
-<span class="kw">ENDIF</span>.</pre></div>
-        </div>
-
-        <div id="s17" class="snippet-panel">
-          <div class="code-header">
-            <h3>재무상태표 Tree 구성 (재무상태표 · BUILD_TREE)</h3>
-            <p>ROOT(재무상태표) → GROUP(자산/부채/자본) → ACCOUNT(계정) 3단계로 노드 생성, 그룹 합계는 ACCOUNT 집계에서 역산</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 그룹(자산/부채/자본)별 합계 계산</span>
-<span class="kw">LOOP AT</span> lt_acct <span class="kw">INTO</span> ls_acct.
-  <span class="kw">CASE</span> ls_acct-ktoks.
-
-    <span class="kw">WHEN</span> <span class="str">'ASST'</span>.
-      ls_asst-curr_amt += ls_acct-curr_amt.
-      ls_asst-prev_amt += ls_acct-prev_amt.
-      ls_asst-diff_amt += ls_acct-diff_amt.
-    <span class="kw">WHEN</span> <span class="str">'LIAB'</span>.
-      ls_liab-curr_amt += ls_acct-curr_amt.
-      ls_liab-prev_amt += ls_acct-prev_amt.
-      ls_liab-diff_amt += ls_acct-diff_amt.
-    <span class="kw">WHEN</span> <span class="str">'EQTY'</span>.
-      ls_eqty-curr_amt += ls_acct-curr_amt.
-      ls_eqty-prev_amt += ls_acct-prev_amt.
-      ls_eqty-diff_amt += ls_acct-diff_amt.
-  <span class="kw">ENDCASE</span>.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" ROOT 총계 = 자산 + 부채 + 자본</span>
-ls_root-curr_amt = ls_asst-curr_amt + ls_liab-curr_amt + ls_eqty-curr_amt.
-ls_root-diff_amt = ls_asst-diff_amt + ls_liab-diff_amt + ls_eqty-diff_amt.
-
-<span class="cm">" ROOT / GROUP 노드 생성 (굵게 강조)</span>
-<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_root <span class="str">'재무상태표'</span> <span class="str">''</span>         lv_root_key <span class="str">'X'</span>.
-<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_asst <span class="str">'자산'</span>      lv_root_key lv_asst_key <span class="str">'X'</span>.
-<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_liab <span class="str">'부채'</span>      lv_root_key lv_liab_key <span class="str">'X'</span>.
-<span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_eqty <span class="str">'자본'</span>      lv_root_key lv_eqty_key <span class="str">'X'</span>.
-
-<span class="cm">" ACCOUNT 노드 생성 — 각 그룹 하위에 계정 배치</span>
-<span class="kw">SORT</span> lt_acct <span class="kw">BY</span> ktoks saknr.
-
-<span class="kw">LOOP AT</span> lt_acct <span class="kw">INTO</span> ls_acct.
-  <span class="kw">CASE</span> ls_acct-ktoks.
-
-    <span class="kw">WHEN</span> <span class="str">'ASST'</span>. <span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_acct ls_acct-txt20 lv_asst_key lv_node_key space.
-    <span class="kw">WHEN</span> <span class="str">'LIAB'</span>. <span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_acct ls_acct-txt20 lv_liab_key lv_node_key space.
-    <span class="kw">WHEN</span> <span class="str">'EQTY'</span>. <span class="fn">PERFORM</span> add_tree_node <span class="kw">USING</span> ls_acct ls_acct-txt20 lv_eqty_key lv_node_key space.
-  <span class="kw">ENDCASE</span>.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" 노드 펼침 — 하위 계정이 있는 그룹만 expand</span>
-<span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_root_key ).
-<span class="kw">IF</span> lv_asst_cnt > <span class="num">0</span>. <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_asst_key ). <span class="kw">ENDIF</span>.
-<span class="kw">IF</span> lv_liab_cnt > <span class="num">0</span>. <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_liab_key ). <span class="kw">ENDIF</span>.
-<span class="kw">IF</span> lv_eqty_cnt > <span class="num">0</span>. <span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_node( i_node_key = lv_eqty_key ). <span class="kw">ENDIF</span>.
-
-<span class="kw">CALL METHOD</span> gcl_tree-&gt;frontend_update.</pre></div>
-        </div>
-
-        <div id="s18" class="snippet-panel">
-          <div class="code-header">
-            <h3>SVG 꺾은선 차트 HTML 동적 생성 (재무상태표 · BUILD_CHART_HTML)</h3>
-            <p>외부 라이브러리 없이 순수 SVG로 당기/전년 꺾은선 차트 생성 — Y축 금액 라벨, 격자선, 전년 데이터 유무 조건 분기 포함</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 월별 SVG 좌표 계산 (X: 등간격, Y: 최대값 대비 비율)</span>
-<span class="kw">LOOP AT</span> gt_chart <span class="kw">ASSIGNING</span> &lt;fs_chart&gt;.
-  lv_idx = lv_idx + <span class="num">1</span>.
-  lv_x      = <span class="num">95</span> + ( lv_idx - <span class="num">1</span> ) * <span class="num">50</span>.
-  lv_curr_y = <span class="num">250</span> - ( lv_curr_abs * <span class="num">190</span> / lv_max_amt ).  <span class="cm">" 위쪽이 Y=0</span>
-  lv_prev_y = <span class="num">250</span> - ( lv_prev_abs * <span class="num">190</span> / lv_max_amt ).
-
-  <span class="cm">" Polyline points 누적 (당기 / 전년)</span>
-  <span class="kw">CONCATENATE</span> lv_curr_points lv_x_txt <span class="str">','</span> lv_curr_y_txt <span class="kw">INTO</span> lv_curr_points <span class="kw">SEPARATED BY</span> space.
-  <span class="kw">CONCATENATE</span> lv_prev_points lv_x_txt <span class="str">','</span> lv_prev_y_txt <span class="kw">INTO</span> lv_prev_points <span class="kw">SEPARATED BY</span> space.
-
-  <span class="cm">" 당기 데이터 포인트 원(circle) SVG 누적</span>
-  <span class="kw">CONCATENATE</span> lv_curr_circle
-    <span class="str">'&lt;circle cx="'</span> lv_x_txt <span class="str">'" cy="'</span> lv_curr_y_txt
-    <span class="str">'" r="5" fill="#2563eb" stroke="white" stroke-width="2"/&gt;'</span>
-    <span class="kw">INTO</span> lv_curr_circle.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" 전년 데이터 유무에 따라 선/범례 조건 분기</span>
-<span class="kw">IF</span> gv_has_prev_data = abap_true.
-  lv_chart_sub   = <span class="str">'당기 / 전년 금액 비교'</span>.
-  lv_prev_legend = <span class="str">'&lt;span class="dot2"&gt;&lt;/span&gt;전년'</span>.
-  <span class="kw">CONCATENATE</span>
-    <span class="str">'&lt;polyline fill="none" stroke="#f97316" stroke-width="4" points="'</span>
-    lv_prev_points <span class="str">'"/'</span> <span class="kw">INTO</span> lv_prev_line.
-<span class="kw">ELSE</span>.
-  lv_chart_sub = <span class="str">'당기 금액 기준 · 전년 데이터 없음'</span>.
-  <span class="kw">CLEAR</span>: lv_prev_line, lv_prev_circle, lv_prev_legend.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 최종 HTML 조합 후 W3HTMLTAB(255자 단위)로 분할 → gcl_chart_html->load_data</span>
-<span class="kw">WHILE</span> lv_html <span class="kw">IS NOT INITIAL</span>.
-  <span class="kw">IF</span> strlen( lv_html ) > <span class="num">255</span>.
-    ls_html-line = lv_html+0(255).
-    <span class="kw">SHIFT</span> lv_html <span class="kw">BY</span> <span class="num">255</span> <span class="kw">PLACES LEFT</span>.
-  <span class="kw">ELSE</span>.
-    ls_html-line = lv_html. <span class="kw">CLEAR</span> lv_html.
-  <span class="kw">ENDIF</span>.
-  <span class="kw">APPEND</span> ls_html <span class="kw">TO</span> lt_html.
-<span class="kw">ENDWHILE</span>.
-
-<span class="kw">CALL METHOD</span> gcl_chart_html-&gt;load_data
-  <span class="kw">EXPORTING</span>  type = <span class="str">'text'</span>  subtype = <span class="str">'html'</span>
-  <span class="kw">IMPORTING</span>  assigned_url = lv_url
-  <span class="kw">CHANGING</span>   data_table   = lt_html.
-<span class="kw">CALL METHOD</span> gcl_chart_html-&gt;show_url( <span class="kw">EXPORTING</span> url = lv_url ).</pre></div>
-        </div>
-
-        <div id="s31" class="snippet-panel">
-          <div class="code-header">
-            <h3>Excel → 내부테이블 동적 필드 매핑 (Excel 일괄 반제 ·GET_DATA)</h3>
-            <p>ALSM_EXCEL_TO_INTERNAL_TABLE로 엑셀 파싱 후 col 번호 기준 ASSIGN COMPONENT로 동적 필드 매핑 — 전표번호 ALPHA 패딩, 금액 콤마 제거, FIELD-SYMBOL 활용</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 엑셀 파일 → alsmex_tabline 내부 테이블 변환 (1048576행)</span>
-<span class="kw">CALL FUNCTION</span> <span class="str">'ALSM_EXCEL_TO_INTERNAL_TABLE'</span>
-  <span class="kw">EXPORTING</span>
-    filename    = pa_fname
-    i_begin_col = <span class="num">1</span>  i_begin_row = <span class="num">2</span>
-    i_end_col   = <span class="num">5</span>  i_end_row   = <span class="num">1048576</span>
-  <span class="kw">TABLES</span>
-    intern      = lt_excel.
-
-<span class="kw">LOOP AT</span> lt_excel <span class="kw">INTO</span> ls_excel.
-  <span class="kw">AT NEW</span> row.
-    <span class="kw">APPEND INITIAL LINE TO</span> gt_bank <span class="kw">ASSIGNING</span> &lt;lfs_line&gt;.
-  <span class="kw">ENDAT</span>.
-
-  <span class="cm">" col 번호 → 구조체 컴포넌트 동적 매핑</span>
-  <span class="kw">CASE</span> ls_excel-col.
-
-    <span class="kw">WHEN</span> <span class="num">1</span>. <span class="kw">ASSIGN COMPONENT</span> <span class="str">'PARTNER_NO'</span> <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
-    <span class="kw">WHEN</span> <span class="num">2</span>.
-      <span class="cm">" 전표번호 ALPHA 패딩 (앞자리 0 채우기)</span>
-      lv_belnr = <span class="kw">CONV</span> zte1fi0005-belnr( ls_excel-value ).
-      <span class="kw">CALL FUNCTION</span> <span class="str">'CONVERSION_EXIT_ALPHA_INPUT'</span>
-        <span class="kw">EXPORTING</span>  input  = lv_belnr
-        <span class="kw">IMPORTING</span>  output = lv_belnr.
-      ls_excel-value = lv_belnr.
-      <span class="kw">ASSIGN COMPONENT</span> <span class="str">'REF_BELNR'</span> <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
-    <span class="kw">WHEN</span> <span class="num">3</span>. <span class="kw">ASSIGN COMPONENT</span> <span class="str">'BUDAT'</span>  <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
-    <span class="kw">WHEN</span> <span class="num">4</span>.
-      <span class="cm">" 금액 콤마 제거 후 매핑</span>
-      <span class="kw">REPLACE ALL OCCURRENCES OF</span> <span class="str">','</span> <span class="kw">IN</span> ls_excel-value <span class="kw">WITH</span> <span class="str">''</span>.
-      <span class="kw">ASSIGN COMPONENT</span> <span class="str">'WRBTR'</span>  <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
-    <span class="kw">WHEN</span> <span class="num">5</span>. <span class="kw">ASSIGN COMPONENT</span> <span class="str">'WAERS'</span>  <span class="kw">OF STRUCTURE</span> &lt;lfs_line&gt; <span class="kw">TO</span> &lt;lv_field&gt;.
-  <span class="kw">ENDCASE</span>.
-
-  <span class="kw">IF</span> &lt;lv_field&gt; <span class="kw">IS ASSIGNED</span>.
-    &lt;lv_field&gt; = ls_excel-value.
-    <span class="kw">UNASSIGN</span> &lt;lv_field&gt;.
-  <span class="kw">ENDIF</span>.
-<span class="kw">ENDLOOP</span>.</pre></div>
-        </div>
-
-        <div id="s32" class="snippet-panel">
-          <div class="code-header">
-            <h3>FAE 유효성 검증 · 누적금액 추적 (Excel 일괄 반제 ·CHECK_VALIDITY)</h3>
-            <p>전표·BP·전표유형을 FAE 3-쿼리로 일괄 조회 후 통화불일치/없는전표/BP조합불일치/초과입금 순차 검증 — 동일 전표 여러 행 처리 시 lt_accum으로 누적 입금액 추적</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" FAE 3-쿼리: 전표+BP 조합 / 전표번호만 / BP번호만</span>
-<span class="kw">SELECT</span> a~bukrs a~gjahr a~belnr a~blart a~partner_no
-       a~waers <span class="kw">AS</span> open_waers a~clear_status
-       b~open_amt c~ltext
-       d~comp_name d~waers <span class="kw">AS</span> bp_waers d~bp_type
-  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_fi
-  <span class="kw">FROM</span> zte1fi0005 <span class="kw">AS</span> a
- <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> b <span class="kw">ON</span> b~bukrs <span class="kw">EQ</span> a~bukrs <span class="kw">AND</span> b~gjahr <span class="kw">EQ</span> a~gjahr <span class="kw">AND</span> b~belnr <span class="kw">EQ</span> a~belnr
- <span class="kw">INNER JOIN</span> zte1fi0002 <span class="kw">AS</span> c <span class="kw">ON</span> a~blart <span class="kw">EQ</span> c~blart
-  <span class="kw">LEFT OUTER JOIN</span> zte1cm0004 <span class="kw">AS</span> d <span class="kw">ON</span> a~partner_no <span class="kw">EQ</span> d~partner_no
-   <span class="kw">FOR ALL ENTRIES IN</span> gt_bank
- <span class="kw">WHERE</span> a~belnr      <span class="kw">EQ</span> gt_bank-ref_belnr
-   <span class="kw">AND</span> a~partner_no <span class="kw">EQ</span> gt_bank-partner_no
-   <span class="kw">AND</span> a~loekz <span class="kw">EQ</span> space.
-
-<span class="kw">LOOP AT</span> gt_bank <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_bank&gt;).
-
-  <span class="cm">" IDOC 금액 → SAP 내부 포맷 변환</span>
-  <span class="kw">CALL FUNCTION</span> <span class="str">'CURRENCY_AMOUNT_IDOC_TO_SAP'</span>
-    <span class="kw">EXPORTING</span>  currency    = &lt;lfs_bank&gt;-wrbtr_waers
-               idoc_amount = &lt;lfs_bank&gt;-wrbtr
-    <span class="kw">IMPORTING</span>  sap_amount  = &lt;lfs_bank&gt;-wrbtr.
-
-  <span class="cm">" 전표+BP 조합 매핑</span>
-  <span class="kw">READ TABLE</span> lt_fi <span class="kw">INTO</span> ls_fi
-    <span class="kw">WITH KEY</span> belnr = &lt;lfs_bank&gt;-ref_belnr  partner_no = &lt;lfs_bank&gt;-partner_no.
-
-  <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-    <span class="cm">" 조합 실패 → 전표/BP 각각 개별 체크 후 remark 누적</span>
-    &lt;lfs_bank&gt;-icon   = icon_led_red.
-    &lt;lfs_bank&gt;-remark = <span class="str">'전표-BP 조합 불일치'</span>.
-    <span class="kw">CONTINUE</span>.
-  <span class="kw">ENDIF</span>.
-
-  <span class="cm">" 이전 행에서 이미 차감된 누적 입금액 반영 (동일 전표 멀티행)</span>
-  <span class="kw">READ TABLE</span> lt_accum <span class="kw">INTO</span> ls_accum
-    <span class="kw">WITH KEY</span> ref_belnr = &lt;lfs_bank&gt;-ref_belnr  partner_no = &lt;lfs_bank&gt;-partner_no.
-  <span class="kw">IF</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
-    &lt;lfs_bank&gt;-open_amt = &lt;lfs_bank&gt;-open_amt - ls_accum-sum_wrbtr.
-  <span class="kw">ENDIF</span>.
-
-  <span class="cm">" 초과입금 체크</span>
-  <span class="kw">IF</span> &lt;lfs_bank&gt;-wrbtr <span class="kw">GT</span> &lt;lfs_bank&gt;-open_amt.
-    &lt;lfs_bank&gt;-icon   = icon_led_red.
-    &lt;lfs_bank&gt;-remark = <span class="str">'입금액이 미결금액 초과'</span>.
-    <span class="kw">CONTINUE</span>.
-  <span class="kw">ENDIF</span>.
-
-  <span class="cm">" 반제 상태별 아이콘/비고 결정</span>
-  <span class="kw">CASE</span> &lt;lfs_bank&gt;-clear_status.
-
-    <span class="kw">WHEN</span> <span class="str">'N'</span> <span class="kw">OR</span> <span class="str">'P'</span>.
-      &lt;lfs_bank&gt;-icon   = <span class="kw">COND #</span>( <span class="kw">WHEN</span> &lt;lfs_bank&gt;-wrbtr <span class="kw">EQ</span> &lt;lfs_bank&gt;-open_amt
-                                    <span class="kw">THEN</span> icon_led_green <span class="kw">ELSE</span> icon_led_yellow ).
-      &lt;lfs_bank&gt;-remark = <span class="kw">COND #</span>( <span class="kw">WHEN</span> &lt;lfs_bank&gt;-wrbtr <span class="kw">EQ</span> &lt;lfs_bank&gt;-open_amt
-                                    <span class="kw">THEN</span> <span class="str">'완전반제 가능'</span> <span class="kw">ELSE</span> <span class="str">'부분반제 가능'</span> ).
-    <span class="kw">WHEN</span> <span class="str">'C'</span>. &lt;lfs_bank&gt;-icon = icon_led_red.  &lt;lfs_bank&gt;-remark = <span class="str">'이미 반제된 전표'</span>. <span class="kw">CONTINUE</span>.
-  <span class="kw">ENDCASE</span>.
-
-  <span class="cm">" 누적 입금액 갱신</span>
-  <span class="kw">READ TABLE</span> lt_accum <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_accum&gt;)
-    <span class="kw">WITH KEY</span> ref_belnr = &lt;lfs_bank&gt;-ref_belnr  partner_no = &lt;lfs_bank&gt;-partner_no.
-  <span class="kw">IF</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>. &lt;lfs_accum&gt;-sum_wrbtr += &lt;lfs_bank&gt;-wrbtr.
-  <span class="kw">ELSE</span>. <span class="kw">APPEND</span> <span class="kw">VALUE #</span>( ref_belnr  = &lt;lfs_bank&gt;-ref_belnr
-                       partner_no = &lt;lfs_bank&gt;-partner_no
-                       sum_wrbtr  = &lt;lfs_bank&gt;-wrbtr ) <span class="kw">TO</span> lt_accum. <span class="kw">ENDIF</span>.
-<span class="kw">ENDLOOP</span>.</pre></div>
-        </div>
-
-        <div id="s33" class="snippet-panel">
-          <div class="code-header">
-            <h3>일괄 반제 FAE 조회 + 채번 + INSERT/MODIFY (Excel 일괄 반제 ·CLEAR_ALL)</h3>
-            <p>유효 행(초록/노랑)만 수집 → FAE 3-쿼리(헤더·아이템·출하테이블) → 전표별 채번 → 반제전표 헤더+아이템 INSERT, 원전표 UPDATE, 출하테이블 UPDATE, 입출금내역 INSERT → COMMIT AND WAIT</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 유효 행(초록/노랑)만 대상 수집 → 중복 제거</span>
-<span class="kw">LOOP AT</span> gt_bank <span class="kw">ASSIGNING</span> &lt;lfs_bank&gt;
-  <span class="kw">WHERE</span> icon <span class="kw">EQ</span> icon_led_green <span class="kw">OR</span> icon <span class="kw">EQ</span> icon_led_yellow.
-  <span class="kw">APPEND</span> <span class="kw">VALUE #</span>( bukrs = &lt;lfs_bank&gt;-bukrs  gjahr = &lt;lfs_bank&gt;-gjahr
-                  ref_belnr = &lt;lfs_bank&gt;-ref_belnr ) <span class="kw">TO</span> lt_target.
-<span class="kw">ENDLOOP</span>.
-<span class="kw">SORT</span> lt_target <span class="kw">BY</span> bukrs gjahr ref_belnr.
-<span class="kw">DELETE ADJACENT DUPLICATES FROM</span> lt_target <span class="kw">COMPARING</span> bukrs gjahr ref_belnr.
-
-<span class="cm">" FAE 일괄 조회: 원전표 헤더 / 아이템 / 출하테이블</span>
-<span class="kw">SELECT</span> bukrs gjahr belnr blart bldat budat partner_no waers clear_status ref_belnr
-  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_head_org <span class="kw">FROM</span> zte1fi0005
-   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
-  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr
-    <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-ref_belnr <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
-
-<span class="kw">SELECT</span> bukrs gjahr belnr buzei hkont partner_no wrbtr open_amt close_amt
-       waers augdt augbl koart shkzg bschl
-  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> lt_all_item <span class="kw">FROM</span> zte1fi0006
-   <span class="kw">FOR ALL ENTRIES IN</span> lt_target
-  <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> lt_target-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> lt_target-gjahr
-    <span class="kw">AND</span> belnr <span class="kw">EQ</span> lt_target-ref_belnr <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
-
-<span class="cm">" 행별 채번 → 반제 후 미결금액/상태 계산 → INSERT/UPDATE 적재</span>
-<span class="kw">LOOP AT</span> gt_bank <span class="kw">ASSIGNING</span> &lt;lfs_bank&gt;
-  <span class="kw">WHERE</span> icon <span class="kw">EQ</span> icon_led_green <span class="kw">OR</span> icon <span class="kw">EQ</span> icon_led_yellow.
-
-  <span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
-    <span class="kw">EXPORTING</span> nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
-    <span class="kw">IMPORTING</span> number      = lv_aug_belnr.
-
-  lv_new_open = &lt;lfs_bank&gt;-open_amt - &lt;lfs_bank&gt;-wrbtr.
-  lv_status   = <span class="kw">COND #</span>( <span class="kw">WHEN</span> lv_new_open <span class="kw">EQ</span> <span class="num">0</span> <span class="kw">THEN</span> <span class="str">'C'</span> <span class="kw">ELSE</span> <span class="str">'P'</span> ).
-
-  <span class="cm">" 반제전표 헤더·입출금내역·원전표 헤더 적재</span>
-  ls_head_ins-belnr        = lv_aug_belnr.
-  ls_head_ins-blart        = <span class="str">'ZR'</span>.
-  ls_head_ins-clear_status = <span class="str">'C'</span>.
-  ls_head_ins-status       = <span class="str">'P'</span>.
-  <span class="kw">APPEND</span> ls_head_ins <span class="kw">TO</span> lt_head_ins.
-
-  ls_head_upd-clear_status = lv_status.
-  ls_head_upd-augbl        = lv_aug_belnr.
-  <span class="kw">APPEND</span> ls_head_upd <span class="kw">TO</span> lt_head_upd.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" DB 반영: INSERT(반제헤더+아이템+입출금) → MODIFY(원전표헤더+아이템+출하) → COMMIT</span>
-<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_ins..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_ins..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">INSERT</span> zte1fi0009 <span class="kw">FROM TABLE</span> lt_save..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">MODIFY</span> zte1fi0005 <span class="kw">FROM TABLE</span> lt_head_upd..
-<span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">MODIFY</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_upd..
-<span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">MODIFY</span> zte1sd0012 <span class="kw">FROM TABLE</span> lt_head_ship..
-<span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">COMMIT WORK AND WAIT</span>.</pre></div>
-        </div>
-
-        <div id="s28" class="snippet-panel">
-          <div class="code-header">
-            <h3>AR/AP 라디오버튼 동적 FCAT 분기 (반제 처리 ·SET_FCAT_LAYOUT)</h3>
-            <p>매출채권(AR·DR)/매입채무(AP·KR) 라디오버튼에 따라 거래처 참조 테이블을 동적으로 분기 — 동일 컬럼(PARTNER_NO/COMP_NAME)이지만 ref_table이 SD·MM 테이블로 달라짐</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 고정 헤더 FCAT 등록 (상태 아이콘·전표번호·일자·전표유형 공통)</span>
-<span class="fn">PERFORM</span> set_fcat_top <span class="kw">USING</span>:
-  <span class="str">'X'</span> <span class="str">'ICON'</span>   <span class="str">'상태'</span>     <span class="str">''</span>           <span class="str">''</span> <span class="num">4</span>,
-  <span class="str">'X'</span> <span class="str">'BELNR'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="num">15</span>,
-  <span class="str">' '</span> <span class="str">'BLDAT'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="num">15</span>,
-  <span class="str">' '</span> <span class="str">'BUDAT'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0005'</span> <span class="str">''</span> <span class="num">15</span>,
-  <span class="str">' '</span> <span class="str">'BLART'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0002'</span> <span class="str">''</span> <span class="num">10</span>,
-  <span class="str">' '</span> <span class="str">'LTEXT'</span>  <span class="str">''</span>         <span class="str">'ZTE1FI0002'</span> <span class="str">''</span> <span class="num">10</span>.
-
-<span class="cm">" AR/AP 라디오버튼에 따라 거래처 ref_table 동적 분기</span>
-<span class="kw">CASE</span> abap_true.
-
-  <span class="kw">WHEN</span> pa_ar.  <span class="cm">" 매출채권 — 고객 마스터(SD)</span>
-    <span class="fn">PERFORM</span> set_fcat_top <span class="kw">USING</span>:
-    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span> <span class="str">''</span> <span class="str">'ZTE1SD0001'</span> <span class="str">''</span>      <span class="num">15</span>,
-    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>  <span class="str">''</span> <span class="str">'ZTE1CM0004'</span> <span class="str">''</span>      <span class="num">18</span>.
-  <span class="kw">WHEN</span> pa_ap.  <span class="cm">" 매입채무 — 공급업체 마스터(MM)</span>
-    <span class="fn">PERFORM</span> set_fcat_top <span class="kw">USING</span>:
-    <span class="str">' '</span> <span class="str">'PARTNER_NO'</span> <span class="str">''</span> <span class="str">'ZTE1MM0010'</span> <span class="str">'LIFNR'</span> <span class="num">15</span>,
-    <span class="str">' '</span> <span class="str">'COMP_NAME'</span>  <span class="str">''</span> <span class="str">'ZTE1CM0004'</span> <span class="str">''</span>      <span class="num">18</span>.
-<span class="kw">ENDCASE</span>.
-
-<span class="cm">" 하단 아이템 FCAT — 차대변 통화키 자동 연결 (cfieldname)</span>
-<span class="fn">PERFORM</span> set_fcat_item <span class="kw">USING</span>:
-  <span class="str">'X'</span> <span class="str">'BUZEI'</span>        <span class="str">'라인번호'</span>       <span class="str">'ZTE1FI0006'</span> <span class="str">''</span>          <span class="num">6</span>,
-  <span class="str">' '</span> <span class="str">'DEBIT_AMT'</span>    <span class="str">'차변 미결금액'</span>  <span class="str">'ZTE1FI0006'</span> <span class="str">'OPEN_AMT'</span>  <span class="num">10</span>,
-  <span class="str">' '</span> <span class="str">'DEBIT_WAERS'</span>  <span class="str">'통화'</span>           <span class="str">'ZTE1FI0006'</span> <span class="str">''</span>          <span class="num">10</span>,
-  <span class="str">' '</span> <span class="str">'CREDIT_AMT'</span>   <span class="str">'대변 미결금액'</span>  <span class="str">'ZTE1FI0006'</span> <span class="str">'OPEN_AMT'</span>  <span class="num">10</span>,
-  <span class="str">' '</span> <span class="str">'CREDIT_WAERS'</span> <span class="str">'통화'</span>           <span class="str">'ZTE1FI0006'</span> <span class="str">''</span>          <span class="num">10</span>.
-
-<span class="cm">" 입출금 내역 FCAT — 원전표금액 합산용 cfieldname 연결</span>
-<span class="fn">PERFORM</span> set_fcat_clearing <span class="kw">USING</span>:
-  <span class="str">'X'</span> <span class="str">'REF_BELNR'</span>    <span class="str">'기존 전표 번호'</span> <span class="str">'ZTE1FI0009'</span> <span class="str">''</span>        <span class="num">10</span>,
-  <span class="str">' '</span> <span class="str">'WRBTR'</span>        <span class="str">'입출금금액'</span>     <span class="str">'ZTE1FI0009'</span> <span class="str">''</span>        <span class="num">10</span>,
-  <span class="str">' '</span> <span class="str">'OG_WRBTR'</span>     <span class="str">'원전표 금액'</span>    <span class="str">'ZTE1FI0005'</span> <span class="str">'WRBTR'</span>   <span class="num">10</span>,
-  <span class="str">' '</span> <span class="str">'CLEAR_STATUS'</span> <span class="str">'반제상태'</span>       <span class="str">'ZTE1FI0009'</span> <span class="str">''</span>        <span class="num">10</span>.</pre></div>
-        </div>
-
-        <div id="s29" class="snippet-panel">
-          <div class="code-header">
-            <h3>반제 내역 4-테이블 JOIN + GROUP BY SUM (반제 처리 ·GET_CLEARING_DATA)</h3>
-            <p>입출금 내역(zte1fi0009)·전표헤더·전표명세·계좌마스터를 4-테이블 JOIN — 명세의 차변(shkzg=S) SUM으로 원전표 금액 집계, 반제상태 도메인 텍스트 후처리</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 4-테이블 JOIN: 입출금내역 + 전표헤더 + 전표명세(차변 SUM) + 계좌마스터</span>
-<span class="kw">SELECT</span> a~bukrs  a~gjahr  a~ref_belnr  a~budat   a~wrbtr
-       a~open_amt <span class="kw">AS</span> open_amt   a~waers  a~augdt  a~tx_seq
-       b~clear_status
-       <span class="fn">SUM</span>( c~wrbtr ) <span class="kw">AS</span> og_wrbtr   <span class="cm">" 원전표 차변 합산</span>
-       <span class="fn">MAX</span>( c~waers ) <span class="kw">AS</span> og_waers
-       d~bank_no d~bank_name
-  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> gt_clearing
-  <span class="kw">FROM</span> zte1fi0009 <span class="kw">AS</span> a
- <span class="kw">INNER JOIN</span> zte1fi0005 <span class="kw">AS</span> b
-    <span class="kw">ON</span>  a~bukrs     <span class="kw">EQ</span> b~bukrs
-   <span class="kw">AND</span> a~gjahr     <span class="kw">EQ</span> b~gjahr
-   <span class="kw">AND</span> a~ref_belnr <span class="kw">EQ</span> b~belnr
- <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> c
-    <span class="kw">ON</span>  b~bukrs <span class="kw">EQ</span> c~bukrs
-   <span class="kw">AND</span> b~gjahr <span class="kw">EQ</span> c~gjahr
-   <span class="kw">AND</span> b~belnr <span class="kw">EQ</span> c~belnr
-   <span class="kw">AND</span> c~shkzg <span class="kw">EQ</span> <span class="str">'S'</span>   <span class="cm">" 차변만 집계</span>
- <span class="kw">INNER JOIN</span> zte1fi0008 <span class="kw">AS</span> d
-    <span class="kw">ON</span>  a~hkont <span class="kw">EQ</span> d~hkont
-   <span class="kw">AND</span> a~waers  <span class="kw">EQ</span> d~waers
- <span class="kw">WHERE</span> a~bukrs     <span class="kw">IN</span> lr_bukrs
-   <span class="kw">AND</span> a~gjahr     <span class="kw">IN</span> lr_gjahr
-   <span class="kw">AND</span> a~ref_belnr <span class="kw">IN</span> lr_belnr
-   <span class="kw">AND</span> a~loekz     <span class="kw">EQ</span> space
- <span class="kw">GROUP BY</span> a~bukrs a~gjahr a~ref_belnr a~budat a~wrbtr a~open_amt
-          a~waers a~augdt a~tx_seq b~clear_status d~bank_no d~bank_name
- <span class="kw">ORDER BY</span> a~ref_belnr a~tx_seq <span class="kw">DESCENDING</span>.
-
-<span class="cm">" 도메인 텍스트 후처리 (ZDE1_FI_CLEAR_STATUS → clear_status_txt)</span>
-<span class="kw">CALL FUNCTION</span> <span class="str">'GET_DOMAIN_VALUES'</span>
-  <span class="kw">EXPORTING</span>  domname    = <span class="str">'ZDE1_FI_CLEAR_STATUS'</span>
-  <span class="kw">TABLES</span>     values_tab = lt_clearing_status.
-
-<span class="kw">LOOP AT</span> gt_clearing <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_clearing&gt;).
-  <span class="kw">READ TABLE</span> lt_clearing_status <span class="kw">INTO DATA</span>(ls_status)
-    <span class="kw">WITH KEY</span> domvalue_l = &lt;lfs_clearing&gt;-clear_status.
-  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
-  &lt;lfs_clearing&gt;-clear_status_txt = ls_status-ddtext.
-<span class="kw">ENDLOOP</span>.</pre></div>
-        </div>
-
-        <div id="s30" class="snippet-panel">
-          <div class="code-header">
-            <h3>반제 처리 · 미결금액 차감 + 반제전표 생성 (반제 처리 ·DO_CLEARING)</h3>
-            <p>입출금 금액과 미결금액 비교로 완전반제(C)/부분반제(P) 결정 — 전표 아이템·헤더 UPDATE 후 채번, 반제전표(ZR) INSERT, AR일 때 청구문서 상태도 동기화, COMMIT AND WAIT</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 미결금액 조회 후 입출금액 비교 → 반제 상태 결정</span>
-<span class="kw">SELECT SINGLE</span> open_amt <span class="kw">INTO CORRESPONDING FIELDS OF</span> gs_item
-  <span class="kw">FROM</span> zte1fi0006 <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> ps_header-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> ps_header-gjahr
-                        <span class="kw">AND</span> belnr <span class="kw">EQ</span> ps_header-belnr <span class="kw">AND</span> loekz <span class="kw">EQ</span> space.
-
-lv_clear_status = <span class="kw">COND #</span>( <span class="kw">WHEN</span> ps_clearing-wrbtr <span class="kw">GE</span> gs_item-open_amt
-                           <span class="kw">THEN</span> <span class="str">'C'</span>  <span class="cm">" 완전반제</span>
-                           <span class="kw">ELSE</span> <span class="str">'P'</span> ).  <span class="cm">" 부분반제</span>
-
-<span class="cm">" 미결금액 차감</span>
-<span class="kw">IF</span> lv_clear_status <span class="kw">EQ</span> <span class="str">'C'</span>.
-  gs_item-open_amt  = <span class="num">0</span>.
-  gs_item-close_amt = lv_open_amt.
-<span class="kw">ELSE</span>.
-  gs_item-open_amt  = lv_open_amt - ps_clearing-wrbtr.
-  gs_item-close_amt = ps_clearing-wrbtr.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 전표 아이템 UPDATE (미결금액·반제일자)</span>
-<span class="kw">UPDATE</span> zte1fi0006
-   <span class="kw">SET</span> augdt = gs_item-augdt  open_amt  = gs_item-open_amt
-       augbl = gs_item-augbl  close_amt = gs_item-close_amt
-       aedat = sy-datum  aezet = sy-uzeit  aenam = sy-uname
- <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> ps_header-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> ps_header-gjahr
-   <span class="kw">AND</span> belnr <span class="kw">EQ</span> ps_header-belnr.
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 전표 헤더 UPDATE (반제상태)</span>
-<span class="kw">UPDATE</span> zte1fi0005
-   <span class="kw">SET</span> clear_status = lv_clear_status
-       aedat = sy-datum  aezet = sy-uzeit  aenam = sy-uname
- <span class="kw">WHERE</span> bukrs <span class="kw">EQ</span> ps_header-bukrs <span class="kw">AND</span> gjahr <span class="kw">EQ</span> ps_header-gjahr
-   <span class="kw">AND</span> belnr <span class="kw">EQ</span> ps_header-belnr.
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" AR 전용 — 청구문서 상태 동기화</span>
-<span class="kw">IF</span> pa_ar <span class="kw">EQ</span> abap_true.
-  <span class="kw">UPDATE</span> zte1sd0012 <span class="kw">SET</span> billing_status = <span class="str">'C'</span>
-   <span class="kw">WHERE</span> ref_fi_belnr <span class="kw">EQ</span> ps_header-belnr.
-  <span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-    <span class="kw">ROLLBACK WORK</span>.
-    <span class="kw">RETURN</span>.
-  <span class="kw">ENDIF</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 채번 후 반제전표(ZR) 헤더+아이템 INSERT</span>
-<span class="kw">CALL FUNCTION</span> <span class="str">'NUMBER_GET_NEXT'</span>
-  <span class="kw">EXPORTING</span> nr_range_nr = <span class="str">'01'</span>  object = <span class="str">'ZNRE1FI01'</span>
-  <span class="kw">IMPORTING</span> number      = lv_belnr.
-
-ls_header_insert-belnr        = lv_belnr.
-ls_header_insert-blart        = <span class="str">'ZR'</span>.
-ls_header_insert-status       = <span class="str">'D'</span>.
-ls_header_insert-clear_status = <span class="str">'C'</span>.
-<span class="kw">INSERT</span> zte1fi0005 <span class="kw">FROM</span> ls_header_insert..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="kw">INSERT</span> zte1fi0006 <span class="kw">FROM TABLE</span> lt_item_insert..
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 통장 입출금 내역 반제 상태 UPDATE → COMMIT AND WAIT</span>
-<span class="kw">UPDATE</span> zte1fi0009
-  <span class="kw">SET</span> clear_status = lv_clear_status
-      augbl         = lv_belnr
-      aedat         = sy-datum
-      aezet         = sy-uzeit
-      aenam         = sy-uname
-  <span class="kw">WHERE</span> bukrs  <span class="kw">EQ</span> ps_header-bukrs
-    <span class="kw">AND</span> gjahr  <span class="kw">EQ</span> ps_header-gjahr
-    <span class="kw">AND</span> tx_seq <span class="kw">EQ</span> ps_clearing-tx_seq.
-<span class="kw">IF</span> sy-subrc <span class="kw">NE</span> <span class="num">0</span>.
-  <span class="kw">ROLLBACK WORK</span>.
-  <span class="kw">RETURN</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">COMMIT WORK AND WAIT</span>.</pre></div>
-        </div>
-
-        <div id="s22" class="snippet-panel">
-          <div class="code-header">
-            <h3>직전 월 기준기간 계산 (여신관리 배치 ·CALC_DATE_RANGE)</h3>
-            <p>시스템 날짜 기준으로 직전 월 1일~오늘을 기준기간으로 산출 — 1월일 경우 연도 역산 처리, 체크박스 미선택 시 즉시 종료</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 체크박스 미선택 시 처리 차단</span>
-<span class="kw">IF</span> pa_chbox <span class="kw">NE</span> abap_true.
-  <span class="kw">MESSAGE</span> s000 <span class="kw">WITH</span> <span class="str">'체크박스 체크 안할 시 여신 변경 불가'</span> <span class="kw">DISPLAY LIKE</span> <span class="str">'E'</span>.
-  <span class="kw">LEAVE LIST-PROCESSING</span>.
-<span class="kw">ENDIF</span>.
-
-lv_year  = sy-datum(<span class="num">4</span>).
-lv_month = sy-datum+<span class="num">4</span>(<span class="num">2</span>).
-
-<span class="cm">" 직전 월 계산 — 1월이면 전년 12월로 역산</span>
-<span class="kw">IF</span> lv_month <span class="kw">EQ</span> <span class="str">'01'</span>.
-  lv_month = <span class="str">'12'</span>.
-  lv_year  = lv_year - <span class="num">1</span>.
-<span class="kw">ELSE</span>.
-  lv_month = lv_month - <span class="num">1</span>.
-<span class="kw">ENDIF</span>.
-
-<span class="cm">" 직전 월 1일 조합 (YYYYMMDD)</span>
-<span class="kw">CONCATENATE</span> lv_year lv_month <span class="str">'01'</span> <span class="kw">INTO</span> gv_first_day.
-
-<span class="cm">" 종료일 = 오늘 (배치 실행 일자)</span>
-gv_last_day = sy-datum.
-
-<span class="kw">WRITE</span>: / |기준기간: { gv_first_day } ~ { gv_last_day }|.</pre></div>
-        </div>
-
-        <div id="s23" class="snippet-panel">
-          <div class="code-header">
-            <h3>매출 GROUP BY 집계 (여신관리 배치 ·GET_SALES_DATA)</h3>
-            <p>기준기간 내 DR 전표에서 거래처별 총 매출·미결잔액을 SUM GROUP BY로 단일 SELECT — bschl=40(매출계정), shkzg=S 조건으로 차변만 집계</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 거래처별 매출 합계·미결잔액을 GROUP BY로 단일 쿼리 집계</span>
-<span class="kw">SELECT</span> a~partner_no,
-       <span class="fn">SUM</span>( b~dmbtr )    <span class="kw">AS</span> total_amt,
-       <span class="fn">SUM</span>( b~open_amt ) <span class="kw">AS</span> open_amt,
-       a~waers
-  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> @gt_sales
-  <span class="kw">FROM</span> zte1fi0005 <span class="kw">AS</span> a
- <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> b
-    <span class="kw">ON</span>  a~bukrs <span class="kw">EQ</span> b~bukrs
-   <span class="kw">AND</span> a~gjahr <span class="kw">EQ</span> b~gjahr
-   <span class="kw">AND</span> a~belnr <span class="kw">EQ</span> b~belnr
- <span class="kw">WHERE</span> a~bukrs      <span class="kw">EQ</span> <span class="str">'1000'</span>
-   <span class="kw">AND</span> a~bldat      <span class="kw">BETWEEN</span> @gv_first_day <span class="kw">AND</span> @gv_last_day
-   <span class="kw">AND</span> a~blart      <span class="kw">EQ</span> <span class="str">'DR'</span>        <span class="cm">" 외상매출 전표유형</span>
-   <span class="kw">AND</span> a~status     <span class="kw">NE</span> <span class="str">'X'</span>
-   <span class="kw">AND</span> a~partner_no <span class="kw">NE</span> @space
-   <span class="kw">AND</span> a~belnr      <span class="kw">LIKE</span> <span class="str">'0%'</span>
-   <span class="kw">AND</span> b~shkzg      <span class="kw">EQ</span> <span class="str">'S'</span>         <span class="cm">" 차변만 집계</span>
-   <span class="kw">AND</span> b~bschl      <span class="kw">EQ</span> <span class="str">'40'</span>        <span class="cm">" 전기 키 40(매출)</span>
-   <span class="kw">AND</span> a~loekz      <span class="kw">EQ</span> @space
- <span class="kw">GROUP BY</span> a~partner_no, a~waers.
-
-<span class="kw">IF</span> gt_sales <span class="kw">IS INITIAL</span>.
-  <span class="kw">WRITE</span>: / <span class="str">'해당 기간 매출 데이터 없음 (기존 등급 기준으로 한도 갱신)'</span>.
-<span class="kw">ELSE</span>.
-  <span class="kw">WRITE</span>: / |매출 집계 대상: { lines( gt_sales ) }건|.
-<span class="kw">ENDIF</span>.</pre></div>
-        </div>
-
-        <div id="s24" class="snippet-panel">
-          <div class="code-header">
-            <h3>등급 재산정 / 여신 일괄 MODIFY (여신관리 배치 ·PROCESS_GRADE)</h3>
-            <p>월말/평일 분기 — 월말에만 매출 기준 S/A/B/C 등급 재산정(매출 없으면 한 단계 강등), 일배치는 기존 등급 유지 · 미결잔액만 갱신. 고객마스터·여신 테이블 일괄 MODIFY 후 COMMIT AND WAIT</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 월말 여부 판단 (RP_LAST_DAY_OF_MONTHS)</span>
-<span class="kw">CALL FUNCTION</span> <span class="str">'RP_LAST_DAY_OF_MONTHS'</span>
-  <span class="kw">EXPORTING</span>  day_in            = sy-datum
-  <span class="kw">IMPORTING</span>  last_day_of_month = lv_last_day.
-<span class="kw">IF</span> sy-datum <span class="kw">EQ</span> lv_last_day. lv_is_last = abap_true. <span class="kw">ENDIF</span>.
-
-<span class="kw">LOOP AT</span> lt_cust <span class="kw">INTO DATA</span>(ls_cust).
-  <span class="kw">READ TABLE</span> gt_sales <span class="kw">INTO</span> gs_sales <span class="kw">WITH KEY</span> partner_no = ls_cust-partner_no.
-  <span class="kw">IF</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>. lv_amt = gs_sales-total_amt. lv_open_amt = gs_sales-open_amt. <span class="kw">ENDIF</span>.
-
-  <span class="cm">" 월말: 매출 기준 등급 재산정</span>
-  <span class="kw">IF</span> lv_is_last <span class="kw">EQ</span> abap_true.
-    <span class="kw">IF</span>      lv_amt <span class="kw">GE</span> gc_amt_s. lv_new_grade = <span class="str">'S'</span>. lv_klimk = gc_amt_s.
-    <span class="kw">ELSEIF</span>  lv_amt <span class="kw">GE</span> gc_amt_a. lv_new_grade = <span class="str">'A'</span>. lv_klimk = gc_amt_a.
-    <span class="kw">ELSEIF</span>  lv_amt <span class="kw">GE</span> gc_amt_b. lv_new_grade = <span class="str">'B'</span>. lv_klimk = gc_amt_b.
-    <span class="kw">ELSE</span>.                         lv_new_grade = <span class="str">'C'</span>. lv_klimk = gc_amt_c. <span class="kw">ENDIF</span>.
-
-    <span class="cm">" 매출 없으면 한 단계 강등</span>
-    <span class="kw">IF</span> lv_amt <span class="kw">IS INITIAL</span>.
-      <span class="kw">CASE</span> lv_old_grade.
-
-        <span class="kw">WHEN</span> <span class="str">'S'</span>. lv_new_grade = <span class="str">'A'</span>. lv_klimk = gc_amt_a.
-        <span class="kw">WHEN</span> <span class="str">'A'</span>. lv_new_grade = <span class="str">'B'</span>. lv_klimk = gc_amt_b.
-        <span class="kw">WHEN OTHERS</span>. lv_new_grade = <span class="str">'C'</span>. lv_klimk = gc_amt_c.
-      <span class="kw">ENDCASE</span>.
-    <span class="kw">ENDIF</span>.
-  <span class="kw">ELSE</span>.
-    <span class="cm">" 평일: 기존 등급 유지, 한도만 매핑</span>
-    lv_new_grade = lv_old_grade.
-    <span class="kw">CASE</span> lv_old_grade.
-
-      <span class="kw">WHEN</span> <span class="str">'S'</span>. lv_klimk = gc_amt_s.  <span class="kw">WHEN</span> <span class="str">'A'</span>. lv_klimk = gc_amt_a.
-      <span class="kw">WHEN</span> <span class="str">'B'</span>. lv_klimk = gc_amt_b.  <span class="kw">WHEN OTHERS</span>. lv_klimk = gc_amt_c.
-    <span class="kw">ENDCASE</span>.
-  <span class="kw">ENDIF</span>.
-
-  <span class="kw">IF</span> lv_old_grade <span class="kw">NE</span> lv_new_grade.
-    gv_change_cnt += <span class="num">1</span>.
-    <span class="kw">WRITE</span>: / |{ ls_cust-partner_no } : { lv_old_grade } → { lv_new_grade } (등급 변경)| <span class="kw">COLOR COL_KEY</span>.
-  <span class="kw">ENDIF</span>.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" 고객마스터(월말만) + 여신 테이블 일괄 MODIFY → COMMIT AND WAIT</span>
-<span class="kw">IF</span> lt_sd0001 <span class="kw">IS NOT INITIAL</span>.
-  <span class="kw">MODIFY</span> zte1sd0001 <span class="kw">FROM TABLE</span> lt_sd0001.
-  <span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">ENDIF</span>.
-<span class="kw">ENDIF</span>.
-<span class="kw">MODIFY</span> zte1sd0016 <span class="kw">FROM TABLE</span> lt_sd0016.
-<span class="kw">IF</span> sy-dbcnt <span class="kw">EQ</span> <span class="num">0</span>. <span class="kw">ROLLBACK WORK</span>. <span class="kw">ENDIF</span>.
-<span class="kw">COMMIT WORK AND WAIT</span>.</pre></div>
-        </div>
-
-        <div id="s25" class="snippet-panel">
-          <div class="code-header">
-            <h3>결재 승인/반려 처리 (임시전표 결재 ·onApprove / onReject)</h3>
-            <p>MessageBox 확인 후 OData update로 Status 변경 — 반려는 Dialog로 사유(ReasonTxt)를 입력받아 함께 전송, 성공 시 대시보드 차트 재집계 후 리스트로 복귀</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">//  결재</span>
-<span class="fn">onApprove</span>: <span class="kw">function</span> () {
-  <span class="kw">var</span> oContext = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"idDetailPage"</span>).<span class="fn">getBindingContext</span>();
-
-  <span class="kw">if</span> (!oContext) {
-    MessageToast.<span class="fn">show</span>(<span class="str">"전표를 선택하세요."</span>);
-    <span class="kw">return</span>;
-  }
-
-  <span class="kw">var</span> oData = oContext.<span class="fn">getObject</span>();
-
-  <span class="kw">if</span> (oData.Status !== <span class="str">"D"</span>) {
-    MessageToast.<span class="fn">show</span>(<span class="str">"결재 대기 상태만 결재 가능합니다."</span>);
-    <span class="kw">return</span>;
-  }
-
-  <span class="kw">var</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
-  <span class="kw">var</span> sPath = oContext.<span class="fn">getPath</span>();
-  <span class="kw">var</span> that = <span class="kw">this</span>;
-
-  MessageBox.<span class="fn">confirm</span>(
-    oData.Belnr + <span class="str">"번 전표를 결재하시겠습니까?"</span>,
-    {
-      title: <span class="str">"임시전표 결재"</span>,
-      onClose: <span class="kw">function</span> (sAction) {
-        <span class="kw">if</span> (sAction === MessageBox.Action.OK) {
-          oModel.<span class="fn">update</span>(sPath, { Status: <span class="str">"P"</span> }, {
-            success: <span class="kw">function</span> () {
-              MessageToast.<span class="fn">show</span>(<span class="str">"결재 완료되었습니다."</span>);
-              oModel.<span class="fn">refresh</span>(<span class="kw">true</span>);
-              that.<span class="fn">_calculateChartCounts</span>(oModel);
-              that.<span class="fn">byId</span>(<span class="str">"idNavContainer"</span>).<span class="fn">back</span>();
-            },
-            error: <span class="kw">function</span> () {
-              MessageToast.<span class="fn">show</span>(<span class="str">"결재 처리 중 오류가 발생했습니다."</span>);
-            }
-          });
-        }
-      }
-    }
-  );
-},
-
-<span class="cm">// 반려</span>
-<span class="fn">onReject</span>: <span class="kw">function</span> () {
-  <span class="kw">var</span> oContext = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"idDetailPage"</span>).<span class="fn">getBindingContext</span>();
-  <span class="kw">var</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
-  <span class="kw">var</span> sPath = oContext.<span class="fn">getPath</span>();
-  <span class="kw">var</span> that = <span class="kw">this</span>;
-
-  <span class="kw">var</span> oDialog = <span class="kw">new</span> Dialog({
-    title: <span class="str">"반려 사유 입력"</span>,
-    type: <span class="str">"Message"</span>,
-    content: [ <span class="kw">new</span> TextArea(<span class="str">"idRejectReason"</span>, { width: <span class="str">"100%"</span>, rows: <span class="num">4</span>,
-      placeholder: <span class="str">"반려 사유를 입력하세요"</span> }) ],
-    beginButton: <span class="kw">new</span> Button({
-      text: <span class="str">"반려 확정"</span>,
-      type: <span class="str">"Reject"</span>,
-      press: <span class="kw">function</span> () {
-        <span class="kw">var</span> sReason = sap.ui.getCore().<span class="fn">byId</span>(<span class="str">"idRejectReason"</span>).<span class="fn">getValue</span>();
-        <span class="kw">if</span> (!sReason) { MessageToast.<span class="fn">show</span>(<span class="str">"반려 사유를 입력하세요."</span>); <span class="kw">return</span>; }
-
-        oModel.<span class="fn">update</span>(sPath, { Status: <span class="str">"J"</span>, ReasonTxt: sReason }, {
-          success: <span class="kw">function</span> () {
-            MessageToast.<span class="fn">show</span>(<span class="str">"반려 처리 완료되었습니다."</span>);
-            oModel.<span class="fn">refresh</span>(<span class="kw">true</span>);
-            that.<span class="fn">_calculateChartCounts</span>(oModel);
-            that.<span class="fn">byId</span>(<span class="str">"idNavContainer"</span>).<span class="fn">back</span>();
-          },
-          error: <span class="kw">function</span> () { MessageToast.<span class="fn">show</span>(<span class="str">"반려 처리 중 오류가 발생했습니다."</span>); }
-        });
-        oDialog.<span class="fn">close</span>();
-      }
-    }),
-    endButton: <span class="kw">new</span> Button({ text: <span class="str">"취소"</span>, press: <span class="kw">function</span> () { oDialog.<span class="fn">close</span>(); } }),
-    afterClose: <span class="kw">function</span> () { oDialog.<span class="fn">destroy</span>(); }
-  });
-
-  oDialog.<span class="fn">open</span>();
-},</pre></div>
-        </div>
-
-        <div id="s26" class="snippet-panel">
-          <div class="code-header">
-            <h3>대시보드 차트 집계 (임시전표 결재 ·_calculateChartCounts)</h3>
-            <p>ApprovalHeaderSet 전량 조회 후 상태(D/P/J)별 건수·비율·최대 대기일수를 클라이언트에서 계산해 차트용 JSON 모델에 반영</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">// 백엔드 OData에서 상태별 전표 개수를 계산하는 내부 메소드</span>
-<span class="fn">_calculateChartCounts</span>: <span class="kw">function</span> (oModel) {
-  <span class="kw">var</span> oChartModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"chart"</span>);
-  <span class="kw">var</span> today = <span class="kw">new</span> Date();
-  <span class="kw">var</span> iThisMonth = today.<span class="fn">getMonth</span>();
-  <span class="kw">var</span> iThisYear = today.<span class="fn">getFullYear</span>();
-
-  oModel.<span class="fn">read</span>(<span class="str">"/ApprovalHeaderSet"</span>, {
-    success: <span class="kw">function</span> (oData) {
-      <span class="kw">var</span> iWait = <span class="num">0</span>, iDone = <span class="num">0</span>, iReject = <span class="num">0</span>, iThisMonthCount = <span class="num">0</span>;
-
-      oData.results.<span class="fn">forEach</span>(<span class="kw">function</span> (item) {
-        <span class="kw">if</span> (item.Status === <span class="str">"D"</span>) { iWait++; }
-        <span class="kw">else if</span> (item.Status === <span class="str">"P"</span>) { iDone++; }
-        <span class="kw">else if</span> (item.Status === <span class="str">"J"</span>) { iReject++; }
-
-        <span class="kw">if</span> (item.Erdat) {
-          <span class="kw">var</span> d = <span class="kw">new</span> Date(item.Erdat);
-          <span class="kw">if</span> (d.<span class="fn">getMonth</span>() === iThisMonth && d.<span class="fn">getFullYear</span>() === iThisYear) { iThisMonthCount++; }
-        }
-      });
-
-      <span class="kw">var</span> iTotal = iWait + iDone + iReject;
-      <span class="kw">var</span> sRejectRate = iTotal > <span class="num">0</span> ? Math.<span class="fn">round</span>((iReject / iTotal) * <span class="num">100</span>) + <span class="str">"%"</span> : <span class="str">"0%"</span>;
-      <span class="kw">var</span> sDoneRate   = iTotal > <span class="num">0</span> ? Math.<span class="fn">round</span>((iDone   / iTotal) * <span class="num">100</span>) + <span class="str">"%"</span> : <span class="str">"0%"</span>;
-
-      <span class="kw">var</span> iMaxPending = <span class="num">0</span>;
-      oData.results.<span class="fn">forEach</span>(<span class="kw">function</span> (item) {
-        <span class="kw">if</span> (item.Status === <span class="str">"D"</span> && item.Erdat) {
-          <span class="kw">var</span> iDays = Math.<span class="fn">floor</span>((today - <span class="kw">new</span> Date(item.Erdat)) / <span class="num">86400000</span>);
-          <span class="kw">if</span> (iDays > iMaxPending) { iMaxPending = iDays; }
-        }
-      });
-
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/WaitCount"</span>, iWait);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/DoneCount"</span>, iDone);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/RejectCount"</span>, iReject);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/RejectRate"</span>, sRejectRate);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/DoneRate"</span>, sDoneRate);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/MaxPendingDays"</span>, iMaxPending + <span class="str">"일"</span>);
-      oChartModel.<span class="fn">setProperty</span>(<span class="str">"/chartData"</span>, [
-        { label: <span class="str">"결재 대기"</span>, count: iWait },
-        { label: <span class="str">"결재 완료"</span>, count: iDone },
-        { label: <span class="str">"반려"</span>,     count: iReject }
-      ]);
-    }.<span class="fn">bind</span>(<span class="kw">this</span>),
-    error: <span class="kw">function</span> () { console.<span class="fn">error</span>(<span class="str">"대시보드 차트용 데이터 집계 중 백엔드 통신 오류 발생"</span>); }
-  });
-},</pre></div>
-        </div>
-
-        <div id="s27" class="snippet-panel">
-          <div class="code-header">
-            <h3>일괄 결재 (임시전표 결재 ·onApproveAll)</h3>
-            <p>현재 필터링된 리스트 바인딩에서 결재 대기(Status=D) 컨텍스트만 추출해 OData update를 콜백 재귀로 순차 호출 — BusyIndicator로 진행 중 표시, 완료 후 성공/실패 건수 집계</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">// ===================== 일괄 결재 =====================</span>
-<span class="fn">onApproveAll</span>: <span class="kw">function</span> () {
-  <span class="kw">var</span> oList = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"idList"</span>);
-  <span class="kw">var</span> oBinding = oList.<span class="fn">getBinding</span>(<span class="str">"items"</span>);
-  <span class="kw">var</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
-  <span class="kw">var</span> that = <span class="kw">this</span>;
-
-  <span class="kw">if</span> (!oBinding) { MessageToast.<span class="fn">show</span>(<span class="str">"결재할 전표 목록이 없습니다."</span>); <span class="kw">return</span>; }
-
-  <span class="kw">var</span> aContexts = oBinding.<span class="fn">getContexts</span>(<span class="num">0</span>, oBinding.<span class="fn">getLength</span>());
-  <span class="kw">var</span> aPending = [];
-
-  aContexts.<span class="fn">forEach</span>(<span class="kw">function</span> (oCtx) {
-    <span class="kw">if</span> (oCtx) {
-      <span class="kw">var</span> oData = oCtx.<span class="fn">getObject</span>();
-      <span class="kw">if</span> (oData && oData.Status === <span class="str">"D"</span>) { aPending.<span class="fn">push</span>(oCtx.<span class="fn">getPath</span>()); }
-    }
-  });
-
-  <span class="kw">if</span> (aPending.length === <span class="num">0</span>) { MessageToast.<span class="fn">show</span>(<span class="str">"현재 목록에 결재 대기 중인 전표가 없습니다."</span>); <span class="kw">return</span>; }
-
-  <span class="kw">var</span> iTotal = aPending.length;
-  <span class="kw">var</span> iSuccess = <span class="num">0</span>;
-  <span class="kw">var</span> iError = <span class="num">0</span>;
-
-  MessageBox.<span class="fn">confirm</span>(iTotal + <span class="str">"건의 전표를 일괄 결재하시겠습니까?"</span>, {
-    title: <span class="str">"일괄 결재"</span>,
-    onClose: <span class="kw">function</span> (sAction) {
-      <span class="kw">if</span> (sAction === MessageBox.Action.OK) {
-        sap.ui.core.BusyIndicator.<span class="fn">show</span>(<span class="num">0</span>);
-
-        <span class="cm">// 건별 순차 호출</span>
-        <span class="kw">var</span> fnNext = <span class="kw">function</span> (iIndex) {
-          <span class="kw">if</span> (iIndex >= iTotal) {
-            sap.ui.core.BusyIndicator.<span class="fn">hide</span>();
-            oModel.<span class="fn">refresh</span>(<span class="kw">true</span>);
-            that.<span class="fn">_calculateChartCounts</span>(oModel);
-
-            <span class="kw">if</span> (iError === <span class="num">0</span>) { MessageToast.<span class="fn">show</span>(iSuccess + <span class="str">"건 일괄 결재 완료."</span>); }
-            <span class="kw">else</span> { MessageBox.<span class="fn">warning</span>(<span class="str">"성공 "</span> + iSuccess + <span class="str">"건 / 실패 "</span> + iError + <span class="str">"건"</span>); }
-
-            that.<span class="fn">byId</span>(<span class="str">"idNavContainer"</span>).<span class="fn">back</span>();
-            <span class="kw">return</span>;
-          }
-
-          oModel.<span class="fn">update</span>(aPending[iIndex], { Status: <span class="str">"P"</span> }, {
-            success: <span class="kw">function</span> () { iSuccess++; <span class="fn">fnNext</span>(iIndex + <span class="num">1</span>); },
-            error: <span class="kw">function</span> () { iError++; <span class="fn">fnNext</span>(iIndex + <span class="num">1</span>); }
-          });
-        };
-
-        <span class="fn">fnNext</span>(<span class="num">0</span>);
-      }
-    }
-  });
-}</pre></div>
-        </div>
-
-        <div id="s19" class="snippet-panel">
-          <div class="code-header">
-            <h3>4-테이블 JOIN + 차대변 분리 (총계정원장 ·GET_DATA)</h3>
-            <p>전표 헤더·명세·전표유형명·계정과목명을 4-테이블 INNER JOIN으로 단일 SELECT — 도메인 값(계정유형명) 추가 후 shkzg 기준 차/대 금액 컬럼 분리</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" zte1fi0005(헤더)·zte1fi0006(명세)·zte1fi0002(전표유형)·zte1fi0001(계정마스터) JOIN</span>
-<span class="kw">SELECT</span> h~bukrs h~gjahr h~budat h~blart h~belnr h~hwaer
-       i~buzei i~koart i~hkont i~shkzg i~wrbtr i~open_amt
-       t2~ltext t1~txt20
-  <span class="kw">INTO CORRESPONDING FIELDS OF TABLE</span> gt_item
-  <span class="kw">FROM</span> zte1fi0005 <span class="kw">AS</span> h
- <span class="kw">INNER JOIN</span> zte1fi0006 <span class="kw">AS</span> i
-    <span class="kw">ON</span>  h~bukrs <span class="kw">EQ</span> i~bukrs
-   <span class="kw">AND</span> h~gjahr <span class="kw">EQ</span> i~gjahr
-   <span class="kw">AND</span> h~belnr <span class="kw">EQ</span> i~belnr
- <span class="kw">INNER JOIN</span> zte1fi0002 <span class="kw">AS</span> t2 <span class="kw">ON</span> h~blart <span class="kw">EQ</span> t2~blart
- <span class="kw">INNER JOIN</span> zte1fi0001 <span class="kw">AS</span> t1 <span class="kw">ON</span> i~hkont <span class="kw">EQ</span> t1~saknr
- <span class="kw">WHERE</span> h~bukrs <span class="kw">EQ</span> pa_bukrs
-   <span class="kw">AND</span> h~gjahr <span class="kw">EQ</span> pa_gjahr
-   <span class="kw">AND</span> h~belnr <span class="kw">LIKE</span> <span class="str">'0%'</span>
-   <span class="kw">AND</span> h~loekz <span class="kw">EQ</span> space
- <span class="kw">ORDER BY</span> h~bukrs h~gjahr h~belnr i~buzei.
-
-<span class="cm">" 계정유형 도메인 텍스트 조회 (ZDE1_FI_KOART)</span>
-<span class="kw">CALL FUNCTION</span> <span class="str">'GET_DOMAIN_VALUES'</span>
-  <span class="kw">EXPORTING</span>  domname    = <span class="str">'ZDE1_FI_KOART'</span>
-  <span class="kw">TABLES</span>     values_tab = lt_koart.
-
-<span class="kw">LOOP AT</span> gt_item <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
-  <span class="cm">" shkzg 기준 차변/대변 금액 컬럼 분리</span>
-  <span class="kw">CASE</span> &lt;lfs_item&gt;-shkzg.
-
-    <span class="kw">WHEN</span> <span class="str">'S'</span>.
-      &lt;lfs_item&gt;-debit_amt   = &lt;lfs_item&gt;-open_amt.
-      &lt;lfs_item&gt;-debit_waers = &lt;lfs_item&gt;-hwaer.
-    <span class="kw">WHEN</span> <span class="str">'H'</span>.
-      &lt;lfs_item&gt;-credit_amt   = &lt;lfs_item&gt;-open_amt.
-      &lt;lfs_item&gt;-credit_waers = &lt;lfs_item&gt;-hwaer.
-  <span class="kw">ENDCASE</span>.
-  <span class="cm">" 계정유형 도메인 텍스트 매핑</span>
-  <span class="kw">READ TABLE</span> lt_koart <span class="kw">INTO DATA</span>(ls_koart)
-    <span class="kw">WITH KEY</span> domvalue_l = &lt;lfs_item&gt;-koart.
-  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
-  &lt;lfs_item&gt;-ktext = ls_koart-ddtext.
-<span class="kw">ENDLOOP</span>.</pre></div>
-        </div>
-
-        <div id="s20" class="snippet-panel">
-          <div class="code-header">
-            <h3>KTOKS 5-그룹 2단계 Tree 계층 (총계정원장 ·MAKE_HIERARCHY)</h3>
-            <p>자산/부채/자본/수익/비용 5개 KTOKS 그룹을 상위 노드로, 각 G/L 계정을 하위 노드로 구성 — shkzg 기준 계정별 차/대 금액 집계 후 add_node 삽입</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" KTOKS 5개 그룹 매핑 테이블 초기화</span>
-lt_ktoks_text = <span class="kw">VALUE #</span>(
-  ( ktoks = <span class="str">'ASST'</span> text = <span class="str">'자산'</span> )  ( ktoks = <span class="str">'LIAB'</span> text = <span class="str">'부채'</span> )
-  ( ktoks = <span class="str">'EQTY'</span> text = <span class="str">'자본'</span> )  ( ktoks = <span class="str">'REVE'</span> text = <span class="str">'수익'</span> )
-  ( ktoks = <span class="str">'EXPN'</span> text = <span class="str">'비용'</span> ) ).
-
-<span class="kw">LOOP AT</span> lt_ktoks_text <span class="kw">INTO</span> ls_ktoks_text.
-  <span class="cm">" 해당 KTOKS에 계정이 하나라도 있어야 상위 노드 생성</span>
-  <span class="kw">READ TABLE</span> lt_acct <span class="kw">INTO</span> ls_acct
-    <span class="kw">WITH KEY</span> ktoks = ls_ktoks_text-ktoks <span class="kw">BINARY SEARCH</span>.
-  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
-
-  <span class="fn">PERFORM</span> add_node <span class="kw">USING</span> gs_item ls_ktoks_text-text
-                          <span class="str">''</span> lv_level_1 <span class="str">'X'</span>.   <span class="cm">" isfolder = X</span>
-
-  <span class="cm">" 하위 노드: 해당 KTOKS 내 G/L 계정 순회</span>
-  <span class="kw">LOOP AT</span> lt_acct <span class="kw">INTO</span> ls_acct <span class="kw">WHERE</span> ktoks = ls_ktoks_text-ktoks.
-    <span class="kw">CLEAR</span> gs_item.
-    <span class="cm">" 계정별 차/대 금액 집계</span>
-    <span class="kw">LOOP AT</span> lt_item <span class="kw">INTO DATA</span>(ls_item) <span class="kw">WHERE</span> hkont = ls_acct-hkont.
-      <span class="kw">CASE</span> ls_item-shkzg.
-
-        <span class="kw">WHEN</span> <span class="str">'S'</span>.
-          gs_item-debit_amt = gs_item-debit_amt + ls_item-wrbtr.
-          gs_item-wrbtr     = gs_item-wrbtr     + ls_item-wrbtr.
-        <span class="kw">WHEN</span> <span class="str">'H'</span>.
-          gs_item-credit_amt = gs_item-credit_amt + ls_item-wrbtr.
-          gs_item-wrbtr      = gs_item-wrbtr      - ls_item-wrbtr.
-      <span class="kw">ENDCASE</span>.
-      gs_item-debit_waers = ls_item-hwaer.
-      gs_item-hwaer       = ls_item-hwaer.
-    <span class="kw">ENDLOOP</span>.
-    <span class="fn">PERFORM</span> add_node <span class="kw">USING</span> gs_item ls_acct-txt20
-                            lv_level_1 lv_level_2 <span class="str">' '</span>.
-  <span class="kw">ENDLOOP</span>.
-<span class="kw">ENDLOOP</span>.
-
-<span class="kw">CALL METHOD</span> gcl_tree-&gt;expand_nodes( it_node_key = lt_expand ).
-<span class="kw">CALL METHOD</span> gcl_tree-&gt;update_calculations.
-<span class="kw">CALL METHOD</span> gcl_tree-&gt;frontend_update.</pre></div>
-        </div>
-
-        <div id="s21" class="snippet-panel">
-          <div class="code-header">
-            <h3>BS 월별 3-라인 iXML 차트 (총계정원장 ·DISPLAY_CHART_MONTHLY)</h3>
-            <p>자산·부채·자본 3개 계열을 월별 누적 합산 — SAP Chart Engine에 UTF-8 XML을 직접 조립·전달하는 iXML 방식, KTOKS 필터 유무에 따라 3-라인/1-라인 분기</p>
-          </div>
-          <div class="code-block"><pre><span class="cm">" 1~12월 고정 테이블 초기화</span>
-<span class="kw">DO</span> <span class="num">12</span> <span class="kw">TIMES</span>.
-  <span class="kw">CLEAR</span> ls_month.  ls_month-month = sy-index.
-  <span class="kw">IF</span> sy-index <span class="kw">LT</span> <span class="num">10</span>. <span class="kw">CONCATENATE</span> <span class="str">'0'</span> ls_month-month <span class="kw">INTO</span> ls_month-month. <span class="kw">ENDIF</span>.
-  <span class="kw">APPEND</span> ls_month <span class="kw">TO</span> lt_month.
-<span class="kw">ENDDO</span>.
-
-<span class="cm">" 전체 조회: BS 3-라인 (자산/부채/자본 shkzg 부호 반영)</span>
-<span class="kw">LOOP AT</span> gt_grid_item <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_item&gt;).
-  lv_mm = &lt;lfs_item&gt;-budat+<span class="num">4</span>(<span class="num">2</span>).
-  <span class="kw">READ TABLE</span> gt_tree <span class="kw">INTO DATA</span>(ls_tree) <span class="kw">WITH KEY</span> hkont = &lt;lfs_item&gt;-hkont.
-  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
-  <span class="kw">CHECK</span> ls_tree-ktoks <span class="kw">EQ</span> <span class="str">'ASST'</span> <span class="kw">OR</span> ls_tree-ktoks <span class="kw">EQ</span> <span class="str">'LIAB'</span> <span class="kw">OR</span> ls_tree-ktoks <span class="kw">EQ</span> <span class="str">'EQTY'</span>.
-  <span class="kw">READ TABLE</span> lt_month <span class="kw">ASSIGNING</span> <span class="kw">FIELD-SYMBOL</span>(&lt;lfs_month&gt;) <span class="kw">WITH KEY</span> month = lv_mm.
-  <span class="kw">CHECK</span> sy-subrc <span class="kw">EQ</span> <span class="num">0</span>.
-  <span class="kw">CASE</span> ls_tree-ktoks.
-
-    <span class="kw">WHEN</span> <span class="str">'ASST'</span>. <span class="cm">" 자산: S+ / H-</span>
-      <span class="kw">IF</span> &lt;lfs_item&gt;-shkzg = <span class="str">'S'</span>. &lt;lfs_month&gt;-asst_sum = &lt;lfs_month&gt;-asst_sum + &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>.
-      <span class="kw">ELSE</span>.                        &lt;lfs_month&gt;-asst_sum = &lt;lfs_month&gt;-asst_sum - &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>. <span class="kw">ENDIF</span>.
-    <span class="kw">WHEN</span> <span class="str">'LIAB'</span>. <span class="cm">" 부채: H+ / S-</span>
-      <span class="kw">IF</span> &lt;lfs_item&gt;-shkzg = <span class="str">'H'</span>. &lt;lfs_month&gt;-liab_sum = &lt;lfs_month&gt;-liab_sum + &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>.
-      <span class="kw">ELSE</span>.                        &lt;lfs_month&gt;-liab_sum = &lt;lfs_month&gt;-liab_sum - &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>. <span class="kw">ENDIF</span>.
-    <span class="kw">WHEN</span> <span class="str">'EQTY'</span>. <span class="cm">" 자본: H+ / S-</span>
-      <span class="kw">IF</span> &lt;lfs_item&gt;-shkzg = <span class="str">'H'</span>. &lt;lfs_month&gt;-eqty_sum = &lt;lfs_month&gt;-eqty_sum + &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>.
-      <span class="kw">ELSE</span>.                        &lt;lfs_month&gt;-eqty_sum = &lt;lfs_month&gt;-eqty_sum - &lt;lfs_item&gt;-wrbtr * <span class="num">100</span>. <span class="kw">ENDIF</span>.
-  <span class="kw">ENDCASE</span>.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" XML 조립 (누적 합계, 3-Series: 자산·부채·자본)</span>
-<span class="kw">LOOP AT</span> lt_month <span class="kw">INTO</span> ls_month.
-  lv_acc_asst = lv_acc_asst + ls_month-asst_sum.
-  lv_acc_liab = lv_acc_liab + ls_month-liab_sum.
-  lv_acc_eqty = lv_acc_eqty + ls_month-eqty_sum.
-  lv_cat    = lv_cat    &amp;&amp; |&lt;Category&gt;{ pa_gjahr }년 { ls_month-month }월&lt;/Category&gt;|.
-  lv_s_asst = lv_s_asst &amp;&amp; |&lt;Point&gt;&lt;Value&gt;{ lv_acc_asst }&lt;/Value&gt;&lt;/Point&gt;|.
-  lv_s_liab = lv_s_liab &amp;&amp; |&lt;Point&gt;&lt;Value&gt;{ lv_acc_liab }&lt;/Value&gt;&lt;/Point&gt;|.
-  lv_s_eqty = lv_s_eqty &amp;&amp; |&lt;Point&gt;&lt;Value&gt;{ lv_acc_eqty }&lt;/Value&gt;&lt;/Point&gt;|.
-<span class="kw">ENDLOOP</span>.
-
-<span class="cm">" Chart Engine에 UTF-8 변환 후 렌더링</span>
-lv_xcust = cl_abap_codepage=&gt;convert_to( source = lv_cust codepage = <span class="str">`UTF-8`</span> ).
-lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span class="str">`UTF-8`</span> ).
-<span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;set_customizing( <span class="kw">EXPORTING</span> xdata = lv_xcust ).
-<span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;set_data(        <span class="kw">EXPORTING</span> xdata = lv_xdata ).
-<span class="kw">CALL METHOD</span> gcl_chart_monthly-&gt;render.</pre></div>
-        </div>
-
-        <div id="s34" class="snippet-panel">
-          <div class="code-header">
-            <h3>손익센터별 차트 데이터 집계 (직원 급여 관리 ·_buildChartData)</h3>
-            <p>코스트센터(Kostl) → 손익센터(Prctr) 메타를 매핑한 뒤, 사원의 RankPay를 코스트센터명 서브그룹으로 집계 — 손익센터별로 그룹핑해 도넛 차트에 전달</p>
-          </div>
-          <div class="code-block"><pre><span class="fn">_buildChartData</span>(aCC) {
-  <span class="kw">const</span> aEmps = <span class="kw">this</span>._allEmployees || [];
-  <span class="kw">if</span> (!aCC) { aCC = <span class="kw">this</span>._allCC || []; }
-
-  <span class="cm">// Kostl → Prctr/PrctrName/KostlName 맵</span>
-  <span class="kw">const</span> oKostlMeta = {};
-  aCC.<span class="fn">forEach</span>((o) => {
-    oKostlMeta[o.Kostl] = { Prctr: o.Prctr, PrctrName: o.PrctrName, KostlName: o.KostlName };
-  });
-
-  <span class="cm">// Prctr별 그룹 초기화 (minKostl: 그룹 내 최소 Kostl 추적)</span>
-  <span class="kw">const</span> oPrctrGroups = {};
-  aCC.<span class="fn">forEach</span>((o) => {
-    <span class="kw">if</span> (!oPrctrGroups[o.Prctr]) {
-      oPrctrGroups[o.Prctr] = { Prctr: o.Prctr, PrctrName: o.PrctrName, kostls: {}, minKostl: o.Kostl };
-    } <span class="kw">else if</span> (o.Kostl < oPrctrGroups[o.Prctr].minKostl) {
-      oPrctrGroups[o.Prctr].minKostl = o.Kostl;
-    }
-  });
-
-  <span class="cm">// 사원을 Prctr 그룹 / KostlName 서브그룹으로 집계</span>
-  aEmps.<span class="fn">forEach</span>((o) => {
-    <span class="kw">const</span> oMeta = oKostlMeta[o.Kostl];
-    <span class="kw">if</span> (!oMeta || !oPrctrGroups[oMeta.Prctr]) { <span class="kw">return</span>; }
-    <span class="kw">const</span> sLabel = oMeta.KostlName || o.Kostl;
-    <span class="kw">const</span> oGrp = oPrctrGroups[oMeta.Prctr];
-    oGrp.kostls[sLabel] = (oGrp.kostls[sLabel] || <span class="num">0</span>) + (<span class="fn">parseFloat</span>(o.RankPay) || <span class="num">0</span>);
-  });
-
-  <span class="cm">// 배열로 변환 — Prctr은 그룹 내 최소 Kostl 기준 오름차순 정렬</span>
-  <span class="kw">const</span> aGroups = Object.<span class="fn">values</span>(oPrctrGroups).<span class="fn">sort</span>((a, b) =>
-    a.minKostl.<span class="fn">localeCompare</span>(b.minKostl)
-  );
-  aGroups.<span class="fn">forEach</span>((oGrp) => {
-    oGrp.items = Object.<span class="fn">keys</span>(oGrp.kostls).<span class="fn">sort</span>().<span class="fn">map</span>((sName) => ({
-      SubGroup: sName,
-      RankPayNum: oGrp.kostls[sName]
-    }));
-  });
-
-  <span class="kw">this</span>.<span class="fn">_renderCharts</span>(aGroups);
-},</pre></div>
-        </div>
-
-        <div id="s35" class="snippet-panel">
-          <div class="code-header">
-            <h3>사원 추가/수정 (직원 급여 관리 ·onConfirmEmpDialog)</h3>
-            <p>필수 입력값 검증 후 신규/수정 여부에 따라 OData create 또는 update 호출 — 성공 시 로컬 사원 배열·코스트센터 집계·차트를 함께 갱신</p>
-          </div>
-          <div class="code-block"><pre><span class="fn">onConfirmEmpDialog</span>() {
-  <span class="kw">const</span> oViewModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"viewModel"</span>);
-  <span class="kw">const</span> oEmp = oViewModel.<span class="fn">getProperty</span>(<span class="str">"/editEmployee"</span>);
-  <span class="kw">const</span> bIsNew = oViewModel.<span class="fn">getProperty</span>(<span class="str">"/isNewEmployee"</span>);
-  <span class="kw">const</span> sPath = oViewModel.<span class="fn">getProperty</span>(<span class="str">"/editPath"</span>);
-
-  <span class="kw">const</span> aMissing = [];
-  <span class="kw">if</span> (!oEmp.EmpName) { aMissing.<span class="fn">push</span>(<span class="str">"사원명"</span>); }
-  <span class="kw">if</span> (!oEmp.DeptNo)  { aMissing.<span class="fn">push</span>(<span class="str">"부서번호"</span>); }
-  <span class="kw">if</span> (!oEmp.Kostl)   { aMissing.<span class="fn">push</span>(<span class="str">"코스트센터"</span>); }
-  <span class="kw">if</span> (aMissing.length) {
-    MessageBox.<span class="fn">warning</span>(<span class="str">`필수 입력항목을 확인해 주세요: ${aMissing.join(", ")}`</span>);
-    <span class="kw">return</span>;
-  }
-
-  <span class="kw">const</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
-
-  <span class="kw">if</span> (bIsNew) {
-    oModel.<span class="fn">create</span>(<span class="str">"/PayrollEmpSet"</span>, oEmp, {
-      success: (oNew) => {
-        <span class="kw">this</span>._allEmployees = [...(<span class="kw">this</span>._allEmployees || []), oNew];
-        <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"local"</span>).<span class="fn">setProperty</span>(<span class="str">"/employees"</span>, <span class="kw">this</span>._allEmployees);
-        <span class="kw">this</span>.<span class="fn">_recalcCC</span>();
-        <span class="kw">this</span>.<span class="fn">_buildChartData</span>();
-        MessageToast.<span class="fn">show</span>(<span class="str">"사원이 추가되었습니다."</span>);
-        <span class="kw">this</span>._oEmpDialog.<span class="fn">close</span>();
-      },
-      error: (oError) => {
-        <span class="kw">const</span> sMsg = <span class="kw">this</span>.<span class="fn">_parseErrorMsg</span>(oError);
-        MessageBox.<span class="fn">error</span>(<span class="str">"추가 실패: "</span> + sMsg);
-      }
-    });
-  } <span class="kw">else</span> {
-    oModel.<span class="fn">update</span>(sPath, oEmp, {
-      success: () => {
-        <span class="kw">this</span>._allEmployees = (<span class="kw">this</span>._allEmployees || []).<span class="fn">map</span>((o) =>
-          o.EmpId === oEmp.EmpId ? Object.<span class="fn">assign</span>({}, o, oEmp) : o
-        );
-        <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"local"</span>).<span class="fn">setProperty</span>(<span class="str">"/employees"</span>, <span class="kw">this</span>._allEmployees);
-        <span class="kw">this</span>.<span class="fn">_recalcCC</span>();
-        <span class="kw">this</span>.<span class="fn">_buildChartData</span>();
-        MessageToast.<span class="fn">show</span>(<span class="str">"수정되었습니다."</span>);
-        <span class="kw">this</span>._oEmpDialog.<span class="fn">close</span>();
-      },
-      error: (oError) => {
-        <span class="kw">const</span> sMsg = <span class="kw">this</span>.<span class="fn">_parseErrorMsg</span>(oError);
-        MessageBox.<span class="fn">error</span>(<span class="str">"수정 실패: "</span> + sMsg);
-      }
-    });
-  }
-},</pre></div>
-        </div>
-
-        <div id="s36" class="snippet-panel">
-          <div class="code-header">
-            <h3>코스트센터별 급여 전표 생성 (직원 급여 관리 ·onCreateDocument / _callCreatePayroll)</h3>
-            <p>이미 지급된 코스트센터를 걸러낸 뒤 확인 팝업 → OData create로 PayrollCCSet에 전표 생성, 성공 시 해당 코스트센터의 PayStatus·전표번호를 로컬 반영</p>
-          </div>
-          <div class="code-block"><pre><span class="fn">onCreateDocument</span>() {
-  <span class="kw">const</span> aItems = <span class="kw">this</span>.<span class="fn">byId</span>(<span class="str">"ccTable"</span>).<span class="fn">getSelectedItems</span>();
-  <span class="kw">if</span> (aItems.length === <span class="num">0</span>) {
-    MessageBox.<span class="fn">warning</span>(<span class="str">"전표를 생성할 코스트센터를 선택해 주세요."</span>);
-    <span class="kw">return</span>;
-  }
-
-  <span class="kw">const</span> aKostlList = aItems.<span class="fn">map</span>((oItem) => oItem.<span class="fn">getBindingContext</span>(<span class="str">"local"</span>).<span class="fn">getObject</span>());
-
-  <span class="kw">const</span> aAlreadyPaid = aKostlList.<span class="fn">filter</span>((o) => o.PayStatus === <span class="str">"X"</span>);
-  <span class="kw">if</span> (aAlreadyPaid.length > <span class="num">0</span>) {
-    <span class="kw">const</span> sNames = aAlreadyPaid.<span class="fn">map</span>((o) => o.KostlName || o.Kostl).<span class="fn">join</span>(<span class="str">", "</span>);
-    MessageBox.<span class="fn">warning</span>(<span class="str">`이미 이번 달 급여가 지급된 코스트센터가 포함되어 있습니다:\n${sNames}`</span>);
-    <span class="kw">return</span>;
-  }
-
-  MessageBox.<span class="fn">confirm</span>(
-    <span class="str">`선택한 코스트센터에 급여 전표를 생성하시겠습니까?\n\n${aKostlList.map((o) => `• ${o.KostlName || o.Kostl}`).join("\n")}`</span>,
-    { title: <span class="str">"전표 생성 확인"</span>, onClose: (sAction) => {
-        <span class="kw">if</span> (sAction !== MessageBox.Action.OK) { <span class="kw">return</span>; }
-        <span class="kw">this</span>.<span class="fn">_callCreatePayroll</span>(aKostlList);
-      }
-    }
-  );
-},
-
-<span class="fn">_callCreatePayroll</span>(aKostlList) {
-  <span class="kw">const</span> oModel = <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>();
-  <span class="kw">let</span> iDone = <span class="num">0</span>, iError = <span class="num">0</span>;
-  <span class="kw">const</span> iTotal = aKostlList.length;
-
-  <span class="kw">const</span> fnApplyResult = (sKostl, oResponse) => {
-    <span class="kw">const</span> sBelnr = (oResponse && oResponse.Belnr) || <span class="str">""</span>;
-    <span class="kw">this</span>._allCC = (<span class="kw">this</span>._allCC || []).<span class="fn">map</span>((o) =>
-      o.Kostl === sKostl ? Object.<span class="fn">assign</span>({}, o, { PayStatus: <span class="str">"X"</span>, Belnr: sBelnr }) : o
-    );
-    <span class="kw">this</span>.<span class="fn">getView</span>().<span class="fn">getModel</span>(<span class="str">"local"</span>).<span class="fn">setProperty</span>(<span class="str">"/ccItems"</span>, <span class="kw">this</span>._allCC);
-    <span class="kw">this</span>.<span class="fn">_updateKPI</span>();
-  };
-
-  aKostlList.<span class="fn">forEach</span>((oCC) => {
-    <span class="kw">const</span> oPayload = {
-      Kostl: oCC.Kostl, KostlName: oCC.KostlName || <span class="str">""</span>, Kokrs: oCC.Kokrs || <span class="str">""</span>,
-      Prctr: oCC.Prctr || <span class="str">""</span>, PrctrName: oCC.PrctrName || <span class="str">""</span>, Waers: oCC.Waers || <span class="str">"KRW"</span>
-    };
-    oModel.<span class="fn">create</span>(<span class="str">"/PayrollCCSet"</span>, oPayload, {
-      success: (oResponse) => { iDone++; <span class="fn">fnApplyResult</span>(oCC.Kostl, oResponse); },
-      error: (oError) => { iError++; MessageBox.<span class="fn">error</span>(<span class="str">`전표 생성 실패 (${oCC.Kostl}): ${this._parseErrorMsg(oError)}`</span>); }
-    });
-  });
-}</pre></div>
-        </div>
-
-      </div><!-- /code-main -->
-    </div><!-- /code-layout -->
-    </div><!-- /modal-body -->
-  </div><!-- /modal-container -->
-</div><!-- /code-modal -->
 
 <script>
   function showTab(name, el) {
@@ -3731,7 +1575,8 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     if (!next || current === next) return;
 
     document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    if (el) el.classList.add('active');
+    const navLink = el || document.querySelector('[data-tab=' + name + ']');
+    if (navLink) navLink.classList.add('active');
 
     if (current) {
       current.style.transition = 'opacity .15s ease, transform .15s ease';
@@ -3743,11 +1588,11 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
         current.style.opacity = '';
         current.style.transform = '';
         next.classList.add('active');
-        window.scrollTo(0, 0);
+        window.scrollTo({top:0, behavior:'instant'});
       }, 150);
     } else {
       next.classList.add('active');
-      window.scrollTo(0, 0);
+      window.scrollTo({top:0, behavior:'instant'});
     }
   }
 
@@ -3863,39 +1708,6 @@ lv_xdata = cl_abap_codepage=&gt;convert_to( source = lv_data codepage = <span cl
     btn.classList.add('active');
   }
 
-  function showSnippet(id, btn) {
-    document.querySelectorAll('.snippet-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.snippet-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    btn.classList.add('active');
-  }
-
-  function openCode(snippetId) {
-    const modal = document.getElementById('code-modal');
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-
-    const targetPanel = document.getElementById(snippetId);
-    if (!targetPanel) return;
-    document.querySelectorAll('.snippet-panel').forEach(p => p.classList.remove('active'));
-    targetPanel.classList.add('active');
-    document.querySelectorAll('.snippet-btn').forEach(b => {
-      b.classList.remove('active');
-      const oc = b.getAttribute('onclick') || '';
-      if (oc.includes("'" + snippetId + "'")) b.classList.add('active');
-    });
-
-    // 활성 버튼이 사이드바에서 보이도록 스크롤
-    const activeBtn = modal.querySelector('.snippet-btn.active');
-    if (activeBtn) activeBtn.scrollIntoView({ block: 'nearest' });
-  }
-
-  function closeModal() {
-    document.getElementById('code-modal').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 
 </body>
