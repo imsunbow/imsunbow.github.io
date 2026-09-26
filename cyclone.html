@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Cyclone 교육 프로젝트 | 이재민</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="styles.css"/>
+    <script src="project.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      본문으로 이동
+    </a>
+    <nav aria-label="주 메뉴">
+      <a class="nav-logo" href="index.html">
+        JAEMIN LEE<span class="nav-dot">.</span>
+      </a>
+      <ul class="nav-links">
+        <li>
+          <a href="index.html">
+            소개
+          </a>
+        </li>
+        <li>
+          <a href="projects.html" class="active" aria-current="page">
+            프로젝트
+          </a>
+        </li>
+        <li>
+          <a href="mailto:imsunbow@gmail.com">
+            연락하기 ↗
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <main id="main">
+      <section>
+        <a class="breadcrumb" href="projects.html">
+          ← 프로젝트 목록
+        </a>
+        <p class="project-context">
+          교육 프로젝트 · SAP Code Academy · FI 모듈 전담 / 개발 리드
+        </p>
+        <div class="section-label">
+          Selected Project · SAP Code Academy
+        </div>
+        <div class="section-title">
+          Cyclone ERP 구축 프로젝트
+        </div>
+        <div class="margin-bottom-32px">
+          <div class="section-label">
+            Organization
+          </div>
+          <div class="section-title margin-bottom-12px">
+            조직도
+          </div>
+          <a class="lightbox-trigger" href="images/organization/Cyclone-조직도.png" data-lightbox="">
+            <img src="images/organization/Cyclone-조직도.png" alt="Cyclone 조직도">
+          </a>
+          <div class="narrative margin-top-16px margin-bottom-0px">
+            <p>
+              총 <strong>7개 부서</strong>로 구성된 조직 구조를 설계했습니다. 각 부서는 <strong>Profit Center(PC)</strong> 단위로 운영되며, 그 하위에 원가 집계 단위인 <strong>Cost Center(CC)</strong>를 배치하는 계층형 구조를 적용했습니다. 이를 통해 부서별 수익성 분석과 비용 추적이 가능한 재무 체계를 구축했습니다.
+            </p>
+          </div>
+        </div>
+        <div class="margin-bottom-32px">
+          <div class="section-label">
+            Data Model
+          </div>
+          <div class="section-title margin-bottom-12px">
+            ERD
+          </div>
+          <div class="erd-tabs">
+            <button class="erd-tab-btn active" data-erd="full" aria-pressed="true">
+              전체
+            </button>
+            <button class="erd-tab-btn" data-erd="fi" aria-pressed="false">
+              FI
+            </button>
+            <button class="erd-tab-btn" data-erd="co" aria-pressed="false">
+              CO
+            </button>
+            <button class="erd-tab-btn" data-erd="mm" aria-pressed="false">
+              MM
+            </button>
+            <button class="erd-tab-btn" data-erd="sd" aria-pressed="false">
+              SD
+            </button>
+            <button class="erd-tab-btn" data-erd="pp" aria-pressed="false">
+              PP
+            </button>
+            <button class="erd-tab-btn" data-erd="qm" aria-pressed="false">
+              QM
+            </button>
+            <button class="erd-tab-btn" data-erd="cm" aria-pressed="false">
+              CM
+            </button>
+          </div>
+          <div class="erd-panel" id="erd-full">
+            <a class="lightbox-trigger" href="images/erd/erd_full.png" data-lightbox="">
+              <img src="images/erd/erd_full.png" alt="전체 ERD">
+            </a>
+          </div>
+          <div class="erd-panel" id="erd-fi" hidden="">
+            <a class="lightbox-trigger" href="images/erd/erd_fi.png" data-lightbox="">
+              <img src="images/erd/erd_fi.png" alt="FI ERD">
+            </a>
+          </div>
+          <div class="erd-panel" id="erd-co" hidden="">
+            <a class="lightbox-trigger" href="images/erd/erd_co.png" data-lightbox="">
+              <img src="images/erd/erd_co.png" alt="CO ERD">
+            </a>
+          </div>
+          <div class="erd-panel" id="erd-mm" hidden="">
+            <a class="lightbox-trigger" href="images/erd/erd_mm.png" data-lightbox="">
+              <img src="images/erd/erd_mm.png" alt="MM ERD">
+            </a>
+          </div>
+          <div class="erd-panel" id="erd-sd" hidden="">
+            <a class="lightbox-trigger" href="images/erd/erd_sd.png" data-lightbox="">
+              <img src="images/erd/erd_sd.png" alt="SD ERD">
+            </a>
+          </div>
+          <div class="erd-panel" id="erd-pp" hidden="">
+            <a class="lightbox-trigger" href="images/erd/erd_pp.png" data-lightbox="">
+              <img src="images/erd/erd_pp.png" alt="PP ERD">
+            </a>
+          </div>
+          <div class="erd-panel" id="erd-qm" hidden="">
+            <a class="lightbox-trigger" href="images/erd/erd_qm.png" data-lightbox="">
+              <img src="images/erd/erd_qm.png" alt="QM ERD">
+            </a>
+          </div>
+          <div class="erd-panel" id="erd-cm" hidden="">
+            <a class="lightbox-trigger" href="images/erd/erd_cm.png" data-lightbox="">
+              <img src="images/erd/erd_cm.png" alt="CM ERD">
+            </a>
+          </div>
+        </div>
+        <div class="margin-bottom-12px">
+          <div class="section-label">
+            Business Challenge
+          </div>
+          <div class="section-title margin-bottom-0px">
+            프로젝트가 마주한 비즈니스 과제
+          </div>
+        </div>
+        <div class="bc-wrapper">
+          <div class="bc-project-header">
+            <div>
+              <div class="bc-project-title">
+                대형 자전거 설계 및 제조 기업
+              </div>
+              <div class="bc-project-sub">
+                국내 자전거 시장을 대상으로 자전거를 대량 생산 및 조립하는 제조 기업
+              </div>
+            </div>
+            <span class="bc-project-theme">수익성 분석을 적용한 통합 재무 및 공급망 관리 서비스</span>
+          </div>
+          <div class="bc-body">
+            <div class="bc-model">
+              <div class="bc-model-title">
+                핵심 사업 모델
+              </div>
+              <div class="bc-model-item">
+                <div class="bc-model-icon">
+                  ⚙️
+                </div>
+                자전거 대량 생산 및 조립
+              </div>
+              <div class="bc-model-item">
+                <div class="bc-model-icon">
+                  🏠
+                </div>
+                표준 BOM 기반 부품 관리
+              </div>
+              <div class="bc-model-item">
+                <div class="bc-model-icon">
+                  💰
+                </div>
+                국내 B2B 채널 중심 판매 및 출고
+              </div>
+            </div>
+            <div class="bc-challenges">
+              <div class="bc-challenges-title">
+                Business Challenges
+              </div>
+              <div class="bc-item">
+                <div class="bc-num">
+                  1
+                </div>
+                <div>
+                  <div class="bc-item-title">
+                    생산 계획 안정성 저하
+                  </div>
+                  <ul class="bc-item-bullets">
+                    <li>
+                      거래처 주문 시점과 물량 편차 확대로 생산 일정 재조정이 빈번하게 발생
+                    </li>
+                    <li>
+                      생산계획 수립 시 실제 자재 가용 수량이 충분히 반영되지 않아 계획 대비 생산 차질 발생
+                    </li>
+                    <li>
+                      생산계획 미흡으로 긴급 생산오더 투입이 반복 발생되어 생산 안정성이 저하
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="bc-item">
+                <div class="bc-num">
+                  2
+                </div>
+                <div>
+                  <div class="bc-item-title">
+                    옵션 증가로 인한 BOM 및 자재 복잡도 상승
+                  </div>
+                  <ul class="bc-item-bullets">
+                    <li>
+                      모델별 옵션 조합 확대로 BOM 버전 관리 부담이 지속적으로 증가
+                    </li>
+                    <li>
+                      유사 부품의 다중 코드 운영으로 자재 관리 효율성이 저하
+                    </li>
+                    <li>
+                      옵션 단위 안전재고 기준 미흡으로 부품 과잉 및 부족 현상 반복
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="bc-item solved">
+                <div class="bc-num">
+                  3
+                </div>
+                <div>
+                  <div class="bc-item-title">
+                    판매–출하–재무 데이터가 단계별로 운영됨 <span class="bc-solved-tag">✓ 해결</span>
+                  </div>
+                  <ul class="bc-item-bullets">
+                    <li>
+                      주문 변경 사항이 생산 및 재고 계획에 즉시 반영되지 않아 운영 지연이 발생
+                    </li>
+                    <li>
+                      <span class="bc-highlight">출하 이후 매출 및 원가 반영 시점 간 시간 차가 발생</span> — 전표 전기 메서드 동시 처리로 해결
+                    </li>
+                    <li>
+                      반품, 교환 정보가 수익성 분석에 즉시 연계되지 않아 저마진 거래처 및 제품 식별에 시간이 소요
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="bc-item">
+                <div class="bc-num">
+                  4
+                </div>
+                <div>
+                  <div class="bc-item-title">
+                    재고 자산이 전략적 관리 대상이 아닌 수량 중심으로 운영
+                  </div>
+                  <ul class="bc-item-bullets">
+                    <li>
+                      재고 수량 중심 관리로 회전율 및 장기 체류 자재에 대한 선제적 대응이 어려움
+                    </li>
+                    <li>
+                      부품 단가 변동이 재고 평가 및 원가에 즉시 반영되지 않아 실시간 손익 변동 분석에 한계
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="bc-item solved">
+                <div class="bc-num">
+                  5
+                </div>
+                <div>
+                  <div class="bc-item-title">
+                    모바일 기반 실시간 협업 및 의사결정 지원 체계 부족 <span class="bc-solved-tag">✓ 해결</span>
+                  </div>
+                  <ul class="bc-item-bullets">
+                    <li>
+                      영업 담당자가 현장에서 주문 가능 재고, 예상 납기, 가격 조건을 실시간으로 확인하기 어려움
+                    </li>
+                    <li>
+                      대리점 및 B2B 고객과의 협의 과정에서 즉시 견적 생성 및 조건 반영이 어려워 계약 리드타임 증가
+                    </li>
+                    <li>
+                      <span class="bc-highlight">경영진 및 관리자가 외부 환경에서 생산 및 매출 현황을 실시간으로 확인하기 어려움</span> — 독촉장 관리 Fiori 앱으로 해결
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bc-approach font-style-normal color-gray700 line-height-1-9">
+            <div class="font-size-12px font-weight-700 letter-spacing-1px text-transform-uppercase color-blue margin-bottom-10px">
+              해석 방향 및 접근 전략
+            </div>
+            <p class="margin-bottom-10px">
+              FI 모듈 담당자 관점에서 BC3·BC5 두 가지 과제에 집중했습니다.
+            </p>
+            <p class="margin-bottom-10px">
+              <strong>BC3 —</strong> 출하 이후 매출·원가 반영이 지연되는 근본 원인은 SD 출하와 FI 전표 전기가 별도 시점에 처리되기 때문입니다.
+              이를 해결하기 위해 채번 후 헤더·아이템을 직접 INSERT하는 방식으로 출하 이벤트와 동시에 처리되도록 구현하여,
+              출하 완료 시점에 FI·CO 전표가 즉시 생성되고 총계정원장에 반영되도록 했습니다.
+              임시전표 결재 프로그램에서도 승인 시 FI·CO 전표를 동기적으로 생성함으로써 재무 데이터 단절 구간을 제거했습니다.
+            </p>
+            <p>
+              <strong>BC5 —</strong> 경영진이 외부 환경에서 채권 현황을 확인하기 어려운 문제는 SAP GUI 의존성에서 비롯됩니다.
+              독촉장 관리 Fiori 앱을 통해 미결 채권 KPI(미납 건수·금액·연체율)를 웹 브라우저에서 실시간으로 조회할 수 있도록 구현하고,
+              거래처별 독촉 메일 발송까지 앱 내에서 처리할 수 있게 하여 현장 의사결정 사이클을 단축했습니다.
+            </p>
+          </div>
+        </div>
+        <div class="margin-top-48px margin-bottom-12px">
+          <div class="section-label">
+            Solutions
+          </div>
+          <div class="section-title margin-bottom-0px">
+            재무 업무별 구현 사례
+          </div>
+        </div>
+        <div class="prog-layout">
+          <div class="prog-list">
+            <a class="prog-back-btn" href="projects.html">
+              ← 프로젝트 목록
+            </a>
+            <div class="prog-group-label">
+              주요 업무
+            </div>
+            <button class="prog-btn active" data-program="p1" aria-pressed="true">
+              <span class="pb-badge abap">ABAP</span>임시전표 작성
+            </button>
+            <button class="prog-btn" data-program="p2" aria-pressed="false">
+              <span class="pb-badge abap">ABAP</span>고정자산 현황 관리
+            </button>
+            <button class="prog-btn" data-program="p3" aria-pressed="false">
+              <span class="pb-badge abap">ABAP</span>전표 조회 / 역분개
+            </button>
+            <button class="prog-btn" data-program="p4" aria-pressed="false">
+              <span class="pb-badge abap">ABAP</span>총계정원장 조회
+            </button>
+            <button class="prog-btn" data-program="p5" aria-pressed="false">
+              <span class="pb-badge fiori">Fiori</span>독촉장 관리 시스템
+            </button>
+            <button class="prog-btn" data-program="p7" aria-pressed="false">
+              <span class="pb-badge abap">ABAP</span>전표 반제 처리
+            </button>
+            <div class="prog-group-label">
+              확장 업무
+            </div>
+            <button class="prog-btn" data-program="p6" aria-pressed="false">
+              <span class="pb-badge abap">ABAP</span>Excel 일괄 반제
+            </button>
+            <button class="prog-btn" data-program="p8" aria-pressed="false">
+              <span class="pb-badge abap">ABAP</span>여신 등급 자동 갱신(Back Job)
+            </button>
+            <button class="prog-btn" data-program="p9" aria-pressed="false">
+              <span class="pb-badge fiori">Fiori</span>임시전표 결재
+            </button>
+            <button class="prog-btn" data-program="p10" aria-pressed="false">
+              <span class="pb-badge abap">ABAP</span>환율 자동 수집(Back Job)
+            </button>
+            <button class="prog-btn" data-program="p11" aria-pressed="false">
+              <span class="pb-badge fiori">Fiori</span>직원 급여 관리
+            </button>
+          </div>
+          <div class="prog-detail" id="prog-detail-area">
+            <div id="p1" class="prog-panel">
+              <span class="prog-featured-badge">핵심</span>
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                임시전표 작성 프로그램
+              </h2>
+              <p>
+                전기 키(SA/DR/KR/AA) 유효성 검증, 차대변 잔액 자동 체크.<br>Number Range 채번 후 헤더·아이템 DB 저장 처리.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">ALV Grid</span><span class="tag hl">TextEditor</span>
+                <span class="tag">전표 밸런스 검증</span><span class="tag">Number Range</span><span class="tag">F4 Value Help</span>
+              </div>
+              <div class="gallery" id="gallery-p1">
+                <div class="gallery-main">
+                  <a href="images/p1_임시전표작성/01.png" data-lightbox="">
+                    <img src="images/p1_임시전표작성/01.png" class="" alt="초기 화면">
+                  </a>
+                  <a href="images/p1_임시전표작성/02.png" data-lightbox="" hidden="">
+                    <img src="images/p1_임시전표작성/02.png" alt="기본정보 입력">
+                  </a>
+                  <a href="images/p1_임시전표작성/03.png" data-lightbox="" hidden="">
+                    <img src="images/p1_임시전표작성/03.png" alt="대변 항목 추가">
+                  </a>
+                  <a href="images/p1_임시전표작성/04.png" data-lightbox="" hidden="">
+                    <img src="images/p1_임시전표작성/04.png" alt="전표 생성 확인">
+                  </a>
+                  <a href="images/p1_임시전표작성/05.png" data-lightbox="" hidden="">
+                    <img src="images/p1_임시전표작성/05.png" alt="결재 화면 이동">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p1-caption">
+                  초기 화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p1" data-index="0" data-caption="초기 화면" aria-label="초기 화면" aria-pressed="true">
+                    <img src="images/p1_임시전표작성/01.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p1" data-index="1" data-caption="전표 기본정보 입력" aria-label="전표 기본정보 입력" aria-pressed="false">
+                    <img src="images/p1_임시전표작성/02.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p1" data-index="2" data-caption="전표 아이템 입력 완료 — 차대변 밸런스 충족" aria-label="전표 아이템 입력 완료 — 차대변 밸런스 충족" aria-pressed="false">
+                    <img src="images/p1_임시전표작성/03.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p1" data-index="3" data-caption="전표 생성 확인 팝업" aria-label="전표 생성 확인 팝업" aria-pressed="false">
+                    <img src="images/p1_임시전표작성/04.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p1" data-index="4" data-caption="전표 생성 완료 — 결재 화면 이동 팝업" aria-label="전표 생성 완료 — 결재 화면 이동 팝업" aria-pressed="false">
+                    <img src="images/p1_임시전표작성/05.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p2" class="prog-panel" hidden="">
+              <span class="prog-featured-badge">핵심</span>
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                고정자산 현황 관리
+              </h2>
+              <p>
+                ALV Tree + 연도별 바 차트 + 자산클래스별 그룹 차트 3-panel.<br>자산 클릭 시 차트 즉시 갱신, 취득·매각 전표 자동 생성.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">ALV Tree</span><span class="tag hl">iXML Chart</span>
+                <span class="tag">감가상각 계산</span><span class="tag">자산 취득/매각</span><span class="tag">스플리터 레이아웃</span>
+              </div>
+              <div class="gallery" id="gallery-p2">
+                <div class="gallery-main">
+                  <a href="images/p2_고정자산현황관리/고정자산 조회- 초기화면.png" data-lightbox="">
+                    <img src="images/p2_고정자산현황관리/고정자산 조회- 초기화면.png" class="" alt="초기화면">
+                  </a>
+                  <a href="images/p2_고정자산현황관리/고정자산 조회- 조회조건 입력.png" data-lightbox="" hidden="">
+                    <img src="images/p2_고정자산현황관리/고정자산 조회- 조회조건 입력.png" alt="조회조건 입력">
+                  </a>
+                  <a href="images/p2_고정자산현황관리/고정자산 조회- 더블 클릭.png" data-lightbox="" hidden="">
+                    <img src="images/p2_고정자산현황관리/고정자산 조회- 더블 클릭.png" alt="자산 더블클릭">
+                  </a>
+                  <a href="images/p2_고정자산현황관리/고정자산 취득 팝업.png" data-lightbox="" hidden="">
+                    <img src="images/p2_고정자산현황관리/고정자산 취득 팝업.png" alt="취득 팝업">
+                  </a>
+                  <a href="images/p2_고정자산현황관리/고정자산 매각.png" data-lightbox="" hidden="">
+                    <img src="images/p2_고정자산현황관리/고정자산 매각.png" alt="매각 처리">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p2-caption">
+                  초기화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p2" data-index="0" data-caption="초기화면" aria-label="초기화면" aria-pressed="true">
+                    <img src="images/p2_고정자산현황관리/고정자산 조회- 초기화면.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p2" data-index="1" data-caption="조회조건 입력" aria-label="조회조건 입력" aria-pressed="false">
+                    <img src="images/p2_고정자산현황관리/고정자산 조회- 조회조건 입력.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p2" data-index="2" data-caption="자산 더블클릭 — 차트 갱신" aria-label="자산 더블클릭 — 차트 갱신" aria-pressed="false">
+                    <img src="images/p2_고정자산현황관리/고정자산 조회- 더블 클릭.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p2" data-index="3" data-caption="취득 팝업" aria-label="취득 팝업" aria-pressed="false">
+                    <img src="images/p2_고정자산현황관리/고정자산 취득 팝업.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p2" data-index="4" data-caption="매각 처리" aria-label="매각 처리" aria-pressed="false">
+                    <img src="images/p2_고정자산현황관리/고정자산 매각.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p3" class="prog-panel" hidden="">
+              <span class="prog-featured-badge">핵심</span>
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                전표 조회 / 역분개
+              </h2>
+              <p>
+                CDS View 기반 헤더·아이템 2-panel 전표 조회.<br>전표유형별 동적 컬럼, 역분개 전표 생성, 환율 환산.<br>Excel · PDF 다운로드 포함.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">CDS View</span><span class="tag hl">역분개</span>
+                <span class="tag">동적 FCAT</span><span class="tag">환율 환산</span><span class="tag">OLE2 PDF 출력</span>
+              </div>
+              <div class="gallery" id="gallery-p3">
+                <div class="gallery-main">
+                  <a href="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(100).png" data-lightbox="">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(100).png" class="" alt="초기화면">
+                  </a>
+                  <a href="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(1000).png" data-lightbox="" hidden="">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(1000).png" alt="초기화면(Selection Screen)">
+                  </a>
+                  <a href="images/p3_전표조회역분개/전표조회 및 역분개- 전체 전표 헤더 출력.png" data-lightbox="" hidden="">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개- 전체 전표 헤더 출력.png" alt="전체 전표 헤더 출력">
+                  </a>
+                  <a href="images/p3_전표조회역분개/전표조회 및 역분개 - 전체 전표 헤더 출력 결과.png" data-lightbox="" hidden="">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 전체 전표 헤더 출력 결과.png" alt="헤더 출력 결과">
+                  </a>
+                  <a href="images/p3_전표조회역분개/전표조회 및 역분개- 더블클릭시 전표 아이템 출력.png" data-lightbox="" hidden="">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개- 더블클릭시 전표 아이템 출력.png" alt="더블클릭 아이템 출력">
+                  </a>
+                  <a href="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드.png" data-lightbox="" hidden="">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드.png" alt="특정 전표 다운로드">
+                  </a>
+                  <a href="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드 결과.png" data-lightbox="" hidden="">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드 결과.png" alt="다운로드 결과">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p3-caption">
+                  초기화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p3" data-index="0" data-caption="초기화면" aria-label="초기화면" aria-pressed="true">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(100).png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p3" data-index="1" data-caption="초기화면(Selection Screen)" aria-label="초기화면(Selection Screen)" aria-pressed="false">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(1000).png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p3" data-index="2" data-caption="전체 전표 헤더 출력" aria-label="전체 전표 헤더 출력" aria-pressed="false">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개- 전체 전표 헤더 출력.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p3" data-index="3" data-caption="전체 전표 헤더 출력 결과" aria-label="전체 전표 헤더 출력 결과" aria-pressed="false">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 전체 전표 헤더 출력 결과.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p3" data-index="4" data-caption="더블클릭 시 전표 아이템 출력" aria-label="더블클릭 시 전표 아이템 출력" aria-pressed="false">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개- 더블클릭시 전표 아이템 출력.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p3" data-index="5" data-caption="특정 전표 다운로드" aria-label="특정 전표 다운로드" aria-pressed="false">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p3" data-index="6" data-caption="다운로드 결과" aria-label="다운로드 결과" aria-pressed="false">
+                    <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드 결과.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p4" class="prog-panel" hidden="">
+              <span class="prog-featured-badge">핵심</span>
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                총계정원장 조회
+              </h2>
+              <p>
+                4-테이블 JOIN으로 전기 데이터 단일 조회.<br>KTOKS 5그룹 기준 ALV Tree로 차/대 집계 표시.<br>계정그룹별 바차트 · BS 월별 추이 차트 동적 렌더링.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">ALV Column Tree</span><span class="tag hl">iXML 차트</span>
+                <span class="tag">4-테이블 JOIN</span><span class="tag">차대변 분리</span><span class="tag">KTOKS 그룹</span>
+              </div>
+              <div class="gallery" id="gallery-p4">
+                <div class="gallery-main">
+                  <a href="images/p4_총계정원장조회/총계정원장 조회- selection screen.png" data-lightbox="">
+                    <img src="images/p4_총계정원장조회/총계정원장 조회- selection screen.png" class="" alt="Selection Screen">
+                  </a>
+                  <a href="images/p4_총계정원장조회/총계정원장 조회- 조회결과.png" data-lightbox="" hidden="">
+                    <img src="images/p4_총계정원장조회/총계정원장 조회- 조회결과.png" alt="조회 결과">
+                  </a>
+                  <a href="images/p4_총계정원장조회/총계정원장 조회- 자산 더블클릭 시 자산상세 및 월별 누적 추이 확인.png" data-lightbox="" hidden="">
+                    <img src="images/p4_총계정원장조회/총계정원장 조회- 자산 더블클릭 시 자산상세 및 월별 누적 추이 확인.png" alt="더블클릭 시 자산상세 및 월별 추이">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p4-caption">
+                  Selection Screen
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p4" data-index="0" data-caption="Selection Screen" aria-label="Selection Screen" aria-pressed="true">
+                    <img src="images/p4_총계정원장조회/총계정원장 조회- selection screen.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p4" data-index="1" data-caption="조회 결과" aria-label="조회 결과" aria-pressed="false">
+                    <img src="images/p4_총계정원장조회/총계정원장 조회- 조회결과.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p4" data-index="2" data-caption="더블클릭 시 자산상세 및 월별 누적 추이 확인" aria-label="더블클릭 시 자산상세 및 월별 누적 추이 확인" aria-pressed="false">
+                    <img src="images/p4_총계정원장조회/총계정원장 조회- 자산 더블클릭 시 자산상세 및 월별 누적 추이 확인.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p5" class="prog-panel" hidden="">
+              <span class="prog-featured-badge">핵심</span>
+              <div class="prog-detail-type fiori">
+                Fiori
+              </div>
+              <h2>
+                독촉장 관리 시스템
+              </h2>
+              <p>
+                미결 채권 KPI 대시보드와 독촉장 발행을 통합한 Fiori 앱.<br>OData 전량 조회 후 클라이언트 사이드 필터링.<br>거래처별 독촉 메일 발송(Gmail 연동) 포함.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">SAP Fiori</span><span class="tag hl">OData 2.0</span>
+                <span class="tag">VizFrame 차트</span><span class="tag">미납액 계산</span><span class="tag">독촉 메일 발송</span>
+              </div>
+              <div class="gallery" id="gallery-p5">
+                <div class="gallery-main">
+                  <a href="images/p5_독촉장관리시스템/채권 연체 관리_초기 화면.png" data-lightbox="">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_초기 화면.png" class="" alt="초기 화면">
+                  </a>
+                  <a href="images/p5_독촉장관리시스템/채권 연체 관리_상세 화면.png" data-lightbox="" hidden="">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_상세 화면.png" alt="상세 화면">
+                  </a>
+                  <a href="images/p5_독촉장관리시스템/채권 연체 관리_독촉장.png" data-lightbox="" hidden="">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_독촉장.png" alt="독촉장">
+                  </a>
+                  <a href="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 메일.png" data-lightbox="" hidden="">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 메일.png" alt="독촉 메일">
+                  </a>
+                  <a href="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 gmail.png" data-lightbox="" hidden="">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 gmail.png" alt="독촉 gmail">
+                  </a>
+                  <a href="images/p5_독촉장관리시스템/채권 연체 관리_메일 확인.png" data-lightbox="" hidden="">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_메일 확인.png" alt="메일 확인">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p5-caption">
+                  초기 화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p5" data-index="0" data-caption="초기 화면" aria-label="초기 화면" aria-pressed="true">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_초기 화면.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p5" data-index="1" data-caption="상세 화면" aria-label="상세 화면" aria-pressed="false">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_상세 화면.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p5" data-index="2" data-caption="독촉장" aria-label="독촉장" aria-pressed="false">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_독촉장.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p5" data-index="3" data-caption="독촉 메일 발송" aria-label="독촉 메일 발송" aria-pressed="false">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 메일.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p5" data-index="4" data-caption="Gmail 발송 확인" aria-label="Gmail 발송 확인" aria-pressed="false">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 gmail.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p5" data-index="5" data-caption="메일 확인" aria-label="메일 확인" aria-pressed="false">
+                    <img src="images/p5_독촉장관리시스템/채권 연체 관리_메일 확인.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p6" class="prog-panel" hidden="">
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                Excel 업로드 일괄 반제
+              </h2>
+              <p>
+                엑셀 업로드로 입출금 내역을 읽어 전표를 일괄 반제.<br>FAE 3-쿼리로 통화불일치·초과입금 등 유효성 일괄 검증 후<br>채번·INSERT/MODIFY 일괄 처리.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">Excel 업로드</span><span class="tag hl">일괄 반제</span>
+                <span class="tag">동적 필드 매핑</span><span class="tag">FAE 유효성 검증</span><span class="tag">누적금액 추적</span>
+              </div>
+              <div class="gallery" id="gallery-p6">
+                <div class="gallery-main">
+                  <a href="images/p6_Excel일괄반제/일괄반제- Selection Screen.png" data-lightbox="">
+                    <img src="images/p6_Excel일괄반제/일괄반제- Selection Screen.png" class="" alt="Selection Screen">
+                  </a>
+                  <a href="images/p6_Excel일괄반제/일괄 반제- 엑셀 업로드.png" data-lightbox="" hidden="">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- 엑셀 업로드.png" alt="엑셀 업로드">
+                  </a>
+                  <a href="images/p6_Excel일괄반제/일괄 반제- Grid에서 입력값 검증.png" data-lightbox="" hidden="">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- Grid에서 입력값 검증.png" alt="Grid 입력값 검증">
+                  </a>
+                  <a href="images/p6_Excel일괄반제/일괄 반제- 전체 반제 버튼 클릭.png" data-lightbox="" hidden="">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- 전체 반제 버튼 클릭.png" alt="전체 반제 버튼 클릭">
+                  </a>
+                  <a href="images/p6_Excel일괄반제/일괄 반제- 일괄 반제처리 완료.png" data-lightbox="" hidden="">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- 일괄 반제처리 완료.png" alt="일괄 반제처리 완료">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p6-caption">
+                  Selection Screen
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p6" data-index="0" data-caption="Selection Screen" aria-label="Selection Screen" aria-pressed="true">
+                    <img src="images/p6_Excel일괄반제/일괄반제- Selection Screen.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p6" data-index="1" data-caption="엑셀 업로드" aria-label="엑셀 업로드" aria-pressed="false">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- 엑셀 업로드.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p6" data-index="2" data-caption="Grid 입력값 검증" aria-label="Grid 입력값 검증" aria-pressed="false">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- Grid에서 입력값 검증.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p6" data-index="3" data-caption="전체 반제 버튼 클릭" aria-label="전체 반제 버튼 클릭" aria-pressed="false">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- 전체 반제 버튼 클릭.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p6" data-index="4" data-caption="일괄 반제처리 완료" aria-label="일괄 반제처리 완료" aria-pressed="false">
+                    <img src="images/p6_Excel일괄반제/일괄 반제- 일괄 반제처리 완료.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p7" class="prog-panel" hidden="">
+              <span class="prog-featured-badge">핵심</span>
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                전표 반제 처리
+              </h2>
+              <p>
+                AR/AP 전환에 따라 채권·채무 전표 조회.<br>입출금액 vs 미결금액 비교로 완전반제(C)/부분반제(P) 자동 결정.<br>AR 반제 시 청구문서 상태 동기화 포함.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">반제(Clearing)</span><span class="tag hl">AR/AP</span>
+                <span class="tag">동적 FCAT</span><span class="tag">미결금액 차감</span><span class="tag">청구문서 연동</span>
+              </div>
+              <div class="gallery" id="gallery-p7">
+                <div class="gallery-main">
+                  <a href="images/p7_전표반제처리/전표 단건반제- Selection Screen.png" data-lightbox="">
+                    <img src="images/p7_전표반제처리/전표 단건반제- Selection Screen.png" class="" alt="Selection Screen">
+                  </a>
+                  <a href="images/p7_전표반제처리/전표 단건반제- 통장 입출금내역 업로드.png" data-lightbox="" hidden="">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 통장 입출금내역 업로드.png" alt="통장 입출금내역 업로드">
+                  </a>
+                  <a href="images/p7_전표반제처리/전표 단건반제- 입출금 내역 업로드 완료.png" data-lightbox="" hidden="">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 입출금 내역 업로드 완료.png" alt="입출금 내역 업로드 완료">
+                  </a>
+                  <a href="images/p7_전표반제처리/전표 단건반제- 조회 결과.png" data-lightbox="" hidden="">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 조회 결과.png" alt="조회 결과">
+                  </a>
+                  <a href="images/p7_전표반제처리/전표 단건 반제- 더블 클릭.png" data-lightbox="" hidden="">
+                    <img src="images/p7_전표반제처리/전표 단건 반제- 더블 클릭.png" alt="더블 클릭">
+                  </a>
+                  <a href="images/p7_전표반제처리/전표 단건반제- 단건반제 실행.png" data-lightbox="" hidden="">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 단건반제 실행.png" alt="단건반제 실행">
+                  </a>
+                  <a href="images/p7_전표반제처리/전표 단건반제- 반제 완료.png" data-lightbox="" hidden="">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 반제 완료.png" alt="반제 완료">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p7-caption">
+                  Selection Screen
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p7" data-index="0" data-caption="Selection Screen" aria-label="Selection Screen" aria-pressed="true">
+                    <img src="images/p7_전표반제처리/전표 단건반제- Selection Screen.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p7" data-index="1" data-caption="통장 입출금내역 업로드" aria-label="통장 입출금내역 업로드" aria-pressed="false">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 통장 입출금내역 업로드.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p7" data-index="2" data-caption="입출금 내역 업로드 완료" aria-label="입출금 내역 업로드 완료" aria-pressed="false">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 입출금 내역 업로드 완료.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p7" data-index="3" data-caption="조회 결과" aria-label="조회 결과" aria-pressed="false">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 조회 결과.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p7" data-index="4" data-caption="더블 클릭" aria-label="더블 클릭" aria-pressed="false">
+                    <img src="images/p7_전표반제처리/전표 단건 반제- 더블 클릭.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p7" data-index="5" data-caption="단건반제 실행" aria-label="단건반제 실행" aria-pressed="false">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 단건반제 실행.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p7" data-index="6" data-caption="반제 완료" aria-label="반제 완료" aria-pressed="false">
+                    <img src="images/p7_전표반제처리/전표 단건반제- 반제 완료.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p8" class="prog-panel" hidden="">
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                여신 등급 자동 갱신 배치
+              </h2>
+              <p>
+                DR 전표 GROUP BY로 거래처별 매출 집계 후 S/A/B/C 등급 산정.<br>월말 배치는 등급 재산정, 일배치는 미결잔액만 갱신.<br>고객마스터·여신 테이블 일괄 MODIFY.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">Batch 배치</span><span class="tag hl">GROUP BY SUM</span>
+                <span class="tag">여신 등급</span><span class="tag">월말/일배치 분기</span><span class="tag">MODIFY 저장</span>
+              </div>
+              <div class="gallery" id="gallery-p8">
+                <div class="gallery-main">
+                  <a href="images/p8_여신등급자동갱신/여신등급_초기화면.png" data-lightbox="">
+                    <img src="images/p8_여신등급자동갱신/여신등급_초기화면.png" class="" alt="초기화면">
+                  </a>
+                  <a href="images/p8_여신등급자동갱신/여신등급_배치 결과.png" data-lightbox="" hidden="">
+                    <img src="images/p8_여신등급자동갱신/여신등급_배치 결과.png" alt="배치 결과">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p8-caption">
+                  초기화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p8" data-index="0" data-caption="초기화면" aria-label="초기화면" aria-pressed="true">
+                    <img src="images/p8_여신등급자동갱신/여신등급_초기화면.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p8" data-index="1" data-caption="배치 결과" aria-label="배치 결과" aria-pressed="false">
+                    <img src="images/p8_여신등급자동갱신/여신등급_배치 결과.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p9" class="prog-panel" hidden="">
+              <div class="prog-detail-type fiori">
+                Fiori
+              </div>
+              <h2>
+                임시전표 결재 프로그램
+              </h2>
+              <p>
+                임시전표를 결재·반려하는 Fiori 앱.<br>KPI 대시보드 차트 클릭으로 리스트 실시간 필터링.<br>개별/일괄 결재 및 반려 사유 입력 처리.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">결재 워크플로우</span><span class="tag hl">일괄결재</span>
+                <span class="tag">OData Update</span><span class="tag">차트-리스트 연동</span><span class="tag">순차 비동기 처리</span>
+              </div>
+              <div class="gallery" id="gallery-p9">
+                <div class="gallery-main">
+                  <a href="images/p9_임시전표결재/01.png" data-lightbox="">
+                    <img src="images/p9_임시전표결재/01.png" class="" alt="초기 화면">
+                  </a>
+                  <a href="images/p9_임시전표결재/02.png" data-lightbox="" hidden="">
+                    <img src="images/p9_임시전표결재/02.png" alt="특정 행 클릭하여 라우팅">
+                  </a>
+                  <a href="images/p9_임시전표결재/03.png" data-lightbox="" hidden="">
+                    <img src="images/p9_임시전표결재/03.png" alt="결재 승인">
+                  </a>
+                  <a href="images/p9_임시전표결재/04.png" data-lightbox="" hidden="">
+                    <img src="images/p9_임시전표결재/04.png" alt="결재 반려">
+                  </a>
+                  <a href="images/p9_임시전표결재/05.png" data-lightbox="" hidden="">
+                    <img src="images/p9_임시전표결재/05.png" alt="반려 완료 확인">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p9-caption">
+                  초기 화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p9" data-index="0" data-caption="초기 화면" aria-label="초기 화면" aria-pressed="true">
+                    <img src="images/p9_임시전표결재/01.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p9" data-index="1" data-caption="특정 행 클릭하여 라우팅" aria-label="특정 행 클릭하여 라우팅" aria-pressed="false">
+                    <img src="images/p9_임시전표결재/02.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p9" data-index="2" data-caption="결재 승인" aria-label="결재 승인" aria-pressed="false">
+                    <img src="images/p9_임시전표결재/03.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p9" data-index="3" data-caption="결재 반려" aria-label="결재 반려" aria-pressed="false">
+                    <img src="images/p9_임시전표결재/04.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p9" data-index="4" data-caption="반려 완료 확인" aria-label="반려 완료 확인" aria-pressed="false">
+                    <img src="images/p9_임시전표결재/05.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p10" class="prog-panel" hidden="">
+              <div class="prog-detail-type abap">
+                ABAP
+              </div>
+              <h2>
+                환율 자동 수집 배치
+              </h2>
+              <p>
+                한국수출입은행 Open API로 당일 환율 JSON 수신.<br>100단위 통화(JPY 등) 처리 후 MODIFY로 DB 저장 (있으면 갱신, 없으면 삽입).
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">HTTP Client</span><span class="tag hl">JSON 파싱</span>
+                <span class="tag">외부 API 연동</span><span class="tag">MODIFY 저장</span><span class="tag">배치 프로그램</span>
+              </div>
+              <div class="gallery" id="gallery-p10">
+                <div class="gallery-main">
+                  <a href="images/p10_환율자동수집배치/환율_초기화면.png" data-lightbox="">
+                    <img src="images/p10_환율자동수집배치/환율_초기화면.png" class="" alt="초기화면">
+                  </a>
+                  <a href="images/p10_환율자동수집배치/환율_테이블 저장 결과.png" data-lightbox="" hidden="">
+                    <img src="images/p10_환율자동수집배치/환율_테이블 저장 결과.png" alt="테이블 저장 결과">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p10-caption">
+                  초기화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p10" data-index="0" data-caption="초기화면" aria-label="초기화면" aria-pressed="true">
+                    <img src="images/p10_환율자동수집배치/환율_초기화면.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p10" data-index="1" data-caption="테이블 저장 결과" aria-label="테이블 저장 결과" aria-pressed="false">
+                    <img src="images/p10_환율자동수집배치/환율_테이블 저장 결과.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="p11" class="prog-panel" hidden="">
+              <div class="prog-detail-type fiori">
+                Fiori
+              </div>
+              <h2>
+                직원 급여 관리 프로그램
+              </h2>
+              <p>
+                사원·코스트센터 데이터를 조회하여 급여를 산정·지급하는 Fiori 앱.<br>손익센터별 VizFrame 도넛 차트로 급여 분포 시각화, 슬라이스 클릭 시 상세 팝오버.<br>사원 CRUD 및 코스트센터별 급여 전표 생성 처리.
+              </p>
+              <div class="prog-detail-tags">
+                <span class="tag hl">VizFrame 차트</span><span class="tag hl">사원 CRUD</span>
+                <span class="tag">OData Create/Update</span><span class="tag">동적 채번</span><span class="tag">Value Help</span>
+              </div>
+              <div class="gallery" id="gallery-p11">
+                <div class="gallery-main">
+                  <a href="images/p11_직원급여관리/직원 급여 관리_초기 화면.png" data-lightbox="">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_초기 화면.png" class="" alt="초기 화면">
+                  </a>
+                  <a href="images/p11_직원급여관리/직원 급여 관리_사원 추가.png" data-lightbox="" hidden="">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_사원 추가.png" alt="사원 추가">
+                  </a>
+                  <a href="images/p11_직원급여관리/직원 급여 관리_전표 생성.png" data-lightbox="" hidden="">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_전표 생성.png" alt="전표 생성">
+                  </a>
+                  <a href="images/p11_직원급여관리/직원 급여 관리_ 월급 지급.png" data-lightbox="" hidden="">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_ 월급 지급.png" alt="월급 지급">
+                  </a>
+                  <a href="images/p11_직원급여관리/직원 급여 관리_급여 전표 확인.png" data-lightbox="" hidden="">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_급여 전표 확인.png" alt="급여 전표 확인">
+                  </a>
+                </div>
+                <div class="gallery-caption" id="gallery-p11-caption">
+                  초기 화면
+                </div>
+                <div class="gallery-thumbs">
+                  <button type="button" class="gallery-thumb active" data-gallery="p11" data-index="0" data-caption="초기 화면" aria-label="초기 화면" aria-pressed="true">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_초기 화면.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p11" data-index="1" data-caption="사원 추가" aria-label="사원 추가" aria-pressed="false">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_사원 추가.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p11" data-index="2" data-caption="전표 생성" aria-label="전표 생성" aria-pressed="false">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_전표 생성.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p11" data-index="3" data-caption="월급 지급" aria-label="월급 지급" aria-pressed="false">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_ 월급 지급.png" alt="">
+                  </button>
+                  <button type="button" class="gallery-thumb" data-gallery="p11" data-index="4" data-caption="급여 전표 확인" aria-label="급여 전표 확인" aria-pressed="false">
+                    <img src="images/p11_직원급여관리/직원 급여 관리_급여 전표 확인.png" alt="">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="margin-top-48px">
+          <div class="section-label">
+            Retrospective
+          </div>
+          <div class="section-title margin-bottom-12px">
+            What I Learned
+          </div>
+          <div class="narrative margin-bottom-0px">
+            <ol class="padding-left-20px margin-top-0px margin-right-0px margin-bottom-0px margin-left-0px">
+              <li class="margin-bottom-10px">
+                전표 전기 시점을 이벤트(출하·승인)와 동기화하는 설계가 재무 데이터 단절을 줄인다는 것을 BC3을 풀며 체감했습니다.
+              </li>
+              <li class="margin-bottom-10px">
+                ABAP 백엔드와 Fiori 프론트를 같은 프로젝트에서 오가며 만들다 보니, OData 서비스 설계 단계에서 화면의 데이터 요구사항을 먼저 그려두는 습관이 생겼습니다.
+              </li>
+              <li class="margin-bottom-10px">
+                일괄결재·일괄반제처럼 여러 건을 순차 처리하는 로직에서는 성공/실패를 개별로 집계해 부분 실패에도 전체가 막히지 않게 만드는 게 중요하다는 걸 배웠습니다.
+              </li>
+              <li class="margin-bottom-10px">
+                VizFrame 차트나 KPI 대시보드는 만들고 끝이 아니라, 슬라이스 클릭 → 상세 조회처럼 사용자의 다음 행동까지 이어줘야 실제로 쓰이는 화면이 된다는 걸 알게 됐습니다.
+              </li>
+              <li>
+                ERD와 조직도를 먼저 설계하고 코드를 짜기 시작하니, 나중에 요구사항이 바뀌어도 테이블 구조를 갈아엎지 않고 대응할 수 있었습니다.
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+      <dialog id="lightbox" class="image-dialog" aria-label="프로젝트 이미지 확대">
+        <img id="lightbox-img" alt=""/>
+        <div class="lightbox-controls">
+          <button type="button" data-zoom="0.8" aria-label="축소">
+            −
+          </button>
+          <button type="button" data-reset>
+            100%
+          </button>
+          <button type="button" data-zoom="1.25" aria-label="확대">
+            +
+          </button>
+          <button type="button" data-close autofocus>
+            닫기 ✕
+          </button>
+        </div>
+      </dialog>
+    </main>
+    <div class="contact-bar" id="contact">
+      <div class="section-label">
+        GET IN TOUCH
+      </div>
+      <h2>
+        더 나은 업무의 흐름을 함께.
+      </h2>
+      <p>
+        SAP PP Consultant ·
+        <a href="mailto:imsunbow@gmail.com">
+          imsunbow@gmail.com
+        </a>
+        ·
+        <a href="https://github.com/imsunbow" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+        ·
+        <a href="https://www.linkedin.com/in/jaemin-lee-68696820b/" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
+        ·
+        <a href="https://imsunbow.tistory.com/" target="_blank" rel="noopener noreferrer">
+          Blog
+        </a>
+      </p>
+      <p class="margin-top-16px font-size-12px color-rgb-123-136-173 letter-spacing-0-3px">
+        © 2026 이재민(Lee Jaemin). All rights reserved.
+      </p>
+    </div>
+  </body>
+</html>

@@ -1,1714 +1,395 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>이재민 | SAP PP Consultant</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --navy:   #1e2d4f;
-      --navy2:  #2d4275;
-      --blue:   #3b66d4;
-      --gray50: #f8f9fc;
-      --gray100:#f0f2f8;
-      --gray200:#e2e6f0;
-      --gray400:#9aa3bf;
-      --gray600:#5a6480;
-      --gray800:#2c3450;
-      --white:  #ffffff;
-      --green:  #1a7f52;
-      --orange: #b05a00;
-    }
-
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Inter', -apple-system, sans-serif;
-      font-size: 15px;
-      color: var(--gray800);
-      background: var(--white);
-      line-height: 1.6;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,.95);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid var(--gray200);
-      padding: 0 40px;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 56px;
-    }
-    .nav-logo { font-weight: 700; color: var(--navy); font-size: 16px; letter-spacing: -.3px; }
-    .nav-links { display: flex; gap: 4px; list-style: none; }
-    .nav-links a {
-      text-decoration: none; color: var(--gray600);
-      font-size: 13px; font-weight: 500;
-      padding: 6px 14px; border-radius: 6px;
-      transition: color .2s, background .2s;
-    }
-    .nav-links a:hover { color: var(--navy); background: var(--gray100); }
-    .nav-links a.active { color: var(--blue); background: #e8edf9; font-weight: 600; }
-
-    /* ── TAB PAGES ── */
-    .tab-page {
-      display: none;
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    .tab-page.active {
-      display: block;
-      animation: tabFadeIn .25s ease forwards;
-    }
-    @keyframes tabFadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── HERO ── */
-    .hero {
-      background: var(--navy);
-      color: var(--white);
-      padding: 80px 40px 72px;
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 60% 80% at 80% 40%, rgba(59,102,212,.25) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .hero-inner { max-width: 1400px; margin: 0 auto; position: relative; display: flex; align-items: center; justify-content: space-between; gap: 40px; }
-    .hero-text { flex: 1; }
-    .hero-photo {
-      flex-shrink: 0;
-      width: 160px; height: 200px;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 3px solid rgba(255,255,255,.15);
-      box-shadow: 0 8px 32px rgba(0,0,0,.4);
-    }
-    .hero-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
-    @media (max-width: 640px) {
-      .hero-inner { flex-direction: column-reverse; align-items: flex-start; gap: 24px; }
-      .hero-photo { width: 100px; height: 125px; }
-    }
-    .hero-tag {
-      display: inline-block;
-      background: rgba(59,102,212,.3);
-      border: 1px solid rgba(59,102,212,.5);
-      color: #a8c0f8;
-      font-size: 12px; font-weight: 600; letter-spacing: 1px;
-      padding: 4px 12px; border-radius: 4px;
-      margin-bottom: 20px; text-transform: uppercase;
-    }
-    .hero h1 {
-      font-size: clamp(26px, 4vw, 42px);
-      font-weight: 700; line-height: 1.25; letter-spacing: -.5px;
-      margin-bottom: 20px;
-    }
-    .hero h1 em { color: #7da8fb; font-style: normal; }
-    .hero-sub {
-      color: #b8c4de; font-size: 16px; max-width: 580px; line-height: 1.7;
-      margin-bottom: 36px;
-    }
-    .hero-stats {
-      display: flex; gap: 40px; flex-wrap: wrap;
-      padding-top: 32px;
-      border-top: 1px solid rgba(255,255,255,.1);
-    }
-    .hero-stat-num { font-size: 28px; font-weight: 700; color: #7da8fb; }
-    .hero-stat-lbl { font-size: 12px; color: #8090b0; margin-top: 2px; }
-
-    /* ── SECTION ── */
-    section { max-width: 1400px; margin: 0 auto; padding: 64px 48px; }
-    section#projects { max-width: 1400px; }
-    section#skills   { max-width: 1400px; }
-    section#about    { max-width: 1400px; }
-    .section-label {
-      font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--blue);
-      margin-bottom: 8px;
-    }
-    .section-title {
-      font-size: 24px; font-weight: 700; color: var(--navy);
-      margin-bottom: 32px; letter-spacing: -.3px;
-    }
-    .section-divider { border: none; border-top: 1px solid var(--gray200); margin: 0; }
-
-    /* ── PROJECT CARDS ── */
-    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-    .card {
-      background: var(--white);
-      border: 1px solid var(--gray200);
-      border-radius: 10px; padding: 24px;
-      transition: box-shadow .2s, border-color .2s, transform .15s;
-      position: relative;
-    }
-    .card:hover {
-      box-shadow: 0 6px 24px rgba(30,45,79,.1);
-      border-color: #b8c8f0; transform: translateY(-2px);
-    }
-    .card-type {
-      font-size: 10px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 10px;
-      display: inline-flex; align-items: center; gap: 5px;
-    }
-    .card-type.abap   { color: #1e7a4e; }
-    .card-type.fiori  { color: #1e4fa0; }
-    .card-type.abap::before  { content: ''; width:8px; height:8px; border-radius:50%; background:#1e7a4e; }
-    .card-type.fiori::before { content: ''; width:8px; height:8px; border-radius:50%; background:#1e4fa0; }
-    .card h3 { font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .card-id { font-size: 11px; color: var(--gray400); font-family: 'JetBrains Mono', monospace; margin-bottom: 10px; }
-    .card p { font-size: 13px; color: var(--gray600); line-height: 1.6; }
-    .card-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-    .tag {
-      font-size: 11px; font-weight: 500; padding: 3px 8px;
-      border-radius: 4px;
-      background: var(--gray100); color: var(--gray600);
-      border: 1px solid var(--gray200);
-    }
-    .tag.hl { background: #e8edf9; color: #1e3a8a; border-color: #b0c4f0; }
-    .card.featured {
-      border-color: var(--blue);
-      background: linear-gradient(135deg, #f5f8ff 0%, #ffffff 100%);
-    }
-    .card.featured::after {
-      content: '핵심';
-      position: absolute; top: 16px; right: 16px;
-      font-size: 10px; font-weight: 700; letter-spacing: .5px;
-      background: var(--blue); color: white;
-      padding: 2px 8px; border-radius: 4px;
-    }
-
-    /* ── NARRATIVE ── */
-    .narrative {
-      background: var(--gray50);
-      border: 1px solid var(--gray200);
-      border-left: 4px solid var(--blue);
-      border-radius: 0 8px 8px 0;
-      padding: 24px 28px; margin-bottom: 40px;
-    }
-    .narrative p { font-size: 14px; color: var(--gray600); line-height: 1.8; }
-    .narrative strong { color: var(--navy); }
-
-    /* ── TIMELINE ── */
-    .timeline { display: flex; flex-direction: column; gap: 0; }
-    .tl-item {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 0 32px;
-      position: relative;
-      padding-bottom: 48px;
-    }
-    .tl-item:last-child { padding-bottom: 0; }
-    .tl-left {
-      text-align: right;
-      padding-top: 4px;
-      position: relative;
-    }
-    .tl-left::after {
-      content: '';
-      position: absolute; right: -20px; top: 8px;
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--blue); border: 2px solid var(--white);
-      box-shadow: 0 0 0 2px var(--blue);
-      z-index: 1;
-    }
-    .tl-item:not(:last-child) .tl-left::before {
-      content: '';
-      position: absolute; right: -16px; top: 18px; bottom: -48px;
-      width: 2px; background: var(--gray200);
-    }
-    .tl-period {
-      font-size: 11px; font-weight: 600; color: var(--blue);
-      font-family: 'JetBrains Mono', monospace; letter-spacing: .03em;
-      line-height: 1.5;
-    }
-    .tl-year {
-      font-size: 22px; font-weight: 700; color: var(--navy);
-      font-family: 'JetBrains Mono', monospace;
-      margin-bottom: 2px;
-    }
-    .tl-right { padding-top: 0; }
-    .tl-title {
-      font-size: 18px; font-weight: 700; color: var(--navy);
-      margin-bottom: 3px;
-    }
-    .tl-role {
-      font-size: 13px; color: var(--gray400); margin-bottom: 10px;
-    }
-    .tl-desc {
-      font-size: 13.5px; color: var(--gray600); line-height: 1.8;
-      margin-bottom: 14px; max-width: 600px;
-    }
-    .tl-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
-    .tl-tag {
-      font-size: 11px; font-weight: 500; padding: 3px 10px;
-      border-radius: 20px;
-      background: var(--gray100); color: var(--gray600);
-      border: 1px solid var(--gray200);
-    }
-    .tl-tag.hl { background: #e8edf9; color: #1e3a8a; border-color: #b0c4f0; }
-    .tl-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-    @media (max-width: 640px) {
-      .tl-item { grid-template-columns: 1fr; gap: 4px; padding-bottom: 36px; }
-      .tl-left { text-align: left; }
-      .tl-left::after { display: none; }
-      .tl-left::before { display: none; }
-      .tl-cards { grid-template-columns: 1fr; }
-    }
-
-    /* ── SKILLS ── */
-    .skills-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-    @media (max-width: 768px) { .skills-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 480px) { .skills-grid { grid-template-columns: 1fr; } }
-    .skill-group { background: var(--gray50); border: 1px solid var(--gray200); border-radius: 8px; padding: 18px 20px; }
-    .skill-group h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 10px; }
-    .skill-group ul { list-style: none; }
-    .skill-group li { font-size: 13px; color: var(--gray600); padding: 3px 0; }
-    .skill-group li::before { content: '—'; margin-right: 6px; color: var(--gray400); }
-
-    /* ── ALGO SECTION ── */
-    .algo-banner {
-      background: linear-gradient(135deg, #0f1a2e 0%, #1a2d50 100%);
-      border: 1px solid #2a3a5c;
-      border-radius: 12px;
-      padding: 32px 36px;
-      display: flex; align-items: center; gap: 40px;
-      flex-wrap: wrap;
-      margin-bottom: 32px;
-    }
-    .algo-badge {
-      display: flex; flex-direction: column; align-items: center; gap: 8px;
-      flex-shrink: 0;
-    }
-    .algo-tier {
-      width: 64px; height: 64px; border-radius: 50%;
-      background: linear-gradient(135deg, #b8b4ff 0%, #7c78e8 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: 800; color: white; letter-spacing: .5px;
-      box-shadow: 0 0 20px rgba(124,120,232,.4);
-    }
-    .algo-tier-lbl { font-size: 11px; color: #8090b0; font-weight: 500; }
-    .algo-info { flex: 1; min-width: 200px; }
-    .algo-info h3 { font-size: 18px; font-weight: 700; color: #e8eef8; margin-bottom: 8px; }
-    .algo-info p { font-size: 13px; color: #8090b0; line-height: 1.7; }
-    .algo-stats { display: flex; gap: 28px; flex-wrap: wrap; }
-    .algo-stat { text-align: center; }
-    .algo-stat-num { font-size: 26px; font-weight: 700; color: #b8b4ff; font-family: 'JetBrains Mono', monospace; }
-    .algo-stat-lbl { font-size: 11px; color: #6070a0; margin-top: 2px; }
-    .algo-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
-    .algo-tag {
-      font-size: 11px; padding: 3px 10px; border-radius: 20px;
-      background: rgba(124,120,232,.15); color: #b8b4ff;
-      border: 1px solid rgba(124,120,232,.3);
-    }
-    .algo-link {
-      display: inline-flex; align-items: center; gap: 6px;
-      margin-top: 16px;
-      font-size: 12px; font-weight: 600; color: #7da8fb;
-      text-decoration: none;
-      border: 1px solid rgba(59,102,212,.4);
-      padding: 6px 14px; border-radius: 6px;
-      transition: background .2s;
-    }
-    .algo-link:hover { background: rgba(59,102,212,.15); }
-
-    /* ── ABOUT (학력/자격증) ── */
-    .about-section {
-      display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px;
-    }
-    @media (max-width: 768px) {
-      .about-section { grid-template-columns: 1fr 1fr; gap: 32px; }
-    }
-    @media (max-width: 480px) {
-      .about-section { grid-template-columns: 1fr; }
-    }
-    .about-block h3 {
-      font-size: 13px; font-weight: 600; letter-spacing: .08em;
-      text-transform: uppercase; color: var(--blue); margin-bottom: 20px;
-    }
-    .about-item {
-      display: flex; gap: 20px; align-items: flex-start;
-      padding: 18px 0; border-bottom: 1px solid var(--gray200);
-    }
-    .about-item:last-child { border-bottom: none; }
-    .about-icon {
-      width: 42px; height: 42px; border-radius: 10px;
-      background: var(--gray100); display: flex; align-items: center;
-      justify-content: center; font-size: 18px; flex-shrink: 0;
-    }
-    .about-item-title { font-weight: 600; font-size: 15px; color: var(--gray800); }
-    .about-item-sub   { font-size: 13px; color: var(--gray600); margin-top: 4px; line-height: 1.6; }
-    @media(max-width:600px){ .about-section{ grid-template-columns:1fr; padding:40px 20px; } }
-
-    /* ── SCREENSHOT GALLERY ── */
-    .gallery { margin: 20px 0 24px; }
-    .gallery-main {
-      position: relative;
-      border: 1px solid var(--gray200);
-      border-radius: 10px 10px 0 0;
-      overflow: hidden;
-    }
-    .gallery-main img {
-      display: none;
-      width: 100%; height: auto;
-      cursor: zoom-in;
-    }
-    .gallery-main img.active { display: block; }
-    .gallery-caption {
-      background: var(--gray50);
-      border: 1px solid var(--gray200); border-top: none;
-      border-radius: 0 0 10px 10px;
-      padding: 10px 16px;
-      font-size: 12.5px; color: var(--gray600); min-height: 38px;
-    }
-    .gallery-thumbs {
-      display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap;
-    }
-    .gallery-thumb {
-      width: 80px; height: 52px;
-      border-radius: 6px; overflow: hidden;
-      border: 2px solid var(--gray200);
-      cursor: pointer; transition: border-color .15s;
-      flex-shrink: 0;
-    }
-    .gallery-thumb img { width: 100%; height: 100%; object-fit: cover; }
-    .gallery-thumb.active { border-color: var(--blue); }
-    .gallery-thumb:hover { border-color: var(--navy); }
-
-    /* ── CONTACT ── */
-    .contact-bar {
-      background: var(--navy);
-      color: rgba(255,255,255,.7);
-      text-align: center; padding: 40px 24px;
-      font-size: 13px;
-    }
-    .contact-bar a { color: #7da8fb; text-decoration: none; }
-    .contact-bar h2 { font-size: 20px; color: white; margin-bottom: 12px; }
-
-    @media (max-width: 640px) {
-      nav { padding: 0 16px; }
-      .hero { padding: 48px 20px 52px; }
-      .hero-stats { gap: 24px; }
-      section { padding: 48px 16px; }
-      .cards { grid-template-columns: 1fr; }
-      .algo-banner { flex-direction: column; gap: 24px; }
-      .prog-layout { grid-template-columns: 1fr; }
-      .prog-list { border-right: none; border-bottom: 1px solid var(--gray200); max-height: 260px; }
-    }
-
-    /* ── PROGRAMS PAGE ── */
-    .prog-layout {
-      display: grid;
-      grid-template-columns: 220px 1fr;
-      min-height: 600px;
-      border: 1px solid var(--gray200);
-      border-radius: 12px;
-      overflow: hidden;
-    }
-    .prog-list {
-      background: var(--gray50);
-      border-right: 1px solid var(--gray200);
-      overflow-y: auto;
-      padding: 12px 0;
-    }
-    /* ── LIGHTBOX ── */
-    .lightbox-trigger {
-      display: block; cursor: zoom-in;
-      border-radius: 8px; overflow: hidden;
-      border: 1px solid rgba(255,255,255,.15);
-      transition: opacity .15s;
-    }
-    .lightbox-trigger:hover { opacity: .85; }
-    .lightbox-trigger img { width: 100%; height: auto; display: block; }
-    /* ── ERD TABS ── */
-    .erd-tabs {
-      display: flex; flex-wrap: wrap; gap: 6px;
-      margin-bottom: 12px;
-    }
-    .erd-tab-btn {
-      padding: 7px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--gray200);
-      background: var(--gray50);
-      font-size: 13px; font-weight: 600;
-      cursor: pointer;
-      transition: background .15s, color .15s, border-color .15s;
-    }
-    .erd-tab-btn:hover { background: var(--gray100); }
-    .erd-tab-btn.active {
-      background: var(--blue); border-color: var(--blue);
-      color: #fff;
-    }
-    .erd-panel { display: none; }
-    .erd-panel.active { display: block; }
-    .lightbox-overlay {
-      display: none;
-      position: fixed; inset: 0; z-index: 500;
-      background: rgba(0,0,0,.85);
-      backdrop-filter: blur(8px);
-      align-items: center; justify-content: center;
-      padding: 24px;
-      cursor: zoom-out;
-    }
-    .lightbox-overlay.open { display: flex; }
-    .lightbox-overlay img {
-      max-width: 90vw; max-height: 85vh;
-      border-radius: 8px;
-      box-shadow: 0 24px 80px rgba(0,0,0,.6);
-      animation: lbFade .2s ease;
-      transform-origin: center center;
-      user-select: none;
-    }
-    @keyframes lbFade { from { opacity:0; transform:scale(.96); } to { opacity:1; transform:scale(1); } }
-    .lightbox-controls {
-      position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
-      display: flex; gap: 8px; z-index: 501; cursor: default;
-    }
-    .lightbox-controls button {
-      min-width: 40px; height: 40px; padding: 0 12px;
-      border-radius: 999px; border: 1px solid rgba(255,255,255,.2);
-      background: rgba(20,20,20,.7); backdrop-filter: blur(6px);
-      color: #fff; font-size: 15px; font-weight: 600;
-      cursor: pointer; transition: background .15s, transform .1s;
-    }
-    .lightbox-controls button:hover { background: rgba(255,255,255,.15); }
-    .lightbox-controls button:active { transform: scale(.94); }
-
-    /* ── BC SECTION ── */
-    .bc-wrapper {
-      margin-bottom: 40px;
-    }
-    .bc-project-header {
-      background: var(--navy);
-      border-radius: 10px 10px 0 0;
-      padding: 20px 28px;
-      display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;
-    }
-    .bc-project-title { font-size: 18px; font-weight: 700; color: white; margin-bottom: 4px; }
-    .bc-project-sub   { font-size: 13px; color: #8090b0; }
-    .bc-project-theme {
-      font-size: 11px; font-weight: 600; color: #7da8fb;
-      background: rgba(59,102,212,.2); border: 1px solid rgba(59,102,212,.4);
-      padding: 4px 12px; border-radius: 20px; white-space: nowrap; flex-shrink: 0;
-    }
-    .bc-body {
-      border: 1px solid var(--gray200); border-top: none;
-      border-radius: 0 0 10px 10px;
-      display: grid; grid-template-columns: 220px 1fr;
-      overflow: hidden;
-    }
-    .bc-model {
-      background: var(--gray50);
-      border-right: 1px solid var(--gray200);
-      padding: 20px;
-    }
-    .bc-model-title {
-      font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--blue);
-      margin-bottom: 14px;
-    }
-    .bc-model-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 0; border-bottom: 1px solid var(--gray200);
-      font-size: 13px; color: var(--gray700);
-    }
-    .bc-model-item:last-child { border-bottom: none; }
-    .bc-model-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      background: #f0e9d6; display: flex; align-items: center;
-      justify-content: center; font-size: 16px; flex-shrink: 0;
-    }
-    .bc-challenges { padding: 20px 24px; }
-    .bc-challenges-title {
-      font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; color: var(--blue); margin-bottom: 14px;
-    }
-    .bc-item {
-      display: flex; gap: 14px; align-items: flex-start;
-      padding: 12px 0; border-bottom: 1px solid var(--gray200);
-    }
-    .bc-item:last-child { border-bottom: none; }
-    .bc-num {
-      width: 24px; height: 24px; border-radius: 50%;
-      background: #c8a84b; color: white;
-      font-size: 12px; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 2px;
-    }
-    .bc-item-title  { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
-    .bc-item-bullets { list-style: none; }
-    .bc-item-bullets li {
-      font-size: 12px; color: var(--gray600); line-height: 1.6;
-      padding-left: 10px; position: relative;
-    }
-    .bc-item-bullets li::before { content: '·'; position: absolute; left: 0; color: var(--gray400); }
-    .bc-item.solved .bc-num { background: #1a7f52; }
-    .bc-item.solved .bc-item-title { color: #1a7f52; }
-    .bc-item.solved { background: rgba(26,127,82,.04); border-radius: 6px; padding: 12px 8px; margin: 0 -8px; }
-    .bc-solved-tag {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 10px; font-weight: 700; letter-spacing: .5px;
-      background: rgba(26,127,82,.12); color: #1a7f52;
-      border: 1px solid rgba(26,127,82,.3);
-      padding: 2px 8px; border-radius: 20px; margin-left: 8px;
-      vertical-align: middle;
-    }
-    .bc-highlight {
-      background: linear-gradient(transparent 40%, rgba(255,220,50,.45) 40%);
-      font-weight: 600; color: var(--gray800);
-    }
-    .bc-approach {
-      margin-top: 16px;
-      background: var(--gray50); border: 1px solid var(--gray200);
-      border-left: 4px solid var(--blue);
-      border-radius: 0 8px 8px 0;
-      padding: 16px 20px;
-      font-size: 13px; color: var(--gray400);
-      font-style: italic;
-    }
-    @media (max-width: 768px) {
-      .bc-body { grid-template-columns: 1fr; }
-      .bc-model { border-right: none; border-bottom: 1px solid var(--gray200); }
-      .bc-project-header { flex-direction: column; gap: 10px; }
-    }
-
-    .prog-back-btn {
-      display: flex; align-items: center; gap: 6px;
-      width: 100%; padding: 12px 16px;
-      background: none; border: none; border-bottom: 1px solid var(--gray200);
-      cursor: pointer; font-family: inherit;
-      font-size: 13px; font-weight: 600; color: var(--gray600);
-      transition: background .15s, color .15s;
-      text-align: left;
-    }
-    .prog-back-btn:hover { background: var(--gray100); color: var(--navy); }
-    .prog-group-label {
-      font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
-      text-transform: uppercase; color: var(--gray400);
-      padding: 12px 16px 6px;
-    }
-    .prog-btn {
-      display: flex; align-items: center; gap: 8px;
-      width: 100%; text-align: left; padding: 9px 16px;
-      background: none; border: none; cursor: pointer;
-      font-family: inherit; font-size: 13px; color: var(--gray600);
-      border-left: 3px solid transparent;
-      transition: background .15s, color .15s;
-    }
-    .prog-btn:hover { background: var(--gray100); color: var(--navy); }
-    .prog-btn.active {
-      background: #e8edf9; color: var(--blue);
-      border-left-color: var(--blue); font-weight: 600;
-    }
-    .prog-btn .pb-badge {
-      font-size: 9px; font-weight: 700; letter-spacing: .5px;
-      text-transform: uppercase; flex-shrink: 0;
-    }
-    .prog-btn .pb-badge.abap  { color: #1e7a4e; }
-    .prog-btn .pb-badge.fiori { color: #1e4fa0; }
-    .prog-detail {
-      display: flex; flex-direction: column; justify-content: center;
-      padding: 40px 36px;
-      background: var(--white);
-    }
-    .prog-detail-empty {
-      color: var(--gray400); font-size: 14px; text-align: center;
-    }
-    .prog-detail-type {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 700; letter-spacing: 1px;
-      text-transform: uppercase; margin-bottom: 12px;
-    }
-    .prog-detail-type.abap  { color: #1e7a4e; }
-    .prog-detail-type.abap::before  { content:''; width:8px; height:8px; border-radius:50%; background:#1e7a4e; }
-    .prog-detail-type.fiori { color: #1e4fa0; }
-    .prog-detail-type.fiori::before { content:''; width:8px; height:8px; border-radius:50%; background:#1e4fa0; }
-    .prog-detail h2 { font-size: 22px; font-weight: 700; color: var(--navy); margin-bottom: 16px; }
-    .prog-detail p  { font-size: 14px; color: var(--gray600); line-height: 1.8; margin-bottom: 20px; max-width: 560px; }
-    .prog-detail-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 28px; }
-    .prog-featured-badge {
-      display: inline-block;
-      font-size: 10px; font-weight: 700; letter-spacing: .5px;
-      background: var(--blue); color: white;
-      padding: 2px 8px; border-radius: 4px; margin-bottom: 12px;
-    }
-
-  </style>
-<link rel="stylesheet" href="refined.css"/>
-</head>
-<body>
-
-<!-- NAV -->
-<nav>
-  <span class="nav-logo">JAEMIN LEE<span class="nav-dot">.</span></span>
-  <ul class="nav-links">
-    <li><a href="#overview" data-tab="overview" class="active" onclick="showTab('overview', this); return false;">소개</a></li>
-    <li><a href="#programs" data-tab="programs" onclick="showTab('programs', this); return false;">프로젝트</a></li>
-    <li><a href="mailto:imsunbow@gmail.com">연락하기 ↗</a></li>
-  </ul>
-</nav>
-
-<!-- ══════════════ TAB: OVERVIEW ══════════════ -->
-<div id="tab-overview" class="tab-page active">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-inner">
-      <div class="hero-text">
-        <span class="hero-tag"><span class="status-dot"></span> METANET · SAP PP CONSULTANT</span>
-        <h1>비즈니스를 이해하고,<br/><em>시스템으로 연결합니다.</em></h1>
-        <p class="hero-sub">SAP PP 컨설턴트 이재민입니다.<br/>메타넷에서 생산관리 업무를 경험하며,<br class="desktop-break"/> 개발 경험을 더해 업무에 필요한 도구를 만듭니다.</p>
-        <div class="hero-actions">
-          <a class="primary-link" href="#projects">경력 살펴보기 <span>↓</span></a>
-          <a class="secondary-link" href="#programs" onclick="showTab('programs', document.querySelector('[data-tab=programs]')); return false;">프로젝트 보기 ↗</a>
-        </div>
-      </div>
-      <div class="profile-card">
-        <div class="profile-topline"><span>PROFILE / 01</span><span>METANET</span></div>
-        <div class="hero-photo"><img src="images/profile.jpg" alt="이재민 프로필 사진"/></div>
-        <div class="profile-caption"><strong>이재민 <span>Jaemin Lee</span></strong><p>SAP PP Consultant</p></div>
-      </div>
-    </div>
-    <div class="hero-footnote"><span>PRODUCTION PLANNING</span><span>BUSINESS PROCESS</span><span>TECHNICAL BACKGROUND</span></div>
-  </div>
-  <!-- TIMELINE -->
-  <section id="projects">
-    <div class="section-label">Experience</div>
-    <div class="section-title">경험이 쌓이는 과정.</div>
-
-    <div class="timeline">
-
-      <!-- ── 메타넷 ── -->
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-year">2026</div>
-          <div class="tl-period">2026.08<br/>– 현재</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-title">Metanet 메타넷</div>
-          <div class="tl-role">SAP Consultant · 재직중</div>
-          <div class="tl-desc">
-            국내 대형 식품 제조사의 <strong>SAP PP(생산관리) 모듈 운영</strong>을 지원하는 인턴 컨설턴트로 근무 중입니다. PP 모듈 온보딩을 위한 <strong>AI 챗봇과 모니터링 대시보드를 개발</strong>하여 선임 의존도를 낮추고 셀프서비스 지식 접근 체계를 구축했습니다.
-          </div>
-          <div class="tl-tags">
-            <span class="tl-tag hl">SAP PP</span>
-            <span class="tl-tag hl">AI Chatbot</span>
-            <span class="tl-tag">Monitoring Dashboard</span>
-            <span class="tl-tag">식품 제조업</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── SAP Code 아카데미 ── -->
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-year" style="color:var(--gray400);">2025</div>
-          <div class="tl-period">2025.10<br/>– 2026.07</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-title">SAP Code Academy 1기</div>
-          <div class="tl-role">교육 수료</div>
-          <div class="tl-desc">
-            SAP ERP 개발 전반을 체계적으로 학습했습니다. ABAP 프로그래밍, OData/SAP Gateway, SAP UI5·Fiori를 집중적으로 교육받았으며, 자전거 제조 기업의 판매(SD)→재무(FI) End-to-End ERP 구축 프로젝트에서 <strong>FI 모듈 전담 및 개발 리드(PL)</strong>를 맡았습니다.
-          </div>
-          <div class="tl-tags">
-            <span class="tl-tag hl">ABAP</span>
-            <span class="tl-tag hl">SAP Fiori</span>
-            <span class="tl-tag hl">OData</span>
-            <span class="tl-tag">FI Module</span>
-            <span class="tl-tag">개발 리드</span>
-          </div>
-          <a onclick="showTab('programs', document.querySelector('[data-tab=programs]')); return false;" href="#" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--blue);text-decoration:none;border:1px solid var(--blue);padding:6px 14px;border-radius:6px;transition:background .15s;" onmouseover="this.style.background='#e8edf9'" onmouseout="this.style.background='transparent'">
-            프로젝트 상세 →
-          </a>
-        </div>
-      </div>
-
-      <!-- ── 에코아이시티 ── -->
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-year" style="color:var(--green);">2025</div>
-          <div class="tl-period">2025.04<br/>– 2025.06</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-title">에코아이시티(EcoICT)</div>
-          <div class="tl-role">교육 인턴 · 3개월</div>
-          <div class="tl-desc">Classic ABAP 문법을 익히고 ALV 리포트 등 기초 프로그램을 구현하며 SAP 개발 기초를 쌓았습니다.</div>
-          <div class="tl-tags">
-            <span class="tl-tag">ABAP</span>
-            <span class="tl-tag">ALV Report</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ── 연세대학교 ── -->
-      <div class="tl-item">
-        <div class="tl-left">
-          <div class="tl-year" style="color:var(--gray400);">2018</div>
-          <div class="tl-period">2018.03<br/>– 2024.08</div>
-        </div>
-        <div class="tl-right">
-          <div class="tl-title">연세대학교 미래캠퍼스</div>
-          <div class="tl-role">학사</div>
-          <div class="tl-desc">환경공학과 컴퓨터공학을 복수 전공했습니다.</div>
-          <div class="tl-tags">
-            <span class="tl-tag">환경공학</span>
-            <span class="tl-tag">컴퓨터공학</span>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /timeline -->
-  </section>
-
-  <hr class="section-divider"/>
-
-  <!-- SKILLS -->
-  <section id="skills">
-    <div class="section-label">Capabilities</div>
-    <div class="section-title">업무를 연결하는 역량.</div>
-    <div class="skills-grid">
-      <div class="skill-group">
-        <h4>Core <span style="font-weight:400;color:var(--gray400);">· 주력</span></h4>
-        <ul>
-          <li>SAP PP (생산관리)</li>
-          <li>SAP Consulting</li>
-          <li>AI Chatbot / 모니터링 대시보드</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <h4>Development <span style="font-weight:400;color:var(--gray400);">· 개발 경험</span></h4>
-        <ul>
-          <li>ABAP</li>
-          <li>SAP UI5 / Fiori</li>
-          <li>OData / SAP Gateway</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <h4>Active <span style="font-weight:400;color:var(--gray400);">· 활용</span></h4>
-        <ul>
-          <li>SAP FI</li>
-          <li>JavaScript</li>
-          <li>Python</li>
-        </ul>
-      </div>
-      <div class="skill-group">
-        <h4>Base <span style="font-weight:400;color:var(--gray400);">· 기초</span></h4>
-        <ul>
-          <li>SQL</li>
-          <li>Git</li>
-          <li>Linux</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about">
-    <div class="about-section">
-      <div class="about-block">
-        <h3>학력</h3>
-        <div class="about-item">
-          <div class="about-icon">🎓</div>
-          <div>
-            <div class="about-item-title">연세대학교 미래캠퍼스</div>
-            <div class="about-item-sub">환경공학 · 컴퓨터공학 전공<br/>2018 – 2024</div>
-          </div>
-        </div>
-      </div>
-      <div class="about-block">
-        <h3>병역</h3>
-        <div class="about-item">
-          <div class="about-icon">🪖</div>
-          <div>
-            <div class="about-item-title">카투사 화학병(CBRN) </div>
-            <div class="about-item-sub">병장 만기 전역</div>
-          </div>
-        </div>
-      </div>
-      <div class="about-block">
-        <h3>자격증</h3>
-        <div class="about-item">
-          <div class="about-icon">📋</div>
-          <div>
-            <div class="about-item-title">C_ABAPD_2601</div>
-            <div class="about-item-sub">SAP Certified Associate · ABAP Developer</div>
-          </div>
-        </div>
-        <div class="about-item">
-          <div class="about-icon">📋</div>
-          <div>
-            <div class="about-item-title">C_FIORID_2601</div>
-            <div class="about-item-sub">SAP Certified Associate · Fiori Application Developer</div>
-          </div>
-        </div>
-        <div class="about-item">
-          <div class="about-icon">📋</div>
-          <div>
-            <div class="about-item-title">SQLD (SQL 개발자)</div>
-            <div class="about-item-sub">한국데이터산업진흥원</div>
-          </div>
-        </div>
-      </div>
-      <div class="about-block">
-        <h3>수상</h3>
-        <div class="about-item">
-          <div class="about-icon">🏆</div>
-          <div>
-            <div class="about-item-title">SAP Code Academy 최종 프로젝트 최우수상</div>
-            <div class="about-item-sub">SAP Education Korea<br/>2026.07.15</div>
-          </div>
-        </div>
-        <div class="about-item">
-          <div class="about-icon">🏆</div>
-          <div>
-            <div class="about-item-title">Code Contributor상</div>
-            <div class="about-item-sub">SAP Education Korea<br/>2026.07.15</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <div class="contact-bar" id="contact">
-    <div class="section-label">GET IN TOUCH</div><h2>더 나은 업무의 흐름을 함께.</h2>
-    <p>SAP PP Consultant · <a href="mailto:imsunbow@gmail.com">imsunbow@gmail.com</a> · <a href="https://github.com/imsunbow" target="_blank">GitHub</a> · <a href="https://www.linkedin.com/in/jaemin-lee-68696820b/" target="_blank">LinkedIn</a> · <a href="https://imsunbow.tistory.com/" target="_blank">Blog</a></p>
-    <p style="margin-top:16px; font-size:12px; color:#7b88ad; letter-spacing:.3px;">© 2026 이재민(Lee Jaemin). All rights reserved.</p>
-  </div>
-
-</div><!-- /tab-overview -->
-
-
-<!-- ══════════════ TAB: 프로젝트 상세 ══════════════ -->
-<div id="tab-programs" class="tab-page">
-  <section style="max-width:1600px;">
-    <div class="section-label">Selected Project · SAP Code Academy</div>
-    <div class="section-title">Cyclone ERP 구축 프로젝트</div>
-
-    <!-- 조직도 -->
-    <div style="margin-bottom:32px;">
-      <div class="section-label">Organization</div>
-      <div class="section-title" style="margin-bottom:12px;">조직도</div>
-      <a class="lightbox-trigger" onclick="openLightbox('images/organization/Cyclone-조직도.png'); return false;" href="#">
-        <img src="images/organization/Cyclone-조직도.png" alt="Cyclone 조직도"/>
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>SAP PP Consultant | 이재민</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="styles.css"/>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      본문으로 이동
+    </a>
+    <nav aria-label="주 메뉴">
+      <a class="nav-logo" href="index.html">
+        JAEMIN LEE<span class="nav-dot">.</span>
       </a>
-      <div class="narrative" style="margin-top:16px; margin-bottom:0;">
-        <p>총 <strong>7개 부서</strong>로 구성된 조직 구조를 설계했습니다. 각 부서는 <strong>Profit Center(PC)</strong> 단위로 운영되며, 그 하위에 원가 집계 단위인 <strong>Cost Center(CC)</strong>를 배치하는 계층형 구조를 적용했습니다. 이를 통해 부서별 수익성 분석과 비용 추적이 가능한 재무 체계를 구축했습니다.</p>
+      <ul class="nav-links">
+        <li>
+          <a href="index.html" class="active" aria-current="page">
+            소개
+          </a>
+        </li>
+        <li>
+          <a href="projects.html">
+            프로젝트
+          </a>
+        </li>
+        <li>
+          <a href="mailto:imsunbow@gmail.com">
+            연락하기 ↗
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <main id="main">
+      <div class="hero">
+        <div class="hero-inner">
+          <div class="hero-text">
+            <span class="hero-tag"><span class="status-dot"></span> METANET · SAP PP CONSULTANT</span>
+            <h1>
+              비즈니스를 이해하고,<br><em>시스템으로 연결합니다.</em>
+            </h1>
+            <p class="hero-sub">
+              SAP PP 컨설턴트 이재민입니다.<br>메타넷에서 생산관리 업무를 경험하며,<br class="desktop-break"> 개발 경험을 더해 업무에 필요한 도구를 만듭니다.
+            </p>
+            <div class="hero-actions">
+              <a class="primary-link" href="#projects">
+                경력 살펴보기 <span>↓</span>
+              </a>
+              <a class="secondary-link" href="projects.html">
+                프로젝트 보기 ↗
+              </a>
+            </div>
+          </div>
+          <div class="profile-card">
+            <div class="profile-topline">
+              <span>PROFILE / 01</span><span>METANET</span>
+            </div>
+            <div class="hero-photo">
+              <img src="images/profile.jpg" alt="이재민 프로필 사진">
+            </div>
+            <div class="profile-caption">
+              <strong>이재민 <span>Jaemin Lee</span></strong>
+              <p>
+                SAP PP Consultant
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-footnote">
+          <span>PRODUCTION PLANNING</span><span>BUSINESS PROCESS</span><span>TECHNICAL BACKGROUND</span>
+        </div>
       </div>
+      <section id="projects">
+        <div class="section-label">
+          Experience
+        </div>
+        <div class="section-title">
+          경험이 쌓이는 과정.
+        </div>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-year">
+                2026
+              </div>
+              <div class="tl-period">
+                2026.08<br>– 현재
+              </div>
+            </div>
+            <div class="tl-right">
+              <div class="tl-title">
+                Metanet 메타넷
+              </div>
+              <div class="tl-role">
+                SAP Consultant · 재직중
+              </div>
+              <div class="tl-desc">
+                국내 대형 식품 제조사의 <strong>SAP PP(생산관리) 모듈 운영</strong>을 지원하는 인턴 컨설턴트로 근무 중입니다. PP 모듈 온보딩을 위한 <strong>AI 챗봇과 모니터링 대시보드를 개발</strong>하여 선임 의존도를 낮추고 셀프서비스 지식 접근 체계를 구축했습니다.
+              </div>
+              <div class="tl-tags">
+                <span class="tl-tag hl">SAP PP</span>
+                <span class="tl-tag hl">AI Chatbot</span>
+                <span class="tl-tag">Monitoring Dashboard</span>
+                <span class="tl-tag">식품 제조업</span>
+              </div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-year color-gray400">
+                2025
+              </div>
+              <div class="tl-period">
+                2025.10<br>– 2026.07
+              </div>
+            </div>
+            <div class="tl-right">
+              <div class="tl-title">
+                SAP Code Academy 1기
+              </div>
+              <div class="tl-role">
+                교육 수료
+              </div>
+              <div class="tl-desc">
+                SAP ERP 개발 전반을 체계적으로 학습했습니다. ABAP 프로그래밍, OData/SAP Gateway, SAP UI5·Fiori를 집중적으로 교육받았으며, 자전거 제조 기업의 판매(SD)→재무(FI) End-to-End ERP 구축 프로젝트에서 <strong>FI 모듈 전담 및 개발 리드(PL)</strong>를 맡았습니다.
+              </div>
+              <div class="tl-tags">
+                <span class="tl-tag hl">ABAP</span>
+                <span class="tl-tag hl">SAP Fiori</span>
+                <span class="tl-tag hl">OData</span>
+                <span class="tl-tag">FI Module</span>
+                <span class="tl-tag">개발 리드</span>
+              </div>
+              <a href="cyclone.html" class="text-link">
+                Cyclone 교육 프로젝트 살펴보기 →
+              </a>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-year color-green">
+                2025
+              </div>
+              <div class="tl-period">
+                2025.04<br>– 2025.06
+              </div>
+            </div>
+            <div class="tl-right">
+              <div class="tl-title">
+                에코아이시티(EcoICT)
+              </div>
+              <div class="tl-role">
+                교육 인턴 · 3개월
+              </div>
+              <div class="tl-desc">
+                Classic ABAP 문법을 익히고 ALV 리포트 등 기초 프로그램을 구현하며 SAP 개발 기초를 쌓았습니다.
+              </div>
+              <div class="tl-tags">
+                <span class="tl-tag">ABAP</span>
+                <span class="tl-tag">ALV Report</span>
+              </div>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-left">
+              <div class="tl-year color-gray400">
+                2018
+              </div>
+              <div class="tl-period">
+                2018.03<br>– 2024.08
+              </div>
+            </div>
+            <div class="tl-right">
+              <div class="tl-title">
+                연세대학교 미래캠퍼스
+              </div>
+              <div class="tl-role">
+                학사
+              </div>
+              <div class="tl-desc">
+                환경공학과 컴퓨터공학을 복수 전공했습니다.
+              </div>
+              <div class="tl-tags">
+                <span class="tl-tag">환경공학</span>
+                <span class="tl-tag">컴퓨터공학</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <hr class="section-divider">
+      <section id="skills">
+        <div class="section-label">
+          Capabilities
+        </div>
+        <div class="section-title">
+          업무를 연결하는 역량.
+        </div>
+        <div class="skills-grid">
+          <div class="skill-group">
+            <h4>
+              Core <span class="font-weight-400 color-gray400">· 주력</span>
+            </h4>
+            <ul>
+              <li>
+                SAP PP (생산관리)
+              </li>
+              <li>
+                SAP Consulting
+              </li>
+              <li>
+                AI Chatbot / 모니터링 대시보드
+              </li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h4>
+              Development <span class="font-weight-400 color-gray400">· 개발 경험</span>
+            </h4>
+            <ul>
+              <li>
+                ABAP
+              </li>
+              <li>
+                SAP UI5 / Fiori
+              </li>
+              <li>
+                OData / SAP Gateway
+              </li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h4>
+              Active <span class="font-weight-400 color-gray400">· 활용</span>
+            </h4>
+            <ul>
+              <li>
+                SAP FI
+              </li>
+              <li>
+                JavaScript
+              </li>
+              <li>
+                Python
+              </li>
+            </ul>
+          </div>
+          <div class="skill-group">
+            <h4>
+              Base <span class="font-weight-400 color-gray400">· 기초</span>
+            </h4>
+            <ul>
+              <li>
+                SQL
+              </li>
+              <li>
+                Git
+              </li>
+              <li>
+                Linux
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+      <section id="about">
+        <div class="about-section">
+          <div class="about-block">
+            <h3>
+              학력
+            </h3>
+            <div class="about-item">
+              <div>
+                <div class="about-item-title">
+                  연세대학교 미래캠퍼스
+                </div>
+                <div class="about-item-sub">
+                  환경공학 · 컴퓨터공학 전공<br>2018 – 2024
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="about-block">
+            <h3>
+              병역
+            </h3>
+            <div class="about-item">
+              <div>
+                <div class="about-item-title">
+                  카투사 화학병(CBRN)
+                </div>
+                <div class="about-item-sub">
+                  병장 만기 전역
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="about-block">
+            <h3>
+              자격증
+            </h3>
+            <div class="about-item">
+              <div>
+                <div class="about-item-title">
+                  C_ABAPD_2601
+                </div>
+                <div class="about-item-sub">
+                  SAP Certified Associate · ABAP Developer
+                </div>
+              </div>
+            </div>
+            <div class="about-item">
+              <div>
+                <div class="about-item-title">
+                  C_FIORID_2601
+                </div>
+                <div class="about-item-sub">
+                  SAP Certified Associate · Fiori Application Developer
+                </div>
+              </div>
+            </div>
+            <div class="about-item">
+              <div>
+                <div class="about-item-title">
+                  SQLD (SQL 개발자)
+                </div>
+                <div class="about-item-sub">
+                  한국데이터산업진흥원
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="about-block">
+            <h3>
+              수상
+            </h3>
+            <div class="about-item">
+              <div>
+                <div class="about-item-title">
+                  SAP Code Academy 최종 프로젝트 최우수상
+                </div>
+                <div class="about-item-sub">
+                  SAP Education Korea<br>2026.07.15
+                </div>
+              </div>
+            </div>
+            <div class="about-item">
+              <div>
+                <div class="about-item-title">
+                  Code Contributor상
+                </div>
+                <div class="about-item-sub">
+                  SAP Education Korea<br>2026.07.15
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <div class="contact-bar" id="contact">
+      <div class="section-label">
+        GET IN TOUCH
+      </div>
+      <h2>
+        더 나은 업무의 흐름을 함께.
+      </h2>
+      <p>
+        SAP PP Consultant ·
+        <a href="mailto:imsunbow@gmail.com">
+          imsunbow@gmail.com
+        </a>
+        ·
+        <a href="https://github.com/imsunbow" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+        ·
+        <a href="https://www.linkedin.com/in/jaemin-lee-68696820b/" target="_blank" rel="noopener noreferrer">
+          LinkedIn
+        </a>
+        ·
+        <a href="https://imsunbow.tistory.com/" target="_blank" rel="noopener noreferrer">
+          Blog
+        </a>
+      </p>
+      <p class="margin-top-16px font-size-12px color-rgb-123-136-173 letter-spacing-0-3px">
+        © 2026 이재민(Lee Jaemin). All rights reserved.
+      </p>
     </div>
-
-    <!-- ERD -->
-    <div style="margin-bottom:32px;">
-      <div class="section-label">Data Model</div>
-      <div class="section-title" style="margin-bottom:12px;">ERD</div>
-      <div class="erd-tabs">
-        <button class="erd-tab-btn active" onclick="showErd('full', this)">전체</button>
-        <button class="erd-tab-btn" onclick="showErd('fi', this)">FI</button>
-        <button class="erd-tab-btn" onclick="showErd('co', this)">CO</button>
-        <button class="erd-tab-btn" onclick="showErd('mm', this)">MM</button>
-        <button class="erd-tab-btn" onclick="showErd('sd', this)">SD</button>
-        <button class="erd-tab-btn" onclick="showErd('pp', this)">PP</button>
-        <button class="erd-tab-btn" onclick="showErd('qm', this)">QM</button>
-        <button class="erd-tab-btn" onclick="showErd('cm', this)">CM</button>
-      </div>
-      <div class="erd-panel active" id="erd-full">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_full.png'); return false;" href="#">
-          <img src="images/erd/erd_full.png" alt="전체 ERD"/>
-        </a>
-      </div>
-      <div class="erd-panel" id="erd-fi">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_fi.png'); return false;" href="#">
-          <img src="images/erd/erd_fi.png" alt="FI ERD"/>
-        </a>
-      </div>
-      <div class="erd-panel" id="erd-co">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_co.png'); return false;" href="#">
-          <img src="images/erd/erd_co.png" alt="CO ERD"/>
-        </a>
-      </div>
-      <div class="erd-panel" id="erd-mm">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_mm.png'); return false;" href="#">
-          <img src="images/erd/erd_mm.png" alt="MM ERD"/>
-        </a>
-      </div>
-      <div class="erd-panel" id="erd-sd">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_sd.png'); return false;" href="#">
-          <img src="images/erd/erd_sd.png" alt="SD ERD"/>
-        </a>
-      </div>
-      <div class="erd-panel" id="erd-pp">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_pp.png'); return false;" href="#">
-          <img src="images/erd/erd_pp.png" alt="PP ERD"/>
-        </a>
-      </div>
-      <div class="erd-panel" id="erd-qm">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_qm.png'); return false;" href="#">
-          <img src="images/erd/erd_qm.png" alt="QM ERD"/>
-        </a>
-      </div>
-      <div class="erd-panel" id="erd-cm">
-        <a class="lightbox-trigger" onclick="openLightbox('images/erd/erd_cm.png'); return false;" href="#">
-          <img src="images/erd/erd_cm.png" alt="CM ERD"/>
-        </a>
-      </div>
-    </div>
-
-    <!-- BC 섹션 -->
-    <div style="margin-bottom:12px;">
-      <div class="section-label">Business Challenge</div>
-      <div class="section-title" style="margin-bottom:0;">프로젝트가 마주한 비즈니스 과제</div>
-    </div>
-    <div class="bc-wrapper">
-      <div class="bc-project-header">
-        <div>
-          <div class="bc-project-title">대형 자전거 설계 및 제조 기업</div>
-          <div class="bc-project-sub">국내 자전거 시장을 대상으로 자전거를 대량 생산 및 조립하는 제조 기업</div>
-        </div>
-        <span class="bc-project-theme">수익성 분석을 적용한 통합 재무 및 공급망 관리 서비스</span>
-      </div>
-
-      <div class="bc-body">
-        <div class="bc-model">
-          <div class="bc-model-title">핵심 사업 모델</div>
-          <div class="bc-model-item">
-            <div class="bc-model-icon">⚙️</div>자전거 대량 생산 및 조립
-          </div>
-          <div class="bc-model-item">
-            <div class="bc-model-icon">🏠</div>표준 BOM 기반 부품 관리
-          </div>
-          <div class="bc-model-item">
-            <div class="bc-model-icon">💰</div>국내 B2B 채널 중심 판매 및 출고
-          </div>
-        </div>
-        <div class="bc-challenges">
-          <div class="bc-challenges-title">Business Challenges</div>
-          <div class="bc-item">
-            <div class="bc-num">1</div>
-            <div>
-              <div class="bc-item-title">생산 계획 안정성 저하</div>
-              <ul class="bc-item-bullets">
-                <li>거래처 주문 시점과 물량 편차 확대로 생산 일정 재조정이 빈번하게 발생</li>
-                <li>생산계획 수립 시 실제 자재 가용 수량이 충분히 반영되지 않아 계획 대비 생산 차질 발생</li>
-                <li>생산계획 미흡으로 긴급 생산오더 투입이 반복 발생되어 생산 안정성이 저하</li>
-              </ul>
-            </div>
-          </div>
-          <div class="bc-item">
-            <div class="bc-num">2</div>
-            <div>
-              <div class="bc-item-title">옵션 증가로 인한 BOM 및 자재 복잡도 상승</div>
-              <ul class="bc-item-bullets">
-                <li>모델별 옵션 조합 확대로 BOM 버전 관리 부담이 지속적으로 증가</li>
-                <li>유사 부품의 다중 코드 운영으로 자재 관리 효율성이 저하</li>
-                <li>옵션 단위 안전재고 기준 미흡으로 부품 과잉 및 부족 현상 반복</li>
-              </ul>
-            </div>
-          </div>
-          <div class="bc-item solved">
-            <div class="bc-num">3</div>
-            <div>
-              <div class="bc-item-title">판매–출하–재무 데이터가 단계별로 운영됨 <span class="bc-solved-tag">✓ 해결</span></div>
-              <ul class="bc-item-bullets">
-                <li>주문 변경 사항이 생산 및 재고 계획에 즉시 반영되지 않아 운영 지연이 발생</li>
-                <li><span class="bc-highlight">출하 이후 매출 및 원가 반영 시점 간 시간 차가 발생</span> — 전표 전기 메서드 동시 처리로 해결</li>
-                <li>반품, 교환 정보가 수익성 분석에 즉시 연계되지 않아 저마진 거래처 및 제품 식별에 시간이 소요</li>
-              </ul>
-            </div>
-          </div>
-          <div class="bc-item">
-            <div class="bc-num">4</div>
-            <div>
-              <div class="bc-item-title">재고 자산이 전략적 관리 대상이 아닌 수량 중심으로 운영</div>
-              <ul class="bc-item-bullets">
-                <li>재고 수량 중심 관리로 회전율 및 장기 체류 자재에 대한 선제적 대응이 어려움</li>
-                <li>부품 단가 변동이 재고 평가 및 원가에 즉시 반영되지 않아 실시간 손익 변동 분석에 한계</li>
-              </ul>
-            </div>
-          </div>
-          <div class="bc-item solved">
-            <div class="bc-num">5</div>
-            <div>
-              <div class="bc-item-title">모바일 기반 실시간 협업 및 의사결정 지원 체계 부족 <span class="bc-solved-tag">✓ 해결</span></div>
-              <ul class="bc-item-bullets">
-                <li>영업 담당자가 현장에서 주문 가능 재고, 예상 납기, 가격 조건을 실시간으로 확인하기 어려움</li>
-                <li>대리점 및 B2B 고객과의 협의 과정에서 즉시 견적 생성 및 조건 반영이 어려워 계약 리드타임 증가</li>
-                <li><span class="bc-highlight">경영진 및 관리자가 외부 환경에서 생산 및 매출 현황을 실시간으로 확인하기 어려움</span> — 독촉장 관리 Fiori 앱으로 해결</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="bc-approach" style="font-style:normal; color:var(--gray700); line-height:1.9;">
-        <div style="font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:10px;">해석 방향 및 접근 전략</div>
-        <p style="margin-bottom:10px;">
-          FI 모듈 담당자 관점에서 BC3·BC5 두 가지 과제에 집중했습니다.
-        </p>
-        <p style="margin-bottom:10px;">
-          <strong>BC3 —</strong> 출하 이후 매출·원가 반영이 지연되는 근본 원인은 SD 출하와 FI 전표 전기가 별도 시점에 처리되기 때문입니다.
-          이를 해결하기 위해 채번 후 헤더·아이템을 직접 INSERT하는 방식으로 출하 이벤트와 동시에 처리되도록 구현하여,
-          출하 완료 시점에 FI·CO 전표가 즉시 생성되고 총계정원장에 반영되도록 했습니다.
-          임시전표 결재 프로그램에서도 승인 시 FI·CO 전표를 동기적으로 생성함으로써 재무 데이터 단절 구간을 제거했습니다.
-        </p>
-        <p>
-          <strong>BC5 —</strong> 경영진이 외부 환경에서 채권 현황을 확인하기 어려운 문제는 SAP GUI 의존성에서 비롯됩니다.
-          독촉장 관리 Fiori 앱을 통해 미결 채권 KPI(미납 건수·금액·연체율)를 웹 브라우저에서 실시간으로 조회할 수 있도록 구현하고,
-          거래처별 독촉 메일 발송까지 앱 내에서 처리할 수 있게 하여 현장 의사결정 사이클을 단축했습니다.
-        </p>
-      </div>
-    </div>
-
-    <!-- 개발 프로그램 섹션 소제목 -->
-    <div style="margin-top:48px; margin-bottom:12px;">
-      <div class="section-label">Solutions</div>
-      <div class="section-title" style="margin-bottom:0;">재무 업무별 구현 사례</div>
-    </div>
-
-    <div class="prog-layout">
-      <!-- 좌측 프로그램 목록 -->
-      <div class="prog-list">
-        <button class="prog-back-btn" onclick="showTab('overview', document.querySelector('[data-tab=overview]'))">← 포트폴리오로 돌아가기</button>
-        <div class="prog-group-label">주요 업무</div>
-        <button class="prog-btn active" onclick="showProg('p1', this)">
-          <span class="pb-badge abap">ABAP</span>임시전표 작성
-        </button>
-        <button class="prog-btn" onclick="showProg('p2', this)">
-          <span class="pb-badge abap">ABAP</span>고정자산 현황 관리
-        </button>
-        <button class="prog-btn" onclick="showProg('p3', this)">
-          <span class="pb-badge abap">ABAP</span>전표 조회 / 역분개
-        </button>
-        <button class="prog-btn" onclick="showProg('p4', this)">
-          <span class="pb-badge abap">ABAP</span>총계정원장 조회
-        </button>
-        <button class="prog-btn" onclick="showProg('p5', this)">
-          <span class="pb-badge fiori">Fiori</span>독촉장 관리 시스템
-        </button>
-        <button class="prog-btn" onclick="showProg('p7', this)">
-          <span class="pb-badge abap">ABAP</span>전표 반제 처리
-        </button>
-        <div class="prog-group-label">확장 업무</div>
-        <button class="prog-btn" onclick="showProg('p6', this)">
-          <span class="pb-badge abap">ABAP</span>Excel 일괄 반제
-        </button>
-        <button class="prog-btn" onclick="showProg('p8', this)">
-          <span class="pb-badge abap">ABAP</span>여신 등급 자동 갱신(Back Job)
-        </button>
-        <button class="prog-btn" onclick="showProg('p9', this)">
-          <span class="pb-badge fiori">Fiori</span>임시전표 결재
-        </button>
-        <button class="prog-btn" onclick="showProg('p10', this)">
-          <span class="pb-badge abap">ABAP</span>환율 자동 수집(Back Job)
-        </button>
-        <button class="prog-btn" onclick="showProg('p11', this)">
-          <span class="pb-badge fiori">Fiori</span>직원 급여 관리
-        </button>
-      </div>
-
-      <!-- 우측 프로그램 상세 -->
-      <div class="prog-detail" id="prog-detail-area">
-
-        <div id="p1" class="prog-panel">
-          <span class="prog-featured-badge">핵심</span>
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>임시전표 작성 프로그램</h2>
-          <p>전기 키(SA/DR/KR/AA) 유효성 검증, 차대변 잔액 자동 체크.<br/>Number Range 채번 후 헤더·아이템 DB 저장 처리.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">ALV Grid</span><span class="tag hl">TextEditor</span>
-            <span class="tag">전표 밸런스 검증</span><span class="tag">Number Range</span><span class="tag">F4 Value Help</span>
-          </div>
-
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p1">
-            <div class="gallery-main">
-              <img src="images/p1_임시전표작성/01.png" class="active" alt="초기 화면"/>
-              <img src="images/p1_임시전표작성/02.png" alt="기본정보 입력"/>
-              <img src="images/p1_임시전표작성/03.png" alt="대변 항목 추가"/>
-              <img src="images/p1_임시전표작성/04.png" alt="전표 생성 확인"/>
-              <img src="images/p1_임시전표작성/05.png" alt="결재 화면 이동"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p1-caption">초기 화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p1',0,'초기 화면',this)">
-                <img src="images/p1_임시전표작성/01.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p1',1,'전표 기본정보 입력',this)">
-                <img src="images/p1_임시전표작성/02.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p1',2,'전표 아이템 입력 완료 — 차대변 밸런스 충족',this)">
-                <img src="images/p1_임시전표작성/03.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p1',3,'전표 생성 확인 팝업',this)">
-                <img src="images/p1_임시전표작성/04.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p1',4,'전표 생성 완료 — 결재 화면 이동 팝업',this)">
-                <img src="images/p1_임시전표작성/05.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p2" class="prog-panel" style="display:none">
-          <span class="prog-featured-badge">핵심</span>
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>고정자산 현황 관리</h2>
-          <p>ALV Tree + 연도별 바 차트 + 자산클래스별 그룹 차트 3-panel.<br/>자산 클릭 시 차트 즉시 갱신, 취득·매각 전표 자동 생성.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">ALV Tree</span><span class="tag hl">iXML Chart</span>
-            <span class="tag">감가상각 계산</span><span class="tag">자산 취득/매각</span><span class="tag">스플리터 레이아웃</span>
-          </div>
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p2">
-            <div class="gallery-main">
-              <img src="images/p2_고정자산현황관리/고정자산 조회- 초기화면.png" class="active" alt="초기화면"/>
-              <img src="images/p2_고정자산현황관리/고정자산 조회- 조회조건 입력.png" alt="조회조건 입력"/>
-              <img src="images/p2_고정자산현황관리/고정자산 조회- 더블 클릭.png" alt="자산 더블클릭"/>
-              <img src="images/p2_고정자산현황관리/고정자산 취득 팝업.png" alt="취득 팝업"/>
-              <img src="images/p2_고정자산현황관리/고정자산 매각.png" alt="매각 처리"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p2-caption">초기화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p2',0,'초기화면',this)">
-                <img src="images/p2_고정자산현황관리/고정자산 조회- 초기화면.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p2',1,'조회조건 입력',this)">
-                <img src="images/p2_고정자산현황관리/고정자산 조회- 조회조건 입력.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p2',2,'자산 더블클릭 — 차트 갱신',this)">
-                <img src="images/p2_고정자산현황관리/고정자산 조회- 더블 클릭.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p2',3,'취득 팝업',this)">
-                <img src="images/p2_고정자산현황관리/고정자산 취득 팝업.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p2',4,'매각 처리',this)">
-                <img src="images/p2_고정자산현황관리/고정자산 매각.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p3" class="prog-panel" style="display:none">
-          <span class="prog-featured-badge">핵심</span>
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>전표 조회 / 역분개</h2>
-          <p>CDS View 기반 헤더·아이템 2-panel 전표 조회.<br/>전표유형별 동적 컬럼, 역분개 전표 생성, 환율 환산.<br/>Excel · PDF 다운로드 포함.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">CDS View</span><span class="tag hl">역분개</span>
-            <span class="tag">동적 FCAT</span><span class="tag">환율 환산</span><span class="tag">OLE2 PDF 출력</span>
-          </div>
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p3">
-            <div class="gallery-main">
-              <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(100).png" class="active" alt="초기화면"/>
-              <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(1000).png" alt="초기화면(Selection Screen)"/>
-              <img src="images/p3_전표조회역분개/전표조회 및 역분개- 전체 전표 헤더 출력.png" alt="전체 전표 헤더 출력"/>
-              <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 전체 전표 헤더 출력 결과.png" alt="헤더 출력 결과"/>
-              <img src="images/p3_전표조회역분개/전표조회 및 역분개- 더블클릭시 전표 아이템 출력.png" alt="더블클릭 아이템 출력"/>
-              <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드.png" alt="특정 전표 다운로드"/>
-              <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드 결과.png" alt="다운로드 결과"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p3-caption">초기화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p3',0,'초기화면',this)">
-                <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(100).png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p3',1,'초기화면(Selection Screen)',this)">
-                <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 초기화면(1000).png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p3',2,'전체 전표 헤더 출력',this)">
-                <img src="images/p3_전표조회역분개/전표조회 및 역분개- 전체 전표 헤더 출력.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p3',3,'전체 전표 헤더 출력 결과',this)">
-                <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 전체 전표 헤더 출력 결과.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p3',4,'더블클릭 시 전표 아이템 출력',this)">
-                <img src="images/p3_전표조회역분개/전표조회 및 역분개- 더블클릭시 전표 아이템 출력.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p3',5,'특정 전표 다운로드',this)">
-                <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p3',6,'다운로드 결과',this)">
-                <img src="images/p3_전표조회역분개/전표조회 및 역분개 - 특정 전표 다운로드 결과.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p4" class="prog-panel" style="display:none">
-          <span class="prog-featured-badge">핵심</span>
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>총계정원장 조회</h2>
-          <p>4-테이블 JOIN으로 전기 데이터 단일 조회.<br/>KTOKS 5그룹 기준 ALV Tree로 차/대 집계 표시.<br/>계정그룹별 바차트 · BS 월별 추이 차트 동적 렌더링.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">ALV Column Tree</span><span class="tag hl">iXML 차트</span>
-            <span class="tag">4-테이블 JOIN</span><span class="tag">차대변 분리</span><span class="tag">KTOKS 그룹</span>
-          </div>
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p4">
-            <div class="gallery-main">
-              <img src="images/p4_총계정원장조회/총계정원장 조회- selection screen.png" class="active" alt="Selection Screen"/>
-              <img src="images/p4_총계정원장조회/총계정원장 조회- 조회결과.png" alt="조회 결과"/>
-              <img src="images/p4_총계정원장조회/총계정원장 조회- 자산 더블클릭 시 자산상세 및 월별 누적 추이 확인.png" alt="더블클릭 시 자산상세 및 월별 추이"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p4-caption">Selection Screen</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p4',0,'Selection Screen',this)">
-                <img src="images/p4_총계정원장조회/총계정원장 조회- selection screen.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p4',1,'조회 결과',this)">
-                <img src="images/p4_총계정원장조회/총계정원장 조회- 조회결과.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p4',2,'더블클릭 시 자산상세 및 월별 누적 추이 확인',this)">
-                <img src="images/p4_총계정원장조회/총계정원장 조회- 자산 더블클릭 시 자산상세 및 월별 누적 추이 확인.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p5" class="prog-panel" style="display:none">
-          <span class="prog-featured-badge">핵심</span>
-          <div class="prog-detail-type fiori">Fiori</div>
-          <h2>독촉장 관리 시스템</h2>
-          <p>미결 채권 KPI 대시보드와 독촉장 발행을 통합한 Fiori 앱.<br/>OData 전량 조회 후 클라이언트 사이드 필터링.<br/>거래처별 독촉 메일 발송(Gmail 연동) 포함.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">SAP Fiori</span><span class="tag hl">OData 2.0</span>
-            <span class="tag">VizFrame 차트</span><span class="tag">미납액 계산</span><span class="tag">독촉 메일 발송</span>
-          </div>
-
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p5">
-            <div class="gallery-main">
-              <img src="images/p5_독촉장관리시스템/채권 연체 관리_초기 화면.png" class="active" alt="초기 화면"/>
-              <img src="images/p5_독촉장관리시스템/채권 연체 관리_상세 화면.png" alt="상세 화면"/>
-              <img src="images/p5_독촉장관리시스템/채권 연체 관리_독촉장.png" alt="독촉장"/>
-              <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 메일.png" alt="독촉 메일"/>
-              <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 gmail.png" alt="독촉 gmail"/>
-              <img src="images/p5_독촉장관리시스템/채권 연체 관리_메일 확인.png" alt="메일 확인"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p5-caption">초기 화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p5',0,'초기 화면',this)">
-                <img src="images/p5_독촉장관리시스템/채권 연체 관리_초기 화면.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p5',1,'상세 화면',this)">
-                <img src="images/p5_독촉장관리시스템/채권 연체 관리_상세 화면.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p5',2,'독촉장',this)">
-                <img src="images/p5_독촉장관리시스템/채권 연체 관리_독촉장.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p5',3,'독촉 메일 발송',this)">
-                <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 메일.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p5',4,'Gmail 발송 확인',this)">
-                <img src="images/p5_독촉장관리시스템/채권 연체 관리_ 독촉 gmail.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p5',5,'메일 확인',this)">
-                <img src="images/p5_독촉장관리시스템/채권 연체 관리_메일 확인.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p6" class="prog-panel" style="display:none">
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>Excel 업로드 일괄 반제</h2>
-          <p>엑셀 업로드로 입출금 내역을 읽어 전표를 일괄 반제.<br/>FAE 3-쿼리로 통화불일치·초과입금 등 유효성 일괄 검증 후<br/>채번·INSERT/MODIFY 일괄 처리.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">Excel 업로드</span><span class="tag hl">일괄 반제</span>
-            <span class="tag">동적 필드 매핑</span><span class="tag">FAE 유효성 검증</span><span class="tag">누적금액 추적</span>
-          </div>
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p6">
-            <div class="gallery-main">
-              <img src="images/p6_Excel일괄반제/일괄반제- Selection Screen.png" class="active" alt="Selection Screen"/>
-              <img src="images/p6_Excel일괄반제/일괄 반제- 엑셀 업로드.png" alt="엑셀 업로드"/>
-              <img src="images/p6_Excel일괄반제/일괄 반제- Grid에서 입력값 검증.png" alt="Grid 입력값 검증"/>
-              <img src="images/p6_Excel일괄반제/일괄 반제- 전체 반제 버튼 클릭.png" alt="전체 반제 버튼 클릭"/>
-              <img src="images/p6_Excel일괄반제/일괄 반제- 일괄 반제처리 완료.png" alt="일괄 반제처리 완료"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p6-caption">Selection Screen</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p6',0,'Selection Screen',this)">
-                <img src="images/p6_Excel일괄반제/일괄반제- Selection Screen.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p6',1,'엑셀 업로드',this)">
-                <img src="images/p6_Excel일괄반제/일괄 반제- 엑셀 업로드.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p6',2,'Grid 입력값 검증',this)">
-                <img src="images/p6_Excel일괄반제/일괄 반제- Grid에서 입력값 검증.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p6',3,'전체 반제 버튼 클릭',this)">
-                <img src="images/p6_Excel일괄반제/일괄 반제- 전체 반제 버튼 클릭.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p6',4,'일괄 반제처리 완료',this)">
-                <img src="images/p6_Excel일괄반제/일괄 반제- 일괄 반제처리 완료.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p7" class="prog-panel" style="display:none">
-          <span class="prog-featured-badge">핵심</span>
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>전표 반제 처리</h2>
-          <p>AR/AP 전환에 따라 채권·채무 전표 조회.<br/>입출금액 vs 미결금액 비교로 완전반제(C)/부분반제(P) 자동 결정.<br/>AR 반제 시 청구문서 상태 동기화 포함.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">반제(Clearing)</span><span class="tag hl">AR/AP</span>
-            <span class="tag">동적 FCAT</span><span class="tag">미결금액 차감</span><span class="tag">청구문서 연동</span>
-          </div>
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p7">
-            <div class="gallery-main">
-              <img src="images/p7_전표반제처리/전표 단건반제- Selection Screen.png" class="active" alt="Selection Screen"/>
-              <img src="images/p7_전표반제처리/전표 단건반제- 통장 입출금내역 업로드.png" alt="통장 입출금내역 업로드"/>
-              <img src="images/p7_전표반제처리/전표 단건반제- 입출금 내역 업로드 완료.png" alt="입출금 내역 업로드 완료"/>
-              <img src="images/p7_전표반제처리/전표 단건반제- 조회 결과.png" alt="조회 결과"/>
-              <img src="images/p7_전표반제처리/전표 단건 반제- 더블 클릭.png" alt="더블 클릭"/>
-              <img src="images/p7_전표반제처리/전표 단건반제- 단건반제 실행.png" alt="단건반제 실행"/>
-              <img src="images/p7_전표반제처리/전표 단건반제- 반제 완료.png" alt="반제 완료"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p7-caption">Selection Screen</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p7',0,'Selection Screen',this)">
-                <img src="images/p7_전표반제처리/전표 단건반제- Selection Screen.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p7',1,'통장 입출금내역 업로드',this)">
-                <img src="images/p7_전표반제처리/전표 단건반제- 통장 입출금내역 업로드.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p7',2,'입출금 내역 업로드 완료',this)">
-                <img src="images/p7_전표반제처리/전표 단건반제- 입출금 내역 업로드 완료.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p7',3,'조회 결과',this)">
-                <img src="images/p7_전표반제처리/전표 단건반제- 조회 결과.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p7',4,'더블 클릭',this)">
-                <img src="images/p7_전표반제처리/전표 단건 반제- 더블 클릭.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p7',5,'단건반제 실행',this)">
-                <img src="images/p7_전표반제처리/전표 단건반제- 단건반제 실행.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p7',6,'반제 완료',this)">
-                <img src="images/p7_전표반제처리/전표 단건반제- 반제 완료.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p8" class="prog-panel" style="display:none">
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>여신 등급 자동 갱신 배치</h2>
-          <p>DR 전표 GROUP BY로 거래처별 매출 집계 후 S/A/B/C 등급 산정.<br/>월말 배치는 등급 재산정, 일배치는 미결잔액만 갱신.<br/>고객마스터·여신 테이블 일괄 MODIFY.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">Batch 배치</span><span class="tag hl">GROUP BY SUM</span>
-            <span class="tag">여신 등급</span><span class="tag">월말/일배치 분기</span><span class="tag">MODIFY 저장</span>
-          </div>
-
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p8">
-            <div class="gallery-main">
-              <img src="images/p8_여신등급자동갱신/여신등급_초기화면.png" class="active" alt="초기화면"/>
-              <img src="images/p8_여신등급자동갱신/여신등급_배치 결과.png" alt="배치 결과"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p8-caption">초기화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p8',0,'초기화면',this)">
-                <img src="images/p8_여신등급자동갱신/여신등급_초기화면.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p8',1,'배치 결과',this)">
-                <img src="images/p8_여신등급자동갱신/여신등급_배치 결과.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p9" class="prog-panel" style="display:none">
-          <div class="prog-detail-type fiori">Fiori</div>
-          <h2>임시전표 결재 프로그램</h2>
-          <p>임시전표를 결재·반려하는 Fiori 앱.<br/>KPI 대시보드 차트 클릭으로 리스트 실시간 필터링.<br/>개별/일괄 결재 및 반려 사유 입력 처리.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">결재 워크플로우</span><span class="tag hl">일괄결재</span>
-            <span class="tag">OData Update</span><span class="tag">차트-리스트 연동</span><span class="tag">순차 비동기 처리</span>
-          </div>
-
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p9">
-            <div class="gallery-main">
-              <img src="images/p9_임시전표결재/01.png" class="active" alt="초기 화면"/>
-              <img src="images/p9_임시전표결재/02.png" alt="특정 행 클릭하여 라우팅"/>
-              <img src="images/p9_임시전표결재/03.png" alt="결재 승인"/>
-              <img src="images/p9_임시전표결재/04.png" alt="결재 반려"/>
-              <img src="images/p9_임시전표결재/05.png" alt="반려 완료 확인"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p9-caption">초기 화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p9',0,'초기 화면',this)">
-                <img src="images/p9_임시전표결재/01.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p9',1,'특정 행 클릭하여 라우팅',this)">
-                <img src="images/p9_임시전표결재/02.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p9',2,'결재 승인',this)">
-                <img src="images/p9_임시전표결재/03.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p9',3,'결재 반려',this)">
-                <img src="images/p9_임시전표결재/04.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p9',4,'반려 완료 확인',this)">
-                <img src="images/p9_임시전표결재/05.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p10" class="prog-panel" style="display:none">
-          <div class="prog-detail-type abap">ABAP</div>
-          <h2>환율 자동 수집 배치</h2>
-          <p>한국수출입은행 Open API로 당일 환율 JSON 수신.<br/>100단위 통화(JPY 등) 처리 후 MODIFY로 DB 저장 (있으면 갱신, 없으면 삽입).</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">HTTP Client</span><span class="tag hl">JSON 파싱</span>
-            <span class="tag">외부 API 연동</span><span class="tag">MODIFY 저장</span><span class="tag">배치 프로그램</span>
-          </div>
-
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p10">
-            <div class="gallery-main">
-              <img src="images/p10_환율자동수집배치/환율_초기화면.png" class="active" alt="초기화면"/>
-              <img src="images/p10_환율자동수집배치/환율_테이블 저장 결과.png" alt="테이블 저장 결과"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p10-caption">초기화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p10',0,'초기화면',this)">
-                <img src="images/p10_환율자동수집배치/환율_초기화면.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p10',1,'테이블 저장 결과',this)">
-                <img src="images/p10_환율자동수집배치/환율_테이블 저장 결과.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="p11" class="prog-panel" style="display:none">
-          <div class="prog-detail-type fiori">Fiori</div>
-          <h2>직원 급여 관리 프로그램</h2>
-          <p>사원·코스트센터 데이터를 조회하여 급여를 산정·지급하는 Fiori 앱.<br/>손익센터별 VizFrame 도넛 차트로 급여 분포 시각화, 슬라이스 클릭 시 상세 팝오버.<br/>사원 CRUD 및 코스트센터별 급여 전표 생성 처리.</p>
-          <div class="prog-detail-tags">
-            <span class="tag hl">VizFrame 차트</span><span class="tag hl">사원 CRUD</span>
-            <span class="tag">OData Create/Update</span><span class="tag">동적 채번</span><span class="tag">Value Help</span>
-          </div>
-
-          <!-- 스크린샷 갤러리 -->
-          <div class="gallery" id="gallery-p11">
-            <div class="gallery-main">
-              <img src="images/p11_직원급여관리/직원 급여 관리_초기 화면.png" class="active" alt="초기 화면"/>
-              <img src="images/p11_직원급여관리/직원 급여 관리_사원 추가.png" alt="사원 추가"/>
-              <img src="images/p11_직원급여관리/직원 급여 관리_전표 생성.png" alt="전표 생성"/>
-              <img src="images/p11_직원급여관리/직원 급여 관리_ 월급 지급.png" alt="월급 지급"/>
-              <img src="images/p11_직원급여관리/직원 급여 관리_급여 전표 확인.png" alt="급여 전표 확인"/>
-            </div>
-            <div class="gallery-caption" id="gallery-p11-caption">초기 화면</div>
-            <div class="gallery-thumbs">
-              <div class="gallery-thumb active" onclick="switchGallery('p11',0,'초기 화면',this)">
-                <img src="images/p11_직원급여관리/직원 급여 관리_초기 화면.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p11',1,'사원 추가',this)">
-                <img src="images/p11_직원급여관리/직원 급여 관리_사원 추가.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p11',2,'전표 생성',this)">
-                <img src="images/p11_직원급여관리/직원 급여 관리_전표 생성.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p11',3,'월급 지급',this)">
-                <img src="images/p11_직원급여관리/직원 급여 관리_ 월급 지급.png" alt=""/>
-              </div>
-              <div class="gallery-thumb" onclick="switchGallery('p11',4,'급여 전표 확인',this)">
-                <img src="images/p11_직원급여관리/직원 급여 관리_급여 전표 확인.png" alt=""/>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /prog-detail -->
-    </div><!-- /prog-layout -->
-
-    <!-- WHAT I LEARNED -->
-    <div style="margin-top:48px;">
-      <div class="section-label">Retrospective</div>
-      <div class="section-title" style="margin-bottom:12px;">What I Learned</div>
-      <div class="narrative" style="margin-bottom:0;">
-        <ol style="padding-left:20px; margin:0;">
-          <li style="margin-bottom:10px;">전표 전기 시점을 이벤트(출하·승인)와 동기화하는 설계가 재무 데이터 단절을 줄인다는 것을 BC3을 풀며 체감했습니다.</li>
-          <li style="margin-bottom:10px;">ABAP 백엔드와 Fiori 프론트를 같은 프로젝트에서 오가며 만들다 보니, OData 서비스 설계 단계에서 화면의 데이터 요구사항을 먼저 그려두는 습관이 생겼습니다.</li>
-          <li style="margin-bottom:10px;">일괄결재·일괄반제처럼 여러 건을 순차 처리하는 로직에서는 성공/실패를 개별로 집계해 부분 실패에도 전체가 막히지 않게 만드는 게 중요하다는 걸 배웠습니다.</li>
-          <li style="margin-bottom:10px;">VizFrame 차트나 KPI 대시보드는 만들고 끝이 아니라, 슬라이스 클릭 → 상세 조회처럼 사용자의 다음 행동까지 이어줘야 실제로 쓰이는 화면이 된다는 걸 알게 됐습니다.</li>
-          <li>ERD와 조직도를 먼저 설계하고 코드를 짜기 시작하니, 나중에 요구사항이 바뀌어도 테이블 구조를 갈아엎지 않고 대응할 수 있었습니다.</li>
-        </ol>
-      </div>
-    </div>
-  </section>
-</div><!-- /tab-programs -->
-
-
-
-<!-- LIGHTBOX -->
-<div id="lightbox" class="lightbox-overlay" onclick="closeLightbox()">
-  <img id="lightbox-img" src="" alt=""/>
-  <div class="lightbox-controls" onclick="event.stopPropagation()">
-    <button type="button" onclick="lbZoomBy(0.8)" aria-label="축소">−</button>
-    <button type="button" onclick="lbReset()" aria-label="원본 크기">100%</button>
-    <button type="button" onclick="lbZoomBy(1.25)" aria-label="확대">+</button>
-  </div>
-</div>
-
-
-
-<script>
-  function showTab(name, el) {
-    const current = document.querySelector('.tab-page.active');
-    const next = document.getElementById('tab-' + name);
-    if (!next || current === next) return;
-
-    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
-    const navLink = el || document.querySelector('[data-tab=' + name + ']');
-    if (navLink) navLink.classList.add('active');
-
-    if (current) {
-      current.style.transition = 'opacity .15s ease, transform .15s ease';
-      current.style.opacity = '0';
-      current.style.transform = 'translateY(-8px)';
-      setTimeout(() => {
-        current.classList.remove('active');
-        current.style.transition = '';
-        current.style.opacity = '';
-        current.style.transform = '';
-        next.classList.add('active');
-        window.scrollTo({top:0, behavior:'instant'});
-      }, 150);
-    } else {
-      next.classList.add('active');
-      window.scrollTo({top:0, behavior:'instant'});
-    }
-  }
-
-  // click any gallery's main screenshot to open it in the zoomable lightbox
-  document.addEventListener('click', e => {
-    const img = e.target.closest('.gallery-main img');
-    if (img) openLightbox(img.src);
-  });
-
-  function showErd(key, btn) {
-    document.querySelectorAll('.erd-panel').forEach(p => p.classList.remove('active'));
-    document.getElementById('erd-' + key).classList.add('active');
-    document.querySelectorAll('.erd-tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-  }
-
-  function switchGallery(galleryId, index, caption, thumbEl) {
-    const gallery = document.getElementById('gallery-' + galleryId);
-    gallery.querySelectorAll('.gallery-main img').forEach((img, i) => img.classList.toggle('active', i === index));
-    gallery.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'));
-    thumbEl.classList.add('active');
-    document.getElementById('gallery-' + galleryId + '-caption').textContent = caption;
-  }
-
-  // ── Lightbox with zoom & pan ──
-  let lbScale = 1, lbX = 0, lbY = 0, lbDragging = false, lbDragStart = {};
-  function lbApply() {
-    const img = document.getElementById('lightbox-img');
-    img.style.transform = `translate(${lbX}px,${lbY}px) scale(${lbScale})`;
-    img.style.cursor = lbScale > 1 ? (lbDragging ? 'grabbing' : 'grab') : 'zoom-out';
-  }
-  function openLightbox(src) {
-    lbScale = 1; lbX = 0; lbY = 0;
-    const img = document.getElementById('lightbox-img');
-    img.src = src;
-    img.style.transform = '';
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
-
-  // zoom toward a given viewport point (cursor / click), keeping that point stationary
-  function lbZoomToward(clientX, clientY, factor) {
-    const img = document.getElementById('lightbox-img');
-    const rect = img.getBoundingClientRect();
-    const cx = rect.left + rect.width / 2;
-    const cy = rect.top + rect.height / 2;
-    const newScale = Math.min(Math.max(lbScale * factor, 1), 8);
-    const ratio = newScale / lbScale;
-    lbX = (clientX - cx) - (clientX - cx - lbX) * ratio;
-    lbY = (clientY - cy) - (clientY - cy - lbY) * ratio;
-    lbScale = newScale;
-    if (lbScale === 1) { lbX = 0; lbY = 0; }
-    lbApply();
-  }
-
-  // wheel zoom (zooms toward cursor position)
-  document.getElementById('lightbox').addEventListener('wheel', e => {
-    e.preventDefault();
-    const delta = e.deltaY < 0 ? 1.15 : 0.87;
-    lbZoomToward(e.clientX, e.clientY, delta);
-  }, { passive: false });
-
-  // double-click to toggle zoom in/out at click point
-  document.getElementById('lightbox-img').addEventListener('dblclick', e => {
-    e.preventDefault();
-    if (lbScale > 1) { lbReset(); }
-    else { lbZoomToward(e.clientX, e.clientY, 2.5); }
-  });
-
-  function lbZoomBy(factor) {
-    const rect = document.getElementById('lightbox-img').getBoundingClientRect();
-    lbZoomToward(rect.left + rect.width / 2, rect.top + rect.height / 2, factor);
-  }
-  function lbReset() {
-    lbScale = 1; lbX = 0; lbY = 0;
-    lbApply();
-  }
-
-  // drag pan
-  const lbImg = document.getElementById('lightbox-img');
-  let lbDownPos = null;
-  document.getElementById('lightbox').addEventListener('mousedown', e => {
-    lbDownPos = { x: e.clientX, y: e.clientY };
-    if (lbScale <= 1) return;
-    e.preventDefault(); lbDragging = true;
-    lbDragStart = { x: e.clientX - lbX, y: e.clientY - lbY };
-    lbApply();
-  });
-  document.addEventListener('mousemove', e => {
-    if (!lbDragging) return;
-    lbX = e.clientX - lbDragStart.x;
-    lbY = e.clientY - lbDragStart.y;
-    lbApply();
-  });
-  document.addEventListener('mouseup', () => { lbDragging = false; lbApply(); });
-
-  // click overlay to close — only for a genuine click (no drag movement), not zoomed, and not on the controls
-  document.getElementById('lightbox').addEventListener('click', e => {
-    if (e.target.closest('.lightbox-controls')) return;
-    const movedDuringClick = lbDownPos && (Math.abs(e.clientX - lbDownPos.x) > 6 || Math.abs(e.clientY - lbDownPos.y) > 6);
-    if (e.target === document.getElementById('lightbox') && lbScale <= 1 && !movedDuringClick) closeLightbox();
-  });
-
-  function showProg(id, btn) {
-    document.querySelectorAll('.prog-panel').forEach(p => p.style.display = 'none');
-    document.querySelectorAll('.prog-btn').forEach(b => b.classList.remove('active'));
-    document.getElementById(id).style.display = 'block';
-    btn.classList.add('active');
-  }
-
-</script>
-
-</body>
+  </body>
 </html>
